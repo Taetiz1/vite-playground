@@ -1,0 +1,35 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+.container label {
+    font-weight: bold;
+    font-size: 1rem;
+    letter-spacing: -5;
+    color: rgba(0, 0, 0, .6);
+    font-family: 'kanit', sans-serif;
+}
+
+.container input {
+    border-radius: 5px;
+    border: 2px solid #eee;
+    outline: none;
+    padding: 10px 15px;
+    color: #000;
+    font-family: 'kanit', sans-serif;
+}
+
+input::placeholder {
+    color: #ccc;
+}
+
+.container input:hover {
+    border-color: #ccc;
+}
+
+.container input:focus {
+    border: 2px solid #ccc;
+}
