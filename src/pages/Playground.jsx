@@ -20,6 +20,7 @@ import Cactus from '../components/Playground/Cactus'
 import * as THREE from 'three'
 import sendingMsg from '../assets/send-message.png'
 import LoadingScene2 from './LoadingScene2'
+import LoadingScene from './LoadingScene'
 import MessagesBox from '../components/Playground/MessagesBox'
 
 import interfacestyles from './Interface.module.css'
@@ -216,94 +217,94 @@ function RotatingText(props) {
   )
 }
 
-function GetitemButton({position, item, isTextVisible, setTextVisibility}) {
-  const {socketClient} = useSocketClient();
-  const textPosition = new THREE.Vector3(position.x, position.y, position.z); 
-  const maxDistanceToShowText = 5;
+// function GetitemButton({position, item, isTextVisible, setTextVisibility}) {
+//   const {socketClient} = useSocketClient();
+//   const textPosition = new THREE.Vector3(position.x, position.y, position.z); 
+//   const maxDistanceToShowText = 5;
   
-  const borderColor = 'black';
+//   const borderColor = 'black';
 
-  const borderMaterial = new THREE.MeshBasicMaterial({ color: borderColor });
+//   const borderMaterial = new THREE.MeshBasicMaterial({ color: borderColor });
 
-  const buttonRef = useRef()
-  useFrame(({ camera }) => {
-    const distance = camera.position.distanceTo(textPosition);
-    if (buttonRef.current) {
-      buttonRef.current.lookAt(camera.position);
-    }
+//   const buttonRef = useRef()
+//   useFrame(({ camera }) => {
+//     const distance = camera.position.distanceTo(textPosition);
+//     if (buttonRef.current) {
+//       buttonRef.current.lookAt(camera.position);
+//     }
 
-    if (distance > maxDistanceToShowText) {
-      setTextVisibility(false, distance);
-    } else {
-      setTextVisibility(true);
-    }
-  })
-  return (
-    <group 
-      position={position} 
-      ref={buttonRef} 
-      visible={isTextVisible} 
-    >
-    <mesh>
-      <boxGeometry args={[0.44, 0.2, 0.44]} />
-      <meshPhysicalMaterial color="black" transparent opacity={0.5} />
-      <Text 
-        position={[0, 0, 1]} 
-        fontSize={0.1} 
-        color="white"  
-        anchorX="center" 
-        anchorY="middle"
-        frustumCulled={false}
-        renderOrder={1}
-        onClick={() => {
-          socketClient.emit("collectItem", {item})
-        }}
-      >
-        pick up
-      </Text>
-    </mesh>
-    </group>
+//     if (distance > maxDistanceToShowText) {
+//       setTextVisibility(false, distance);
+//     } else {
+//       setTextVisibility(true);
+//     }
+//   })
+//   return (
+//     <group 
+//       position={position} 
+//       ref={buttonRef} 
+//       visible={isTextVisible} 
+//     >
+//     <mesh>
+//       <boxGeometry args={[0.44, 0.2, 0.44]} />
+//       <meshPhysicalMaterial color="black" transparent opacity={0.5} />
+//       <Text 
+//         position={[0, 0, 1]} 
+//         fontSize={0.1} 
+//         color="white"  
+//         anchorX="center" 
+//         anchorY="middle"
+//         frustumCulled={false}
+//         renderOrder={1}
+//         onClick={() => {
+//           socketClient.emit("collectItem", {item})
+//         }}
+//       >
+//         pick up
+//       </Text>
+//     </mesh>
+//     </group>
     
-  );
-}
+//   );
+// }
 
-function QuestionButton({position, setshowQuestion}) {
-  const buttonRef = useRef()
-  useFrame(({ camera }) => {
-    if (buttonRef.current) {
-      buttonRef.current.lookAt(camera.position);
-    }
-  })
+// function QuestionButton({position, setshowQuestion}) {
+//   const buttonRef = useRef()
+//   useFrame(({ camera }) => {
+//     if (buttonRef.current) {
+//       buttonRef.current.lookAt(camera.position);
+//     }
+//   })
 
-  const openQ = () => {
-    const result = window.confirm('ต้องการดำเนินการหรือไม่?');
+//   const openQ = () => {
+//     const result = window.confirm('ต้องการดำเนินการหรือไม่?');
 
-    if (result) {
-      setshowQuestion(true)
-    } else {
-      return;
-    }
-  };
+//     if (result) {
+//       setshowQuestion(true)
+//     } else {
+//       return;
+//     }
+//   };
 
-  return (
-    <mesh ref={buttonRef} position={position} >
-      <sphereGeometry args={[0.8, 15, 15]} />
-      <meshPhysicalMaterial color="black" transparent opacity={0.2} />
-      <Text 
-        onClick={openQ}
-        position={[0, 0, 1]} 
-        fontSize={0.3} 
-        color="white"  
-        anchorX="center" 
-        anchorY="middle"
-        // onClick={() => {}}
-      >
-        Question!
-      </Text>
-    </mesh>
+//   return (
+//     <mesh ref={buttonRef} position={position} >
+//       <sphereGeometry args={[0.8, 15, 15]} />
+//       <meshPhysicalMaterial color="black" transparent opacity={0.2} />
+//       <Text 
+//         onClick={openQ}
+//         position={[0, 0, 1]} 
+//         fontSize={0.3} 
+//         color="white"  
+//         anchorX="center" 
+//         anchorY="middle"
+//         // onClick={() => {}}
+//       >
+//         Question!
+//       </Text>
+//     </mesh>
     
-  );
-}
+//   );
+// }
 
 const UserWrapper = ({ position, rotation, name, action, chathead, avatarUrl}) => {
   
@@ -991,7 +992,7 @@ function Playground() {
                 {/* <QuestionButton position={[4, 3, 4]} setshowQuestion={setshowQuestion} /> */}
             </Canvas>
             
-            <LoadingScene2 onLoading={onLoading} setOnLoading={() => setOnLoading(false)}/>  
+            <LoadingScene onLoading={onLoading} setOnLoading={() => setOnLoading(false)}/>  
           </div>
       )
      

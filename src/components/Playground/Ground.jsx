@@ -1,6 +1,7 @@
-import React, { useRef} from 'react'
+import React, { useRef, useState } from 'react'
 import { RigidBody } from '@micmania1/react-three-rapier'
 import { useFrame } from '@react-three/fiber';
+import * as THREE from 'three'
 import { useSocketClient } from '../Login/SocketClient';
 import { Text } from '@react-three/drei';
 import Cactus from './Cactus';
@@ -14,38 +15,54 @@ function EnterScene ({position, setOnLoading}) {
         } = useSocketClient();
   
   const { id } = socketClient;
+  const textPosition = new THREE.Vector3(position.x, position.y, position.z); 
+  const maxDistanceToShowText = 5;
+  const [textVisible, setTextVisibility] = useState(true);
 
   const buttonRef = useRef()
   useFrame(({ camera }) => {
+    const distance = camera.position.distanceTo(textPosition);
     if (buttonRef.current) {
       buttonRef.current.lookAt(camera.position);
+    }
+
+    if (distance > maxDistanceToShowText) {
+      setTextVisibility(false);
+    } else {
+      setTextVisibility(true);
     }
   })
 
   return (
-    <mesh ref={buttonRef} position={position} >
-      <sphereGeometry args={[0.8, 15, 15]} />
-      <meshPhysicalMaterial color="black" transparent opacity={0.2} />
-      <Text 
-        position={[0, 0, 1]} 
-        fontSize={0.3} 
-        color="white"  
-        anchorX="center" 
-        anchorY="middle"
-        onClick={() => {
-          socketClient.emit('joinroom', {
-            id,
-            name: username,
-            avatarUrl: avatarUrl,
-            email: email,
-            roomID: 1,
-          })
-          setOnLoading()
-        }}
-      >
-        Enter Zone1
-      </Text>
-    </mesh>
+    <group 
+      ref={buttonRef}
+      position={position}
+      visible={textVisible} 
+    >
+      <mesh>
+        <sphereGeometry args={[0.8, 15, 15]} />
+        <meshPhysicalMaterial color="black" transparent opacity={0.2} />
+        <Text 
+          position={[0, 0, 1]} 
+          fontSize={0.3} 
+          color="white"  
+          anchorX="center" 
+          anchorY="middle"
+          onClick={() => {
+            socketClient.emit('joinroom', {
+              id,
+              name: username,
+              avatarUrl: avatarUrl,
+              email: email,
+              roomID: 1,
+            })
+            setOnLoading()
+          }}
+        >
+          Enter
+        </Text>
+      </mesh>
+    </group>
     
   );
 }
@@ -60,38 +77,54 @@ function EnterScene0 ({position, setOnLoading}) {
         } = useSocketClient();
   
   const { id } = socketClient;
+  const textPosition = new THREE.Vector3(position.x, position.y, position.z); 
+  const maxDistanceToShowText = 5;
+  const [textVisible, setTextVisibility] = useState(true);
 
   const buttonRef = useRef()
   useFrame(({ camera }) => {
+    const distance = camera.position.distanceTo(textPosition);
     if (buttonRef.current) {
       buttonRef.current.lookAt(camera.position);
+    }
+
+    if (distance > maxDistanceToShowText) {
+      setTextVisibility(false);
+    } else {
+      setTextVisibility(true);
     }
   })
 
   return (
-    <mesh ref={buttonRef} position={position} >
-      <sphereGeometry args={[0.8, 15, 15]} />
-      <meshPhysicalMaterial color="black" transparent opacity={0.2} />
-      <Text 
-        position={[0, 0, 1]} 
-        fontSize={0.3} 
-        color="white"  
-        anchorX="center" 
-        anchorY="middle"
-        onClick={() => {
-          socketClient.emit('joinroom', {
-            id,
-            name: username,
-            avatarUrl: avatarUrl,
-            email: email,
-            roomID: 0,
-          })
-          setOnLoading()
-        }}
-      >
-        Enter Zone0
-      </Text>
-    </mesh>
+    <group
+      ref={buttonRef} 
+      position={position}
+      visible={textVisible}
+    >
+      <mesh>
+        <sphereGeometry args={[0.8, 15, 15]} />
+        <meshPhysicalMaterial color="black" transparent opacity={0.2} />
+        <Text 
+          position={[0, 0, 1]} 
+          fontSize={0.3} 
+          color="white"  
+          anchorX="center" 
+          anchorY="middle"
+          onClick={() => {
+            socketClient.emit('joinroom', {
+              id,
+              name: username,
+              avatarUrl: avatarUrl,
+              email: email,
+              roomID: 0,
+            })
+            setOnLoading()
+          }}
+        >
+          Enter
+        </Text>
+      </mesh>
+    </group>
     
   );
 }

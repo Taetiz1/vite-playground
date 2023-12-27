@@ -53,7 +53,7 @@ router.use('*', (req, res) => {
 const app = express()
 app.use(router)
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 4000;
 
 const server = app.listen(port, () => {
     console.log(`Listening on port http://localhost:${port}`)
@@ -62,8 +62,6 @@ const server = app.listen(port, () => {
 const origin = process.env.CLIENT_URL || "http://localhost:5173";
 
 const ioServer = new Server(server, {cors: origin})
-
-console.log(ioServer)
 
 let clients = {}
 const messages = [];
