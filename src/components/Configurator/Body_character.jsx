@@ -34,7 +34,7 @@ const Body_character = ({
   );
   const { animations: idleAnimation} = (GLTFLoader, "/public/models/animations/M_Standing_Idle_001.glb")
 
-  const { actions } = useAnimations([waveAnimation[0], idleAnimation[0]], cloneRef)
+  const { actions } = useAnimations([waveAnimation, idleAnimation], cloneRef)
 
   const [animation, setAnimation] = useState("M_Standing_Idle_001");
   const [init, setInit] = useState(avatarUrl);
