@@ -29,37 +29,37 @@ const Body_character = ({
   const { scene } = useLoader(GLTFLoader, avatarUrl)
   const clone = useMemo(() => SkeletonUtils.clone(scene), [scene])
 
-  const { animations: waveAnimation } = useLoader(GLTFLoader, "/public/models/animations/M_Standing_Expressions_001.glb");
+  // const { animations: waveAnimation } = useLoader(GLTFLoader, "/public/models/animations/M_Standing_Expressions_001.glb");
   
-  const { animations: idleAnimation} = useLoader(GLTFLoader, "/public/models/animations/M_Standing_Idle_001.glb")
+  // const { animations: idleAnimation} = useLoader(GLTFLoader, "/public/models/animations/M_Standing_Idle_001.glb")
 
-  const { actions } = useAnimations([waveAnimation[0], idleAnimation[0]], cloneRef)
+  // const { actions } = useAnimations([waveAnimation[0], idleAnimation[0]], cloneRef)
 
-  const [animation, setAnimation] = useState("M_Standing_Idle_001");
-  const [init, setInit] = useState(avatarUrl);
+  // const [animation, setAnimation] = useState("M_Standing_Idle_001");
+  // const [init, setInit] = useState(avatarUrl);
 
-  useEffect(() => {
-    actions[animation]
-      .reset()
-      .fadeIn(init === avatarUrl ? 0.32 : 0)
-      .play();
-    setInit(avatarUrl);
-    return () => actions[animation]?.fadeOut(0.32);
-  }, [animation, avatarUrl]);
+  // useEffect(() => {
+  //   actions[animation]
+  //     .reset()
+  //     .fadeIn(init === avatarUrl ? 0.32 : 0)
+  //     .play();
+  //   setInit(avatarUrl);
+  //   return () => actions[animation]?.fadeOut(0.32);
+  // }, [animation, avatarUrl]);
 
-  const delayWave = (delay) => {
-    setTimeout(() => {
-      setAnimation("M_Standing_Expressions_001");
-      setTimeout(() => {
-        setAnimation("M_Standing_Idle_001");
-        delayWave(3000);
-      }, 6000);
-    }, delay);
-  };
+  // const delayWave = (delay) => {
+  //   setTimeout(() => {
+  //     setAnimation("M_Standing_Expressions_001");
+  //     setTimeout(() => {
+  //       setAnimation("M_Standing_Idle_001");
+  //       delayWave(3000);
+  //     }, 6000);
+  //   }, delay);
+  // };
 
-  useEffect(() => {
-    delayWave(12);
-  }, []);
+  // useEffect(() => {
+  //   delayWave(12);
+  // }, []);
 
 
   // Hairstyles.forEach((hair) => {
