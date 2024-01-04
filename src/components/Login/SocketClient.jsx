@@ -85,7 +85,7 @@ export const SocketclientProvider = ({children}) => {
     const [currentRoom, setCurrentRoom] = useState()
     const [onLoading, setOnLoading] = useState(true);
     
-    const Web_URL = import.meta.env.VITE_SERVER_URL || "http://localhost:3000";
+    const Web_URL = "https://metaverse-wat-suan-kaew-u8047.vm.elestio.app/" || "http://localhost:3000";
 
     useEffect(() => {
         if (socketClient) {
