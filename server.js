@@ -59,7 +59,7 @@ const server = app.listen(port, () => {
     console.log(`Listening on port http://localhost:${port}`)
 })
 
-const origin = "https://metaverse-wat-suan-kaew-u8047.vm.elestio.app/" || "http://localhost:5173";
+const origin = "https://metaverse-wat-suan-kaew-u8047.vm.elestio.app" || "http://localhost:5173";
 
 const ioServer = new Server(server, {cors: origin})
 
