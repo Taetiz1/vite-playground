@@ -29,12 +29,11 @@ const Body_character = ({
   const { scene } = useLoader(GLTFLoader, avatarUrl)
   const clone = useMemo(() => SkeletonUtils.clone(scene), [scene])
 
-  const { animations: waveAnimation } = (GLTFLoader,
-    "/public/models/animations/M_Standing_Expressions_001.glb"
-  );
-  const { animations: idleAnimation} = (GLTFLoader, "/public/models/animations/M_Standing_Idle_001.glb")
+  const { animations: waveAnimation } = useLoader(GLTFLoader, "/public/models/animations/M_Standing_Expressions_001.glb");
+  
+  const { animations: idleAnimation} = useLoader(GLTFLoader, "/public/models/animations/M_Standing_Idle_001.glb")
 
-  const { actions } = useAnimations([waveAnimation, idleAnimation], cloneRef)
+  const { actions } = useAnimations([waveAnimation[0], idleAnimation[0]], cloneRef)
 
   const [animation, setAnimation] = useState("M_Standing_Idle_001");
   const [init, setInit] = useState(avatarUrl);
