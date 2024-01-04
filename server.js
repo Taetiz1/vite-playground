@@ -59,7 +59,9 @@ const server = app.listen(port, () => {
     console.log(`Listening on port http://localhost:${port}`)
 })
 
-const ioServer = new Server(server)
+const origin = process.env.CLIENT_URL || "http://localhost:5173";
+
+const ioServer = new Server(server, {cors: origin})
 
 let clients = {}
 const messages = [];
