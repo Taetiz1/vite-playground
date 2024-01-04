@@ -85,7 +85,7 @@ export const SocketclientProvider = ({children}) => {
     const [currentRoom, setCurrentRoom] = useState()
     const [onLoading, setOnLoading] = useState(true);
     
-    const Web_URL = "https://metaverse-wat-suan-kaew-u8047.vm.elestio.app";
+    const Web_URL = "https://metaverse-watsuankaew-u8047.vm.elestio.app";
 
     useEffect(() => {
         if (socketClient) {
