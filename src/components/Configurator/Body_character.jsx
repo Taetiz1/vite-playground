@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useMemo, useState } from 'react'
-import { useAnimations, useGLTF } from '@react-three/drei'
+import { useAnimations } from '@react-three/drei'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
+import { useLoader } from '@react-three/fiber'
 import { useCharacterAnimations } from './CharacterAnimations'
 import * as SkeletonUtils from 'three/examples/jsm/utils/SkeletonUtils'
 import { useCharacterCustomization, Hairstyles } from './CharacterCustomization'
@@ -24,13 +26,13 @@ const Body_character = ({
 
   const cloneRef = useRef()
 
-  const { scene } = useGLTF(avatarUrl)
+  const { scene } = useLoader(GLTFLoader, avatarUrl)
   const clone = useMemo(() => SkeletonUtils.clone(scene), [scene])
 
-  const { animations: waveAnimation } = useGLTF(
+  const { animations: waveAnimation } = (GLTFLoader,
     "/public/models/animations/M_Standing_Expressions_001.glb"
   );
-  const { animations: idleAnimation} = useGLTF("/public/models/animations/M_Standing_Idle_001.glb")
+  const { animations: idleAnimation} = (GLTFLoader, "/public/models/animations/M_Standing_Idle_001.glb")
 
   const { actions } = useAnimations([waveAnimation[0], idleAnimation[0]], cloneRef)
 
@@ -166,5 +168,5 @@ const Body_character = ({
 
 export default Body_character
 
-useGLTF.preload("/public/models/animations/M_Standing_Idle_001.glb");
-useGLTF.preload("/public/models/animations/M_Standing_Expressions_001.glb");
+// useGLTF.preload("/public/models/animations/M_Standing_Idle_001.glb");
+// useGLTF.preload("/public/models/animations/M_Standing_Expressions_001.glb");
