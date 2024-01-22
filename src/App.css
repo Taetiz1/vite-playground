@@ -7,10 +7,10 @@
 
 @font-face {
   font-family: 'kanit';
-  src: url('/public/fonts/kanit/kanit-light.otf') format('truetype');
+  src: url('/fonts/kanit/kanit-light.otf') format('truetype');
 }
 
 @font-face {
   font-family: 'Pawmor';
-  src: url('/public/fonts/Pawmor/PawmorDEMO-Medium.woff') format('woff'); 
+  src: url('/fonts/Pawmor/PawmorDEMO-Medium.woff') format('woff'); 
 }
