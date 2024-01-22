@@ -5,8 +5,8 @@ import { useEffect } from "react";
 const SocketclientContext = createContext({});
 
 export const AddonEquipments = [ 
-    { id: 'Item_1', name: 'Item 1', image: '/public/User.png', equipped: false, isNew: true },
-    { id: 'Item_1', name: 'Item 2', image: '/public/User.png', equipped: false, isNew: true },
+    { id: 'Item_1', name: 'Item 1', image: '/User.png', equipped: false, isNew: true },
+    { id: 'Item_1', name: 'Item 2', image: '/User.png', equipped: false, isNew: true },
 ]
 
 export const SocketclientProvider = ({children}) => {

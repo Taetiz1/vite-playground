@@ -27,9 +27,9 @@ const Body_character = ({
   const { scene } = useGLTF(avatarUrl)
   const clone = useMemo(() => SkeletonUtils.clone(scene), [scene])
 
-  const { animations: waveAnimation } = useGLTF("/public/models/animations/M_Standing_Expressions_001.glb");
+  const { animations: waveAnimation } = useGLTF("/models/animations/M_Standing_Expressions_001.glb");
   
-  const { animations: idleAnimation} = useGLTF("/public/models/animations/M_Standing_Idle_001.glb")
+  const { animations: idleAnimation} = useGLTF("/models/animations/M_Standing_Idle_001.glb")
 
   const { actions } = useAnimations([idleAnimation[0], waveAnimation[0]], cloneRef)
 
@@ -167,5 +167,5 @@ const Body_character = ({
 
 export default Body_character
 
-// useGLTF.preload("/public/models/animations/M_Standing_Idle_001.glb");
-// useGLTF.preload("/public/models/animations/M_Standing_Expressions_001.glb");
+useGLTF.preload("/models/animations/M_Standing_Idle_001.glb");
+useGLTF.preload("/models/animations/M_Standing_Expressions_001.glb");

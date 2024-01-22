@@ -67,7 +67,7 @@ const ConfiguratorInterface = ({ socket, onLoading, setOnLoading, setCustomMode}
     return (
         !onLoading && <>
             <Affix position={{top: 20, left:20}}>
-                <img src="/src/assets/MetaverseLogo.png" alt="icon" width="200" height="74" style={{pointerEvents: 'none', userSelect: 'none'}}/>
+                <img src="/assets/MetaverseLogo.png" alt="icon" width="200" height="74" style={{pointerEvents: 'none', userSelect: 'none'}}/>
             </Affix>
 
             <Affix position={{ top: 20, right: 20}}>

@@ -57,8 +57,8 @@ export const Character = ({socket, inventory, pos}) => {
     
     const modelRef = useRef();
 
-    const { animations: walkAnimation} = useGLTF("/public/models/animations/M_Walk_001.glb")
-    const { animations: idleAnimation} = useGLTF("/public/models/animations/M_Standing_Idle_001.glb")
+    const { animations: walkAnimation} = useGLTF("/models/animations/M_Walk_001.glb")
+    const { animations: idleAnimation} = useGLTF("/models/animations/M_Standing_Idle_001.glb")
 
     const { actions } = useAnimations([walkAnimation[0], idleAnimation[0]], scene)
 
@@ -371,4 +371,3 @@ export const Character = ({socket, inventory, pos}) => {
 useGLTF.preload("/public/models/animations/M_Walk_001.glb");
 useGLTF.preload("/public/models/animations/M_Standing_Idle_001.glb");
 useGLTF.preload("/public/models/animations/M_Dances_001.glb");
-useGLTF.preload("/public/models/animations/M_Standing_Expressions_001.glb");
