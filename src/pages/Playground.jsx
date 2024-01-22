@@ -352,7 +352,7 @@ const UserWrapper = ({ position, rotation, name, action, chathead, avatarUrl}) =
             anchorX="center"
             anchorY="middle"
             fontSize={0.2}
-            font="/public/fonts/kanit/kanit-light.otf"
+            font="/fonts/kanit/kanit-light.otf"
             outlineWidth={0.025}
             outlineColor="white"
           > 
