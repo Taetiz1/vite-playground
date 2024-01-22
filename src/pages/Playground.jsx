@@ -18,7 +18,7 @@ import data from '@emoji-mart/data'
 import Peer, { channelConfig } from 'simple-peer'
 import Cactus from '../components/Playground/Cactus'
 import * as THREE from 'three'
-import sendingMsg from '../assets/send-message.png'
+import sendingMsg from '/assets/send-message.png'
 import LoadingScene2 from './LoadingScene2'
 import MessagesBox from '../components/Playground/MessagesBox'
 
@@ -528,7 +528,6 @@ function Playground() {
     if (logedIn) { 
       setSocketClient(io.connect(Web_URL))
       setIsGetEmail(true)
-	console.log('logedIn')
     }
 
   }, [logedIn])
