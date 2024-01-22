@@ -368,6 +368,6 @@ export const Character = ({socket, inventory, pos}) => {
     )
 }
 
-useGLTF.preload("/public/models/animations/M_Walk_001.glb");
-useGLTF.preload("/public/models/animations/M_Standing_Idle_001.glb");
-useGLTF.preload("/public/models/animations/M_Dances_001.glb");
+useGLTF.preload("/models/animations/M_Walk_001.glb");
+useGLTF.preload("/models/animations/M_Standing_Idle_001.glb");
+useGLTF.preload("/models/animations/M_Dances_001.glb");
