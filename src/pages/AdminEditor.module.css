@@ -1,0 +1,49 @@
+.container {
+    font-family: 'kanit', sans-serif;
+    height: 100%;
+    min-height: 100vh;
+    width: 100%;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.navbar {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 0;
+}
+  
+.navbar_li {
+    float: left;
+    font-size: 20px;
+}
+  
+.navbar_li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+  
+.navbar_li a:hover {
+    background-color: #4CAF50;
+}
+
+.dashboard {
+    height: 100%;
+    width: 100%;
+    background: none;
+    padding: 10px;
+    background-color: silver;
+}
+
+.displayname {
+}
