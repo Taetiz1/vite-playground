@@ -4,15 +4,12 @@ import { useAnimations, useGLTF, OrbitControls, } from "@react-three/drei";
 import { useThree, useFrame,  } from "@react-three/fiber";
 import { Quaternion, Vector3, } from "three";
 import { RigidBody, CapsuleCollider, } from "@micmania1/react-three-rapier";
-import { useCharacterCustomization, Hairstyles, } from "../Configurator/CharacterCustomization";
-import * as THREE from 'three'
 import { useSocketClient } from "../Login/SocketClient";
 
 let walkDirection = new Vector3();
 let rotateAngle = new Vector3(0, 1, 0);
 let rotateQuarternion = new Quaternion();
 let cameraTarget = new Vector3()
-// const [path, setPath] = useState();
 
 const directionOffset = ({ forward, backward, left, right}) => {
     var directionOffset = 0;
@@ -89,138 +86,8 @@ export const Character = ({socket, inventory, pos}) => {
             bodyRef.current.setEnabledTranslations(true, true, true)
         }
     }, [onLoading])
-
-    // const { 
-    //     Pupil,
-    //     Iris,
-    //     Sclera,
-    //     Skin,
-    //     Hair,
-    //     HairColor,
-    // } = useCharacterCustomization();
-
-    // Hairstyles.forEach((hair) => {
-    //     if(hair != Hair){
-    //       const hairMesh = scene.getObjectByName(hair)
-    //       hairMesh.visible = false;
-    //     }
-    // });
-
-    // useEffect(() => {
-    //     const hairMesh = scene.getObjectByName(Hair);
-    //     const eyeBrowL = scene.getObjectByName('eyebrow_L')
-    //     const eyeBrowR = scene.getObjectByName('eyebrow_R')
-    
-    //     hairMesh.visible = true;
-    
-    //     hairMesh.material = new THREE.MeshStandardMaterial({
-    //       color: HairColor,
-    //       roughness: 0.8,
-    //       metalness: 0.0, 
-    //     });
-
-    //     eyeBrowL.material = new THREE.MeshStandardMaterial({
-    //     color: HairColor,
-    //     roughness: 0.8,
-    //     metalness: 0.0, 
-    //     });
-
-    //     eyeBrowR.material = new THREE.MeshStandardMaterial({
-    //     color: HairColor,
-    //     roughness: 0.8,
-    //     metalness: 0.0, 
-    //     });
-    
-    //     return () => {
-    //       hairMesh.visible = false;
-    //     }
-    //   }, [Hair, HairColor])
   
     scene.scale.set(0.5, 0.5, 0.5);
-
-    // const irisMeshL = scene.getObjectByName("pasted__Monta_L_eyeBall_iris_geo");
-    // const irisMeshR = scene.getObjectByName("pasted__Monta_L_eyeBall_iris_geo002");
-    // const pupilMeshL = scene.getObjectByName("pasted__Monta_L_eyeBall_pupil_geo");
-    // const pupilMeshR = scene.getObjectByName("pasted__Monta_L_eyeBall_pupil_geo002");
-    // const sceleraMeshL = scene.getObjectByName("pasted__Monta_L_eyeBall_sclera_geo");
-    // const sceleraMeshR = scene.getObjectByName("pasted__Monta_L_eyeBall_sclera_geo001");
-    // const skinMesh = scene.getObjectByName("uploads_files_2017656_body_1");
-
-    // const irisMaterial = new THREE.MeshStandardMaterial({
-    //     color: Iris,
-    //     roughness: 0.5, // ความไม่เรียบ (0=เรียบ, 1=ไม่เรียบ)
-    //     metalness: 0.4, // ความโลหะ (0=ไม่โลหะ, 1=โลหะ)
-    // });
-    
-    // const pupilMaterial = new THREE.MeshStandardMaterial({
-    //     color: Pupil,
-    //     roughness: 0.1,
-    //     metalness: 0.2,
-    // });
-    
-    // const scleraMaterial = new THREE.MeshStandardMaterial({
-    //     color: Sclera,
-    //     roughness: 0,
-    //     metalness: 0,
-    // });
-
-    // const skinMaterial = new THREE.MeshStandardMaterial({
-    //     color: Skin,
-    //     roughness: 0.6,
-    //     metalness: 0.1,
-    // });
-
-    // irisMeshL.material = irisMaterial
-    // irisMeshR.material = irisMaterial
-    // pupilMeshL.material = pupilMaterial
-    // pupilMeshR.material = pupilMaterial
-    // sceleraMeshL.material = scleraMaterial
-    // sceleraMeshR.material = scleraMaterial
-    // skinMesh.material = skinMaterial
-    
-    // const { nodes: {Octopus}, } = useGLTF('/public/models/Octopus.glb')
-    // const banana = useGLTF('/public/models/banana.glb')
-    // const bananaModel = banana.nodes.Cube
-
-    // scene.traverse((object) => {
-    //     if(object.isMesh) {
-    //         object.castShadow = true;
-    //         object.receiveShadow = true;
-    //     }
-    // })
-
-    // useEffect(() => {
-    //     if(inventory["Item_1"]){
-    //         if(inventory["Item_1"].equipped){
-    //             nodes.mixamorigLeftHand.add(bananaModel); 
-    //             bananaModel.scale.set(0.03, 0.03, 0.03)
-    //             bananaModel.position.y = 0.2;
-    //             bananaModel.position.x = -0.1;
-    //             bananaModel.position.z = 0.05;
-    //         }
-                
-    //         return () => {
-    //             nodes.mixamorigLeftHand.remove(bananaModel);
-    //         };
-    //     } 
-
-    // },  [inventory])
-
-    // useEffect(() => {
-    
-    //     if(inventory["Item_2"]){
-    //         if(inventory["Item_2"].equipped){
-    //             nodes.mixamorigHead.add(Octopus); 
-    //             Octopus.scale.set(0.15, 0.15, 0.15)
-    //             Octopus.position.y = 0.8;
-    //         }
-      
-    //         return () => {
-    //             nodes.mixamorigHead.remove(Octopus);
-    //         };
-    //     } 
-
-    // },  [inventory])
   
     const currentAction = useRef("");
     const controlsRef = useRef()

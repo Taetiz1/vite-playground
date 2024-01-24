@@ -1,12 +1,12 @@
 import React , { useState, useEffect, useRef, useMemo }from 'react'
 import { Canvas } from '@react-three/fiber'
 import { Ground } from '../components/Playground/Ground'
-import { Stats, Sky, useHelper, useGLTF, Html, OrbitControls } from '@react-three/drei'
+import { Stats, Sky, useHelper, useGLTF, Html } from '@react-three/drei'
 import { Character } from '../components/Playground/Character'
 import { io } from 'socket.io-client'
 import { Text, useAnimations } from '@react-three/drei'
 import * as SkeletonUtils from 'three/examples/jsm/utils/SkeletonUtils'
-import { Physics, Debug, RigidBody} from '@micmania1/react-three-rapier'
+import { Physics, Debug } from '@micmania1/react-three-rapier'
 import { useFrame } from '@react-three/fiber'
 import { Affix, Modal, Container, Grid, Col, Text as MantineText } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks';
@@ -15,9 +15,7 @@ import badWords from 'bad-words';
 import TextareaAutosize  from 'react-textarea-autosize'
 import EmojiPicker from '@emoji-mart/react'
 import data from '@emoji-mart/data'
-import Peer, { channelConfig } from 'simple-peer'
-import Cactus from '../components/Playground/Cactus'
-import * as THREE from 'three'
+import Peer from 'simple-peer'
 import sendingMsg from '/assets/send-message.png'
 import LoadingScene2 from './LoadingScene2'
 import MessagesBox from '../components/Playground/MessagesBox'
@@ -26,21 +24,12 @@ import interfacestyles from './Interface.module.css'
 import quizStyles from './QuizGane.module.css'
 import loginstyles from './Login.module.css'
 
-import { AddonEquipments, useSocketClient, } from '../components/Login/SocketClient'
-import { Hairstyles, useCharacterCustomization } from '../components/Configurator/CharacterCustomization'
+import { useSocketClient } from '../components/Login/SocketClient'
+import { useCharacterCustomization } from '../components/Configurator/CharacterCustomization'
+import { useVideoChat } from '../components/context'
 import Login from './Login'
 import Configurator from './Configurator'
-import Admin_login from './Admin'
 import { pushNotification } from '../components/Playground/Notification'
-
-///////////////////////////////////////////////////////////////
-// import { ScrollControls } from '@react-three/drei'
-// import { 
-//   SocketManager, 
-//   roomIDAtom,
-// } from '../components/Login/SocketClient'
-// import { useAtom } from "jotai";
-/////////////////////////////////////////////////////////
 
 const OtherPlayers = ({action, avatarUrl}) => {
   const cloneRef = useRef()
@@ -54,89 +43,6 @@ const OtherPlayers = ({action, avatarUrl}) => {
   const { actions } = useAnimations([walkAnimation[0], idleAnimation[0]], cloneRef)
   
   const currentAction = useRef("");
-
-  // const { nodes: {Octopus} } = useGLTF('/public/models/Octopus.glb')
-  // const banana = useGLTF('/public/models/banana.glb')
-  // const bananaModel = banana.nodes.Cube
-
-  // const cloneOctopus = Octopus.clone()
-  // const cloneBanana = bananaModel.clone()
-  
-  // Hairstyles.forEach((hair) => {
-  //   if(hair != config.Hair){
-  //     const hairMesh = clone.getObjectByName(hair)
-  //     hairMesh.visible = false;
-  //   }
-  // });
-
-  // const irisMeshL = clone.getObjectByName("pasted__Monta_L_eyeBall_iris_geo");
-  // const irisMeshR = clone.getObjectByName("pasted__Monta_L_eyeBall_iris_geo002");
-  // const pupilMeshL = clone.getObjectByName("pasted__Monta_L_eyeBall_pupil_geo");
-  // const pupilMeshR = clone.getObjectByName("pasted__Monta_L_eyeBall_pupil_geo002");
-  // const sceleraMeshL = clone.getObjectByName("pasted__Monta_L_eyeBall_sclera_geo");
-  // const sceleraMeshR = clone.getObjectByName("pasted__Monta_L_eyeBall_sclera_geo001");
-  // const skinMesh = clone.getObjectByName("uploads_files_2017656_body_1");
-
-  // useEffect(() => {
-  //   const hairMesh = clone.getObjectByName(config.Hair);
-  //   const eyeBrowL = clone.getObjectByName('eyebrow_L')
-  //   const eyeBrowR = clone.getObjectByName('eyebrow_R')
-
-  //   hairMesh.visible = true;
-
-  //   hairMesh.material = new THREE.MeshStandardMaterial({
-  //     color: config.HairColor,
-  //     roughness: 0.8,
-  //     metalness: 0.0, 
-  //   });
-
-  //   eyeBrowL.material = new THREE.MeshStandardMaterial({
-  //     color: config.HairColor,
-  //     roughness: 0.8,
-  //     metalness: 0.0, 
-  //   });
-
-  //   eyeBrowR.material = new THREE.MeshStandardMaterial({
-  //     color: config.HairColor,
-  //     roughness: 0.8,
-  //     metalness: 0.0, 
-  //   });
-
-  //   const irisMaterial = new THREE.MeshStandardMaterial({
-  //     color: config.Iris,
-  //     roughness: 0.5, // ความไม่เรียบ (0=เรียบ, 1=ไม่เรียบ)
-  //     metalness: 0.4, // ความโลหะ (0=ไม่โลหะ, 1=โลหะ)
-  //   });
-  
-  //   const pupilMaterial = new THREE.MeshStandardMaterial({
-  //     color: config.Pupil,
-  //     roughness: 0.1,
-  //     metalness: 0.2,
-  //   });
-  
-  //   const scleraMaterial = new THREE.MeshStandardMaterial({
-  //     color: config.Sclera,
-  //     roughness: 0,
-  //     metalness: 0,
-  //   });
-  
-  //   const skinMaterial = new THREE.MeshStandardMaterial({
-  //     color: config.Skin,
-  //     roughness: 0.6,
-  //     metalness: 0.1,
-  //   });
-
-  //   return () => {
-  //     hairMesh.visible = false
-  //     irisMeshL.material = irisMaterial
-  //     irisMeshR.material = irisMaterial
-  //     pupilMeshL.material = pupilMaterial
-  //     pupilMeshR.material = pupilMaterial
-  //     sceleraMeshL.material = scleraMaterial
-  //     sceleraMeshR.material = scleraMaterial
-  //     skinMesh.material = skinMaterial
-  //   }
-  // }, [config])
 
   clone.traverse((object) => {
     if(object.isMesh) {
@@ -161,37 +67,6 @@ const OtherPlayers = ({action, avatarUrl}) => {
     const hips = cloneRef.current.getObjectByName("Hips");
     hips.position.set(0, hips.position.y, 0);
   })
-  
-  // const LeftHandNode = clone.getObjectByName('mixamorigLeftHand');
-  // const HeadNode = clone.getObjectByName('mixamorigHead');
-
-  // useEffect(() => {
-  //   if(equipment.includes("Item_1")){
-  //     LeftHandNode.add(cloneBanana); 
-  //     cloneBanana.scale.set(0.03, 0.03, 0.03)
-  //     cloneBanana.position.y = 0.2;
-  //     cloneBanana.position.x = -0.1;
-  //     cloneBanana.position.z = 0.05;
-  //   } 
-  
-  //   return () => {
-  //     LeftHandNode.remove(cloneBanana);
-  //   };
-
-  // },  [equipment])
-
-  // useEffect(() => {
-  //   if(equipment.includes("Item_2")){
-  //     HeadNode.add(cloneOctopus); 
-  //     cloneOctopus.scale.set(0.15, 0.15, 0.15)
-  //     cloneOctopus.position.y = 0.8;
-  //   } 
-  
-  //   return () => {
-  //     HeadNode.remove(cloneOctopus);
-  //   };
-
-  // },  [equipment])
 
   return (
       <group ref={cloneRef} >
@@ -215,57 +90,6 @@ function RotatingText(props) {
       />
   )
 }
-
-// function GetitemButton({position, item, isTextVisible, setTextVisibility}) {
-//   const {socketClient} = useSocketClient();
-//   const textPosition = new THREE.Vector3(position.x, position.y, position.z); 
-//   const maxDistanceToShowText = 5;
-  
-//   const borderColor = 'black';
-
-//   const borderMaterial = new THREE.MeshBasicMaterial({ color: borderColor });
-
-//   const buttonRef = useRef()
-//   useFrame(({ camera }) => {
-//     const distance = camera.position.distanceTo(textPosition);
-//     if (buttonRef.current) {
-//       buttonRef.current.lookAt(camera.position);
-//     }
-
-//     if (distance > maxDistanceToShowText) {
-//       setTextVisibility(false, distance);
-//     } else {
-//       setTextVisibility(true);
-//     }
-//   })
-//   return (
-//     <group 
-//       position={position} 
-//       ref={buttonRef} 
-//       visible={isTextVisible} 
-//     >
-//     <mesh>
-//       <boxGeometry args={[0.44, 0.2, 0.44]} />
-//       <meshPhysicalMaterial color="black" transparent opacity={0.5} />
-//       <Text 
-//         position={[0, 0, 1]} 
-//         fontSize={0.1} 
-//         color="white"  
-//         anchorX="center" 
-//         anchorY="middle"
-//         frustumCulled={false}
-//         renderOrder={1}
-//         onClick={() => {
-//           socketClient.emit("collectItem", {item})
-//         }}
-//       >
-//         pick up
-//       </Text>
-//     </mesh>
-//     </group>
-    
-//   );
-// }
 
 // function QuestionButton({position, setshowQuestion}) {
 //   const buttonRef = useRef()
@@ -379,15 +203,6 @@ const Lights = ({x, y, z}) => {
   )
 }
 
-// const VoiceChat = () => {
-
-//   return (
-//     <div style={{color: 'green'}}>
-//       Voice Chat Activated
-//     </div>
-//   );
-// }
-
 // const Video = ({peer}) => {
 //   const ref = useRef();
 
@@ -418,11 +233,15 @@ function Playground() {
     onLoading,
     setOnLoading
   } = useSocketClient();
-  const { HairColor } = useCharacterCustomization();
+
+  const {
+    MicisToggled,
+    Peers,
+    setPeers,
+    callUser,
+  } = useVideoChat();
 
   const [clients, setClients] = useState({})
-  
-  // const [items, setItems] = useState({});
 
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
@@ -437,14 +256,6 @@ function Playground() {
 
   // const [questions, setQuestions] = useState([{}])
 
-  // function checkItem(item) {
-  //   socketClient.emit("checkItem", { item});
-  // }
-
-  // const [item1_Visible, setItem1_Visible] = useState();
-  // const [item2_Visible, setItem2_Visible] = useState();
-
-  // const [MicisToggled, setMicIsToggled] = useState(false);
   // const [Peers, setPeers] = useState([]);
   // const peersRef = useRef([]);
 
@@ -519,11 +330,6 @@ function Playground() {
   //   } 
   // },[MicisToggled])
 
-  // const toggleMicrophone = () => {
-  
-  //   setMicIsToggled(!MicisToggled);
-  // }
-
   useEffect(() => {
     if (logedIn) { 
       setSocketClient(io.connect(Web_URL))
@@ -547,10 +353,6 @@ function Playground() {
       socketClient.on("message", (message) => {
         setMessages(message);
       })
-
-      // socketClient.on("inventory", (item) => {
-      //   setItems(item);
-      // })
   
       // socketClient.on("selectedQuestions", (selectedQuestions) => {
       //   setQuestions(selectedQuestions);
@@ -585,11 +387,6 @@ function Playground() {
     }
     
   }, [socketClient])
-
-  // function equipItem(item) {
-  //   const { id } = socketClient;
-  //   socketClient.emit("equipItem", {id, item});
-  // }
 
   const sendMessage = () => {
     const { id } = socketClient;
@@ -632,9 +429,6 @@ function Playground() {
     }
   };
 
-  // const [openInventory, { open, close }] = useDisclosure(false);
-  // const [adminpage, setAdminpage] = useState(false)
-  
   // const [showQuestion, setshowQuestion] = useState(false);
   
   function scrollToBottom() {
@@ -693,7 +487,7 @@ function Playground() {
     
                   {/* <div className={interfacestyles.MicbuttonContainer}>
                     <button 
-                      onClick={toggleMicrophone}
+                      onClick={callUser}
                       style={{
                         backgroundColor: MicisToggled ? 'rgb(220, 20, 60, .6)' : 'rgba(0, 0, 0, .25)',
                       }}
@@ -702,7 +496,6 @@ function Playground() {
                     </button>
                   </div> */}
                   
-    
                   <div className={interfacestyles.chatInputContainer} >
                     <div className={interfacestyles.textareaContainer}>
                       <TextareaAutosize 
@@ -797,76 +590,8 @@ function Playground() {
                   }}>
                     Return
                   </button>
-                  {/* {MicisToggled && <VoiceChat />} */}
                 </div>
             </Affix>
-    
-            {/* <Affix position={{top: 20, right: 20}} style={{zIndex: 2}}>
-              <div className={loginstyles.admin_btn_container}>
-                <button 
-                  className={loginstyles.admin_btn} 
-                  onClick={() => {
-                    setAdminpage(true)
-                    setAdminLogedIn(false)
-                  }} >
-                  Admin
-                </button>
-              </div>
-            </Affix>
-    
-            <Modal size="calc(100vw - 3rem)" opened={adminpage} onClose={() => {setAdminpage(false)}} style={{zIndex: '2', padding: '0'}}>
-              <Admin_login /> 
-            </Modal> */}
-    
-            {/* <Affix position={{bottom: 20, left: 20}} style={{zIndex: '2',}}>
-                <div className={interfacestyles.Inventory_button_container}>
-                  <button onClick={open}>
-                    Inventory
-                  </button>
-                </div>
-            </Affix> */}
-    
-            {/* <Modal opened={openInventory} onClose={close} title="Inventory" style={{zIndex: '2',}}>
-              <Container size="xl">
-                <Grid gutter="sm">
-    
-                {Object.entries(items).map(([key, item]) => (
-                  <Col key={key} span={3}>
-                    <div 
-                      className={ interfacestyles.Item_container }
-                      onDoubleClick={() => equipItem(key)}
-                      onClick={() => {
-                        if(item.isNew){
-                          checkItem(key)
-                        }
-                      }}
-                    >
-                      <div 
-                        className={ item.isNew ? interfacestyles.newItemCard:(item.equipped ? interfacestyles.Item_equipped : interfacestyles.itemCard)}
-                      >
-                        <img 
-                          src={item.image} 
-                          alt={item.name} 
-                          style={{ width: '50px', height: '50px', position: 'absolute', bottom: '30%'}} 
-                          draggable="false" 
-                          onContextMenu={(e) => {
-                            e.preventDefault(); // Prevent default context menu
-                          }}
-                        />
-                        <div style={{bottom: '5%', position: 'absolute', }}>
-                          {item.name}
-                        </div>
-                      </div>
-                      {item.isNew && <div className={interfacestyles.newBadge}>new</div>}
-                      {item.equipped && <div className={interfacestyles.equipBadge}>✔</div>}
-                      {(!item.equipped && !item.isNew) && <div className={interfacestyles.emptyBadge}></div>}
-                    </div>
-                  </Col>
-                ))}
-    
-                </Grid>
-              </Container>
-            </Modal> */}
     
             {/* <Modal size="xl" opened={showQuestion} onClose={() => { setshowQuestion(false) }} title="Question" style={{zIndex: '2',}}>
               <div className={quizStyles.quizCard}>

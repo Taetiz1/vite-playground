@@ -2,8 +2,6 @@ import { Affix, Button, Group } from "@mantine/core"
 import React, { useState } from "react"
 import { useCharacterAnimations } from "./CharacterAnimations"
 import { CameraModes, useCharacterCustomization } from "./CharacterCustomization";
-import { HeadConfigurator } from "./HeadConfigurator";
-import { BodyConfigurator } from "./BodyConfigurator";
 import { useSocketClient } from "../Login/SocketClient";
 
 const ConfiguratorInterface = ({ socket, onLoading, setOnLoading, setCustomMode}) => {
@@ -18,37 +16,15 @@ const ConfiguratorInterface = ({ socket, onLoading, setOnLoading, setCustomMode}
         isMode,
         SetIsMode,
         setCameraMode, 
-        Skin,
-        Pupil,
-        Iris,
-        Sclera, 
-        Hair,
-        HairColor,
     } = useCharacterCustomization();
 
     const { 
         username,
         setconfigChar,
         avatarUrl,
-        email,
     } = useSocketClient();
 
     function enterPlaygroud() {
-
-        // if(Pupil && Iris && Sclera && Skin && Hair && HairColor){
-        //     const { id } = socket;
-        //     socket.emit('config', {
-        //         id,
-        //         Skin: Skin,
-        //         Pupil: Pupil,
-        //         Iris: Iris,
-        //         Sclera: Sclera,
-        //         Hair: Hair,
-        //         HairColor: HairColor,
-        //     })
-        //     setconfigChar(true)
-        //     setOnLoading()
-        // } 
 
         if(avatarUrl){
             const { id } = socket;
@@ -56,7 +32,6 @@ const ConfiguratorInterface = ({ socket, onLoading, setOnLoading, setCustomMode}
                 id,
                 name: username,
                 avatarUrl: avatarUrl,
-                email: email,
                 roomID: 0,
             })
             setconfigChar(true)
@@ -88,11 +63,6 @@ const ConfiguratorInterface = ({ socket, onLoading, setOnLoading, setCustomMode}
                     }
                 </Group>
             </Affix>
-
-            {/* <Affix position={{top: 60, right: 20}}>
-                    {isMode === CameraModes.Head && <HeadConfigurator /> }
-                    {isMode === CameraModes.Body && <BodyConfigurator /> }
-            </Affix> */}
 
             <Affix position={{ bottom: 20, right: '50%' }}>
                 <Button onClick={() => {setCustomMode()}}>

@@ -1,13 +1,6 @@
-import React, { createContext, useContext, useState } from "react";
-import { useGLTF } from "@react-three/drei";
-import { useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 
 const SocketclientContext = createContext({});
-
-export const AddonEquipments = [ 
-    { id: 'Item_1', name: 'Item 1', image: '/User.png', equipped: false, isNew: true },
-    { id: 'Item_1', name: 'Item 2', image: '/User.png', equipped: false, isNew: true },
-]
 
 export const SocketclientProvider = ({children}) => {
     const [socketClient, setSocketClient] = useState(null)
@@ -26,12 +19,6 @@ export const SocketclientProvider = ({children}) => {
     useEffect(() => {
         if (socketClient) {
           socketClient.on('configSetting', (config) => {
-            // setSkin(config.Skin)
-            // setPupil(config.Pupil)
-            // setIris(config.Iris)
-            // setScelera(config.Sclera)
-            // setHair(config.Hair)
-            // setHairColor(config.HairColor)
             setAvatarUrl(config)
           })
 

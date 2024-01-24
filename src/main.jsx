@@ -7,6 +7,7 @@ import { CharacterAnimationsProvider } from './components/Configurator/Character
 import { CharacterCustomizationProvider } from './components/Configurator/CharacterCustomization'
 import { SocketclientProvider } from './components/Login/SocketClient'
 import { GoogleOAuthProvider } from '@react-oauth/google'
+import { VideoChatProvider } from './components/context'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -16,11 +17,13 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         withNormalizeCSS
       >
         <SocketclientProvider>
-          <CharacterCustomizationProvider>
-            <CharacterAnimationsProvider>
-              <App />
-            </CharacterAnimationsProvider>
-          </CharacterCustomizationProvider>
+          <VideoChatProvider>
+            <CharacterCustomizationProvider>
+              <CharacterAnimationsProvider>
+                <App />
+              </CharacterAnimationsProvider>
+            </CharacterCustomizationProvider>
+          </VideoChatProvider>
         </SocketclientProvider>
       </MantineProvider>
     </GoogleOAuthProvider>

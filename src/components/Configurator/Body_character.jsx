@@ -1,22 +1,12 @@
 import React, { useEffect, useRef, useMemo, useState } from 'react'
 import { useAnimations, useGLTF } from '@react-three/drei'
-import { useCharacterAnimations } from './CharacterAnimations'
 import * as SkeletonUtils from 'three/examples/jsm/utils/SkeletonUtils'
-import { useCharacterCustomization, Hairstyles } from './CharacterCustomization'
-import * as THREE from 'three'
+import { useCharacterCustomization } from './CharacterCustomization'
 import { useSocketClient } from '../Login/SocketClient'
 const Body_character = ({
   ...props
 }) => {
   // const { setAnimations, animationIndex } = useCharacterAnimations();
-  // const { 
-  //   Pupil,
-  //   Iris,
-  //   Sclera,
-  //   Skin,
-  //   Hair,
-  //   HairColor,
-  // } = useCharacterCustomization();
 
   const { 
     avatarUrl,
@@ -62,89 +52,12 @@ const Body_character = ({
     delayWave(12);
   }, []);
 
-  // Hairstyles.forEach((hair) => {
-  //   if(hair != Hair){
-  //     const hairMesh = clone.getObjectByName(hair)
-  //     hairMesh.visible = false;
-  //   }
-  // });
-
   clone.traverse((object) => {
     if (object.isMesh) {
       object.castShadow = true;
       object.receiveShadow = true;
     }
   })
-  
-  // useEffect(() => {
-  //   const hairMesh = clone.getObjectByName(Hair);
-  //   const eyeBrowL = clone.getObjectByName('eyebrow_L')
-  //   const eyeBrowR = clone.getObjectByName('eyebrow_R')
-
-  //   hairMesh.visible = true;
-
-  //   hairMesh.material = new THREE.MeshStandardMaterial({
-  //     color: HairColor,
-  //     roughness: 0.8,
-  //     metalness: 0.2, 
-  //   });
-
-  //   eyeBrowL.material = new THREE.MeshStandardMaterial({
-  //     color: HairColor,
-  //     roughness: 0.8,
-  //     metalness: 0.2, 
-  //   });
-
-  //   eyeBrowR.material = new THREE.MeshStandardMaterial({
-  //     color: HairColor,
-  //     roughness: 0.8,
-  //     metalness: 0.2, 
-  //   });
-
-  //   return () => {
-  //     hairMesh.visible = false;
-  //   }
-  // }, [Hair, HairColor])
-
-  // const irisMeshL = clone.getObjectByName("pasted__Monta_L_eyeBall_iris_geo");
-  // const irisMeshR = clone.getObjectByName("pasted__Monta_L_eyeBall_iris_geo002");
-  // const pupilMeshL = clone.getObjectByName("pasted__Monta_L_eyeBall_pupil_geo");
-  // const pupilMeshR = clone.getObjectByName("pasted__Monta_L_eyeBall_pupil_geo002");
-  // const sceleraMeshL = clone.getObjectByName("pasted__Monta_L_eyeBall_sclera_geo");
-  // const sceleraMeshR = clone.getObjectByName("pasted__Monta_L_eyeBall_sclera_geo001");
-  // const skinMesh = clone.getObjectByName("uploads_files_2017656_body_1");
-
-  // const irisMaterial = new THREE.MeshStandardMaterial({
-  //   color: Iris,
-  //   roughness: 0.5, // ความไม่เรียบ (0=เรียบ, 1=ไม่เรียบ)
-  //   metalness: 0.4, // ความโลหะ (0=ไม่โลหะ, 1=โลหะ)
-  // });
-
-  // const pupilMaterial = new THREE.MeshStandardMaterial({
-  //   color: Pupil,
-  //   roughness: 0.1,
-  //   metalness: 0.2,
-  // });
-
-  // const scleraMaterial = new THREE.MeshStandardMaterial({
-  //   color: Sclera,
-  //   roughness: 0,
-  //   metalness: 0,
-  // });
-  
-  // const skinMaterial = new THREE.MeshStandardMaterial({
-  //   color: Skin,
-  //   roughness: 0.6,
-  //   metalness: 0.1,
-  // });
-
-  // irisMeshL.material = irisMaterial
-  // irisMeshR.material = irisMaterial
-  // pupilMeshL.material = pupilMaterial
-  // pupilMeshR.material = pupilMaterial
-  // sceleraMeshL.material = scleraMaterial
-  // sceleraMeshR.material = scleraMaterial
-  // skinMesh.material = skinMaterial
 
   // useEffect(() => {
   //   setAnimations(names);
