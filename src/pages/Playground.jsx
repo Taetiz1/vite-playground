@@ -15,10 +15,10 @@ import badWords from 'bad-words';
 import TextareaAutosize  from 'react-textarea-autosize'
 import EmojiPicker from '@emoji-mart/react'
 import data from '@emoji-mart/data'
-import Peer from 'simple-peer'
 import sendingMsg from '/assets/send-message.png'
 import LoadingScene2 from './LoadingScene2'
 import MessagesBox from '../components/Playground/MessagesBox'
+import Video from '../components/Voice/Video'
 
 import interfacestyles from './Interface.module.css'
 import quizStyles from './QuizGane.module.css'
@@ -26,7 +26,7 @@ import loginstyles from './Login.module.css'
 
 import { useSocketClient } from '../components/Login/SocketClient'
 import { useCharacterCustomization } from '../components/Configurator/CharacterCustomization'
-import { useVideoChat } from '../components/context'
+import { useVideoChat } from '../components/voiceContext'
 import Login from './Login'
 import Configurator from './Configurator'
 import { pushNotification } from '../components/Playground/Notification'
@@ -203,20 +203,6 @@ const Lights = ({x, y, z}) => {
   )
 }
 
-// const Video = ({peer}) => {
-//   const ref = useRef();
-
-//   useEffect(() => {
-//     peer.on("stream", stream => {
-//       ref.current.srcObject = stream;
-//     })
-//   }, []);
-
-//   return (
-//     <video style={{display: "none"}} playsInline autoPlay ref={ref} />
-//   );
-// }
-
 function Playground() {
 
   const {
@@ -228,7 +214,6 @@ function Playground() {
     setSocketClient,
     setErrorEmail,
     Web_URL,
-    setAdminLogedIn,
     currentRoom,
     onLoading,
     setOnLoading
@@ -236,9 +221,9 @@ function Playground() {
 
   const {
     MicisToggled,
+    setMicIsToggled,
     Peers,
-    setPeers,
-    callUser,
+    userVideo,
   } = useVideoChat();
 
   const [clients, setClients] = useState({})
@@ -256,79 +241,6 @@ function Playground() {
 
   // const [questions, setQuestions] = useState([{}])
 
-  // const [Peers, setPeers] = useState([]);
-  // const peersRef = useRef([]);
-
-  // function createPeer(userToSignal, callerID, stream) {
-  //   const peer = new Peer({
-  //     initiator: true,
-  //     trickle: false,
-  //     stream,
-  //   });
-
-  //   peer.on("signal", signal => {
-  //     socketClient.emit("sending signal", { userToSignal, callerID, signal })
-  //   })
-
-  //   return peer;
-  // }
-
-  // function addPeer(incomingSignal, callerID, stream) {
-  //   const peer = new Peer({
-  //     initiator: false,
-  //     trickle: false,
-  //     stream,
-  //   })
-
-  //   peer.on("signal", signal => {
-  //     socketClient.emit("returning signal", { signal, callerID })
-  //   })
-
-  //   peer.signal(incomingSignal);
-
-  //   return peer;
-  // }
-
-  // useEffect(() => {
-  //   if(MicisToggled) {
-      
-      
-  //     const { id } = socketClient;
-      
-  //     navigator.mediaDevices.getUserMedia({ video: false, audio: true }).then(stream => {
-	// 	    socketClient.emit("join room", { id })
-
-  //       socketClient.on("all users", (users) => {
-  //         console.log('all users')
-  //         const peers = [];
-  //         users.forEach(userID => {
-  //           const peer = createPeer(userID, id, stream);
-  //           peersRef.current.push({
-  //             peerID: userID,
-  //             peer,
-  //           })
-  //           peers.push(peer);
-  //         })
-  //         setPeers(peers);
-  //         ;
-  //       })
-  
-  //       socketClient.on("user joined", ({signal, callerID}) => {
-  //         console.log("user joined")
-  //         const peer = addPeer(signal, callerID, stream);
-  //         peersRef.current.push({
-  //           peerID: callerID,
-  //           peer: peer,
-  //         })
-  //         console.log(peer)         
-  //         setPeers(users => [...users, peer]);
-  
-  //       })
-
-  //     })
-
-  //   } 
-  // },[MicisToggled])
 
   useEffect(() => {
     if (logedIn) { 
@@ -361,25 +273,19 @@ function Playground() {
       socketClient.on("alreadyLogin", (error) => {
         setErrorEmail(error)
       })
-
-      socketClient.on("isPicked", ({type, header, text}) => {
-        
-        pushNotification(header, text, type)
-      })
    
-      socketClient.on("Admin_check", (check) => {
-        if (check) {
-          setAdminLogedIn(true)
-        } else {
-          setAdminLogedIn(false)
-          const errorMsg = "ID หรือ Password ไม่ถูกต้อง"
-          pushNotification("ล้มเหลว", errorMsg, "error")
-        }
-      });
+      // socketClient.on("Admin_check", (check) => {
+      //   if (check) {
+      //     setAdminLogedIn(true)
+      //   } else {
+      //     setAdminLogedIn(false)
+      //     const errorMsg = "ID หรือ Password ไม่ถูกต้อง"
+      //     pushNotification("ล้มเหลว", errorMsg, "error")
+      //   }
+      // });
       
       // socketClient.on("receiving returned signal", ({signal, id}) => {
         
-      //   console.log("receiving returned signal")
       //   const item = peersRef.current.find(p => p.peerID === id);
       //   item.peer.signal(signal);
       // });
@@ -401,7 +307,6 @@ function Playground() {
           id, 
           username: username, 
           message: filter.clean(message),
-          color: HairColor,
         }
         socketClient.emit("message", msg);
         setMessage("");
@@ -411,7 +316,6 @@ function Playground() {
           id, 
           username: username, 
           message: filterTHBadWords(message),
-          color: HairColor,
         }
         socketClient.emit("message", msg);
         setMessage("");
@@ -421,7 +325,6 @@ function Playground() {
           id, 
           username: username, 
           message: message,
-          color: HairColor,
         }
         socketClient.emit("message", msg);
         setMessage("");
@@ -470,8 +373,9 @@ function Playground() {
       return (socketClient &&
           <div className={interfacestyles.container}>
     
-            {/* <Affix position={{top: 20, left: 500,}} style={{zIndex: '2',}}> 
+            <Affix position={{top: 20, left: 500,}} style={{zIndex: '2',}}> 
               <div style={{padding: "20px", display: "flex", height: "100vh", width: "90%", margin: "auto", flexWrap: "wrap"}}>
+                {/* <video style={{height: '40%', width: '50%'}} muted playsInline autoPlay ref={userVideo} /> */}
                 {Peers.map((peer, index) => {
                   return (
                     <Video key={index} peer={peer} />
@@ -479,22 +383,22 @@ function Playground() {
                 })}
               </div>
     
-            </Affix> */}
+            </Affix>
     
             <Affix position={{bottom: 20, right: 20, }} style={{zIndex: '2',}}>
               
                 <div className={interfacestyles.InteractiveContainer}>
     
-                  {/* <div className={interfacestyles.MicbuttonContainer}>
+                  <div className={interfacestyles.MicbuttonContainer}>
                     <button 
-                      onClick={callUser}
+                      onClick={() => {setMicIsToggled(!MicisToggled)}}
                       style={{
                         backgroundColor: MicisToggled ? 'rgb(220, 20, 60, .6)' : 'rgba(0, 0, 0, .25)',
                       }}
                     >
                       mic
                     </button>
-                  </div> */}
+                  </div>
                   
                   <div className={interfacestyles.chatInputContainer} >
                     <div className={interfacestyles.textareaContainer}>
@@ -703,14 +607,11 @@ function Playground() {
                           rotation={rotation}
                           action={action}
                           chathead={chathead}
-                          // equipment={equipment}
                           avatarUrl={avatarUrl}
                         />
                       )
                   })
                 }
-                {/* <GetitemButton socketClient={socketClient} item={AddonEquipments[0]} position={[2, 3, 2]} isTextVisible={item1_Visible} setTextVisibility={setItem1_Visible} />
-                <GetitemButton socketClient={socketClient} item={AddonEquipments[1]} position={[1, 3, 1]} isTextVisible={item2_Visible} setTextVisibility={setItem2_Visible} /> */}
                 {/* <QuestionButton position={[4, 3, 4]} setshowQuestion={setshowQuestion} /> */}
             </Canvas>
             
@@ -728,10 +629,5 @@ function Playground() {
     return ( <Login /> )
   }
 }
-
-useGLTF.preload("/public/models/animations/M_Walk_001.glb");
-useGLTF.preload("/public/models/animations/M_Standing_Idle_001.glb");
-useGLTF.preload("/public/models/animations/M_Dances_001.glb");
-useGLTF.preload("/public/models/animations/M_Standing_Expressions_001.glb");
 
 export default Playground

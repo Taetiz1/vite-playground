@@ -7,7 +7,7 @@ import { CharacterAnimationsProvider } from './components/Configurator/Character
 import { CharacterCustomizationProvider } from './components/Configurator/CharacterCustomization'
 import { SocketclientProvider } from './components/Login/SocketClient'
 import { GoogleOAuthProvider } from '@react-oauth/google'
-import { VideoChatProvider } from './components/context'
+import { VideoChatProvider } from './components/voiceContext'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

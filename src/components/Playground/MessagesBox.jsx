@@ -29,7 +29,7 @@ const MessagesBox = ({message, index}) => {
         <li key={index} className={interfacestyles.li_chatBox}>
             <div className={interfacestyles.chatBox} >
                 <span style={{
-                    backgroundColor: `${message.color}`,
+                    backgroundColor: `#a648e5`,
                     color: '#eee',
                     fontWeight: '500',
                     fontSize: '16px',
