@@ -13,6 +13,7 @@ export const SocketclientProvider = ({children}) => {
     const [avatarUrl, setAvatarUrl] = useState("https://models.readyplayer.me/655a5d4e9b792809cdac419d.glb")
     const [currentRoom, setCurrentRoom] = useState()
     const [onLoading, setOnLoading] = useState(true);
+    const [posMinimap, setPosMinimap] = useState([0, 0, 0])
     
     const Web_URL = import.meta.env.VITE_SERVER_URL || "http://localhost:3000";
 
@@ -51,7 +52,9 @@ export const SocketclientProvider = ({children}) => {
                 setAvatarUrl,
                 currentRoom,
                 onLoading,
-                setOnLoading
+                setOnLoading,
+                posMinimap,
+                setPosMinimap
             }}
         >
             {children}

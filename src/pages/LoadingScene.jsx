@@ -6,10 +6,6 @@ import { useSocketClient } from "../components/Login/SocketClient";
 const LoadingScene = ({username, onLoading, setOnLoading }) => {
     const { progress } = useProgress();
 
-    useEffect(() => {
-        console.log(progress)
-    }, [progress])
-
     const { errorEmail } = useSocketClient();
 
     return (

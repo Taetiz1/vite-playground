@@ -16,6 +16,13 @@
     cursor: grabbing;
 }
 
+.InteractiveContainerWrap {
+    display: flex;
+    gap: 6px;
+    align-items: end;
+    justify-content: end;
+}
+
 .InteractiveContainer {
     display: grid;
     grid-auto-flow: column;
@@ -30,7 +37,16 @@
     user-select: none;
 }
 
-.MicbuttonContainer button{
+.miniMapWrap {
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, .25);
+    border-radius: 28px;
+    padding: 6px;
+    user-select: none;
+}
+
+.SendMsgbuttonContainer button{
     width: 40px;
     height: 40px;
     display: inline-block;
@@ -38,6 +54,40 @@
     border: none;
     border-radius: 24px;
     background-color: rgba(0, 0, 0, .25);
+    color: #fff;
+    cursor: pointer;
+}
+
+/* .MicbuttonContainerWrap {
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, .25);
+    border-radius: 18px;
+    padding: 5px;
+    user-select: none;
+} */
+
+.VideoInteractiveContainer {
+    display: grid;
+    grid-auto-flow: column;
+    grid-column-gap: 8px;
+    column-gap: 8px;
+    align-items: center;
+    justify-items: center;
+    border-color: #eee;
+    padding: 0 16px;
+    height: 48px;
+    width: 100%;
+    margin-top: -7px;
+}
+
+.Micbutton {
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+    outline: none;
+    border: none;
+    border-radius: 24px;
     color: #fff;
     cursor: pointer;
 }
@@ -98,7 +148,7 @@
     overflow-y: auto;
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* IE and Edge */
-    max-height: 600px;
+    max-height: 504px;
 }
 
 .ul_chatBox::-webkit-scrollbar {

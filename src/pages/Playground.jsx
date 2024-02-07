@@ -1,7 +1,7 @@
 import React , { useState, useEffect, useRef, useMemo }from 'react'
 import { Canvas } from '@react-three/fiber'
 import { Ground } from '../components/Playground/Ground'
-import { Stats, Sky, useHelper, useGLTF, Html } from '@react-three/drei'
+import { Stats, Sky, useHelper, useGLTF, Html, OrthographicCamera, MapControls } from '@react-three/drei'
 import { Character } from '../components/Playground/Character'
 import { io } from 'socket.io-client'
 import { Text, useAnimations } from '@react-three/drei'
@@ -19,6 +19,17 @@ import sendingMsg from '/assets/send-message.png'
 import LoadingScene2 from './LoadingScene2'
 import MessagesBox from '../components/Playground/MessagesBox'
 import Video from '../components/Voice/Video'
+import Minimap from '../components/Playground/miniMap'
+
+import headset from '/assets/headset.png'
+import mute from '/assets/mute.png'
+import unmute from '/assets/unmute.png'
+import micMute from '/assets/micMute.png'
+import micUnmute from '/assets/micUnmute.png'
+import cam from '/assets/cam.png'
+import CamOff from '/assets/camOff.png'
+import disconnectBT from '/assets/disconnect.png'
+
 
 import interfacestyles from './Interface.module.css'
 import quizStyles from './QuizGane.module.css'
@@ -43,13 +54,6 @@ const OtherPlayers = ({action, avatarUrl}) => {
   const { actions } = useAnimations([walkAnimation[0], idleAnimation[0]], cloneRef)
   
   const currentAction = useRef("");
-
-  clone.traverse((object) => {
-    if(object.isMesh) {
-      object.castShadow = true;
-      object.receiveShadow = true;
-    }
-  })
   
   useEffect(() => {
     
@@ -61,7 +65,7 @@ const OtherPlayers = ({action, avatarUrl}) => {
       currentAction.current = action;
     }
     
-  },[action])
+  }, [action])
 
   useFrame((state, delta) => {
     const hips = cloneRef.current.getObjectByName("Hips");
@@ -69,9 +73,9 @@ const OtherPlayers = ({action, avatarUrl}) => {
   })
 
   return (
-      <group ref={cloneRef} >
-        <primitive object={clone} scale={[0.5, 0.5, 0.5]} rotation={[0, 9.4, 0]}/>
-      </group>
+    <group ref={cloneRef} >
+      <primitive object={clone} scale={[0.5, 0.5, 0.5]} rotation={[0, 9.4, 0]}/>
+    </group>
   )
 }
 
@@ -129,9 +133,19 @@ function RotatingText(props) {
 //   );
 // }
 
-const UserWrapper = ({ position, rotation, name, action, chathead, avatarUrl}) => {
+const UserWrapper = ({ id, position, rotation, name, action, chathead, avatarUrl}) => {
   
-  const [showChatBubble, setShowChatBubble] = useState(false);
+  const [showChatBubble, setShowChatBubble] = useState(true);
+  const [voiceConnected, setVoiceConnected] = useState(false);
+
+  const {
+    peersRef,
+    Peers,
+    setPeers,
+    Mute,
+  } = useVideoChat();
+
+  const videoRef = useRef();
 
   useEffect(() => {
     if(chathead != ''){
@@ -141,7 +155,33 @@ const UserWrapper = ({ position, rotation, name, action, chathead, avatarUrl}) =
       setShowChatBubble(false) 
     }
 
-  },[chathead])
+  }, [chathead])
+
+  useEffect(() => {
+    const item = peersRef.current.find(p => p.peerID === id);
+
+    if(item) {
+
+      videoRef.current = item
+
+      setVoiceConnected(true)
+    }
+
+  }, [Peers])
+
+  function disconnectVoice() {
+    
+    const itemIndex = peersRef.current.findIndex(p => p.peerID === id);
+
+    if(itemIndex !== '-1') {
+      peersRef.current.splice(itemIndex, 1);
+
+      setPeers(Peers.splice(itemIndex, 1))
+
+      console.log(peersRef.current.length)
+      console.log(Peers.length)
+    }
+  }
 
   return (
       <group
@@ -161,14 +201,31 @@ const UserWrapper = ({ position, rotation, name, action, chathead, avatarUrl}) =
               transform: `scale(${showChatBubble ?  1 : 0.5})`,
             }}
           >
-            <div className={interfacestyles.ChatBubble}>
-                
-              <p className={interfacestyles.chatBubbleText}>
-                {chathead}
-              </p>
+              <div className={interfacestyles.ChatBubble}>
+                  
+                <p className={interfacestyles.chatBubbleText}>
+                  {chathead}
+                </p>
 
-            </div>
+              </div>
           </Html>
+
+          {voiceConnected ? <Html 
+            occlude
+            position-x={0}
+            position-y={1.8}
+            zIndexRange={[0, 0]} 
+            distanceFactor={5}
+          >
+
+            <Video 
+              p={videoRef.current} 
+              Mute={Mute} 
+              setVoiceConnected={setVoiceConnected} 
+              disconnectVoice={disconnectVoice}
+            /> 
+
+          </Html> : null}
 
           <RotatingText 
             position={[0, 1.1, 0]}
@@ -220,9 +277,14 @@ function Playground() {
   } = useSocketClient();
 
   const {
-    MicisToggled,
-    setMicIsToggled,
-    Peers,
+    MicisMute,
+    setMicisMute,
+    Mute,
+    setMute,
+    connectPeer,
+    setConnectPeer,
+    camOff,
+    setCamOff,
     userVideo,
   } = useVideoChat();
 
@@ -240,7 +302,6 @@ function Playground() {
   const messageListRef = useRef();
 
   // const [questions, setQuestions] = useState([{}])
-
 
   useEffect(() => {
     if (logedIn) { 
@@ -373,32 +434,142 @@ function Playground() {
       return (socketClient &&
           <div className={interfacestyles.container}>
     
-            <Affix position={{top: 20, left: 500,}} style={{zIndex: '2',}}> 
-              <div style={{padding: "20px", display: "flex", height: "100vh", width: "90%", margin: "auto", flexWrap: "wrap"}}>
-                {/* <video style={{height: '40%', width: '50%'}} muted playsInline autoPlay ref={userVideo} /> */}
-                {Peers.map((peer, index) => {
-                  return (
-                    <Video key={index} peer={peer} />
-                  )
-                })}
-              </div>
-    
-            </Affix>
-    
             <Affix position={{bottom: 20, right: 20, }} style={{zIndex: '2',}}>
               
-                <div className={interfacestyles.InteractiveContainer}>
-    
-                  <div className={interfacestyles.MicbuttonContainer}>
+              <div className={interfacestyles.InteractiveContainerWrap}>
+
+                <div style={{
+                  display: 'flex',
+                  padding: connectPeer ? "0px" : "4px",
+                  margin: '4px',
+                  marginRight: '0px',
+                  backgroundColor: "rgba(0, 0, 0, .25)",
+                  borderRadius: connectPeer ? "20px" : "28px",
+                  alignContent: 'center',
+                  alignItems: 'end',
+                  height: connectPeer ? "228.2px" : "48px"
+                }}>
+
+                  {connectPeer ? null : <div>
                     <button 
-                      onClick={() => {setMicIsToggled(!MicisToggled)}}
+                      className={interfacestyles.Micbutton}
+                      onClick={() => {setConnectPeer(!connectPeer)}}
                       style={{
-                        backgroundColor: MicisToggled ? 'rgb(220, 20, 60, .6)' : 'rgba(0, 0, 0, .25)',
+                        backgroundColor: 'rgba(60,179,113)',
                       }}
                     >
-                      mic
+                      <img src={headset} style={{pointerEvents: 'none', userSelect: 'none', width: '25px', height: 'auto',}}/>
                     </button>
-                  </div>
+                  </div>}
+
+                  {connectPeer ? <div style={{
+                    gap: '0px'
+                  }}>
+                    
+                    <video 
+                      style={{
+                        height: 'auto', 
+                        width: '240px', 
+                        borderRadius: '16px 16px 0px 0', 
+                        margin: '0px'
+                      }} 
+                      muted 
+                      playsInline 
+                      autoPlay
+                      ref={userVideo} 
+                    />
+
+                    <div className={interfacestyles.VideoInteractiveContainer}>
+
+                      <button
+                        onClick={() => {
+                          if(!Mute) {
+                            setMicisMute(!MicisMute)
+                          }
+                        }}
+                        style={{
+                          width: '30px',
+                          height: '30px',
+                          display: 'inline-block',
+                          outline: 'none',
+                          border: 'none',
+                          borderRadius: '24px',
+                          color: '#fff',
+                          cursor: 'pointer',
+                          backgroundColor: 'rgb(225, 225, 225)',
+                        }}
+                      >
+                        {MicisMute ? <img src={micMute} style={{pointerEvents: 'none', userSelect: 'none', width: '18px', height: 'auto',}} />
+                        : <img src={micUnmute} style={{pointerEvents: 'none', userSelect: 'none', width: '18px', height: 'auto',}} />}
+                      </button>
+
+                      <button
+                        onClick={() => {
+                          
+                          if(!Mute){
+                            setMute(true)
+                            setMicisMute(true)
+                          } else {
+                            setMute(false)
+                            setMicisMute(false)
+                          }
+                        }}
+                        style={{
+                          width: '30px',
+                          height: '30px',
+                          display: 'inline-block',
+                          outline: 'none',
+                          border: 'none',
+                          borderRadius: '24px',
+                          color: '#fff',
+                          cursor: 'pointer',
+                          backgroundColor: 'rgb(225, 225, 225)' 
+                        }}
+                      >
+                        {Mute ? <img src={mute} style={{pointerEvents: 'none', userSelect: 'none', width: '18px', height: 'auto',}} />
+                        : <img src={unmute} style={{pointerEvents: 'none', userSelect: 'none', width: '18px', height: 'auto',}} />}
+                      </button>
+
+                      <button
+                        onClick={() => {setCamOff(!camOff)}}
+                        style={{
+                          width: '30px',
+                          height: '30px',
+                          display: 'inline-block',
+                          outline: 'none',
+                          border: 'none',
+                          borderRadius: '24px',
+                          color: '#fff',
+                          cursor: 'pointer',
+                          backgroundColor: 'rgb(225, 225, 225)' 
+                        }}
+                      >
+                        { camOff ? <img src={CamOff} style={{pointerEvents: 'none', userSelect: 'none', width: 'auto', height: '20px',}} />
+                        : <img src={cam} style={{pointerEvents: 'none', userSelect: 'none', width: '20px', height: 'auto',}} />}
+                      </button>
+
+                      <button
+                        onClick={() => {setConnectPeer(!connectPeer)}}
+                        style={{
+                          width: '30px',
+                          height: '30px',
+                          display: 'inline-block',
+                          outline: 'none',
+                          border: 'none',
+                          borderRadius: '24px',
+                          color: '#fff',
+                          cursor: 'pointer',
+                          backgroundColor: 'rgb(220, 20, 60)' 
+                        }}
+                      >
+                        <img src={disconnectBT} style={{pointerEvents: 'none', userSelect: 'none', width: '18px', height: 'auto',}}/>
+                      </button>
+
+                    </div>
+                  </div> : null}
+                </div>
+
+                <div className={interfacestyles.InteractiveContainer}>
                   
                   <div className={interfacestyles.chatInputContainer} >
                     <div className={interfacestyles.textareaContainer}>
@@ -434,15 +605,16 @@ function Playground() {
                     
                   </div>
     
-                  <div className={interfacestyles.MicbuttonContainer}>
+                  <div className={interfacestyles.SendMsgbuttonContainer}>
                     <button 
                       onClick={sendMessage}
                     >
-                      <img src={sendingMsg} style={{pointerEvents: 'none', userSelect: 'none', width: '25px', height: '25px',}}/>
+                      <img src={sendingMsg} style={{pointerEvents: 'none', userSelect: 'none', width: '25px', height: '25px',}} />
                     </button>
                   </div>
     
                 </div>
+              </div>
             </Affix>
     
             <Affix position={{bottom: 80, right: 20, }} style={{zIndex: '2',}} >
@@ -486,6 +658,20 @@ function Playground() {
                 }
     
             </Affix>
+
+            {/* <Affix position={{bottom: 15, right: 300 }} style={{zIndex: '2',}} >
+
+              <div style={{
+                transition: 'all 1s',
+                opacity: MicisToggled ? 1 : 0,
+                transform: `scale(${MicisToggled ?  1 : 0.5})`,
+                pointerEvents: 'none',
+              }}>
+                <video style={{height: 'auto', width: '250px', borderRadius: '28px'}} muted playsInline autoPlay ref={userVideo} />
+              </div>
+              
+
+            </Affix> */}
     
             <Affix position={{top: 20, left: 20}} style={{zIndex: '2',}}>
                 <div className={interfacestyles.Exit_button_container}>
@@ -574,6 +760,8 @@ function Playground() {
                 fov: 70,
               }}
             >
+              
+              <Minimap />
               {testing ? <Stats/> : null}
               {testing ? <axesHelper args={[2]}/> : null}
               {testing ? <gridHelper args={[10, 10]}/> : null}
@@ -587,21 +775,21 @@ function Playground() {
               <Lights x={0} y={10} z={0}/>
               
               <ambientLight intensity={0.4} position={[0, 10, 0]} />
-              {/* <Sky sunPosition={new THREE.Vector3(100, 10, 100)} /> */}
-              {/* <OrbitControls /> */}
+              <Sky />
               <Physics timeStep="vary" >
                 {/* <Debug /> */}
-                <Ground x={100} z={100} currentRoom={currentRoom} setOnLoading={() => setOnLoading(true)}/>
-                <Character socket={socketClient} pos={[0, 2, 0]} />
+                <Ground x={200} z={200} currentRoom={currentRoom} setOnLoading={() => setOnLoading(true)}/>
+                <Character socket={socketClient} />
                 
               </Physics>
                 {Object.keys(clients)
                   .filter((clientKey) => clientKey !== socketClient.id)
                   .map((client) => {
-                    const { position, rotation, name, action, chathead, avatarUrl, } = clients[client]
+                    const { position, rotation, name, action, chathead, avatarUrl} = clients[client]
                       return (
                         <UserWrapper
                           key={client}
+                          id={client}
                           name={name}
                           position={position}
                           rotation={rotation}

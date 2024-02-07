@@ -5,126 +5,111 @@ import Peer from 'simple-peer';
 const VideoChatContext = createContext({});
 
 export const VideoChatProvider = ({children}) => {
-    const [MicisToggled, setMicIsToggled] = useState(false);
+    const [MicisMute, setMicisMute] = useState(false);
+    const [Mute, setMute] = useState(false)
+    const [camOff, setCamOff] = useState(false)
+    const [connectPeer, setConnectPeer] = useState(false)
+    const [otherUsers, setOtherUsers] = useState([]);
     const [Peers, setPeers] = useState([]);
-    // const [stream, setStream] = useState();
-    // const [caller, setCaller] = useState(false);
+    const [Stream, setStream] = useState();
 
-    // const myVideo = useRef();
     const userVideo = useRef();
-    // const connectionRef = useRef();
     const peersRef = useRef([]);
 
     const {
         socketClient
     } = useSocketClient();
 
-    const videoConstraints = {
-        height: window.innerHeight / 2,
-        width: window.innerWidth / 2
-    };
-
-    // useEffect(() => {
-    //     if(socketClient){
-    //     if(MicisToggled) {
-
-    //         navigator.mediaDevices.getUserMedia({ video: true, audio: true })
-    //             .then((currentStream) => {
-    //                 setStream(currentStream)
-
-    //                 myVideo.current.srcObject = currentStream;
-    //             });         
-                
-    //             socketClient.on("call users", ({signalData, from}) => {
-        
-    //                 const peer = new Peer({ initiator: false, trickle: false, stream });
-                
-    //                 peer.on('signal', (data) => {
-    //                     socketClient.emit('answer Call', { signal: data, to: from });
-    //                 });
-                
-    //                 peer.on('stream', (currentStream) => {
-    //                   userVideo.current.srcObject = currentStream;
-    //                 });
-                
-    //                 peer.signal(signalData);
-                
-    //                 connectionRef.current = peer;
-    //             })
-
-    //     } 
-
-       
-    //     }
-
-    // }, [MicisToggled])
-
-    // const callUser = () => {
-
-    //     setMicIsToggled(!MicisToggled);
-
-    //     const peer = new Peer({ initiator: true, trickle: false, stream });
-
-    //     peer.on('signal', (data) => {
-    //         socketClient.emit("join voice", {signalData: data})
-    //     });
-
-    //     peer.on('stream', (currentStream) => {
-    //         userVideo.current.srcObject = currentStream;
-    //     });
-
-    //     socketClient.on('call accepted', (signal) => {
-
-    //         peer.signal(signal);
-    //     });
-
-    //     connectionRef.current = peer;
-    // }
-
     useEffect(() => {
-        if(MicisToggled) {
+        if(socketClient){
 
             const { id } = socketClient;
-            
-            navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => {
-                // userVideo.current.srcObject = stream;
-                socketClient.emit("join voice")
 
-                socketClient.on("all users", (users) => {
-                    const peers = []
-                    users.forEach((userID) => {
-                        const peer = createPeer(userID, id, stream);
-                        peersRef.current.push({
-                        peerID: userID,
-                        peer,
+            if(connectPeer) {
+                
+                navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => {
+                    userVideo.current.srcObject = stream;
+                    setStream(stream);
+
+                    socketClient.emit("join voice")
+
+                    socketClient.on("all users", (users) => {
+                        setOtherUsers(users)
+
+                        const peers = []
+                        users.forEach((userID) => {
+                            const peer = createPeer(userID, id, stream);
+                            peersRef.current.push({
+                            peerID: userID,
+                            peer: peer,
+                            })
+
+                            peers.push(peer)
                         })
 
-                        peers.push(peer)
+                        if(peers.length > 0) {
+                            setPeers(peers)
+                        }
                     })
-                    
-                    setPeers(peers)
-                })
-    
-                socketClient.on("user joined", ({signal, callerID}) => {
-                    const peer = addPeer(signal, callerID, stream);
-                    peersRef.current.push({
-                        peerID: callerID,
-                        peer: peer,
-                    })        
-                    
-                    setPeers(users => [...users, peer]);
         
+                    socketClient.on("user joined", ({signal, callerID}) => {
+                        setOtherUsers(users => [...users, callerID]);
+                        const peer = addPeer(signal, callerID, stream);
+                        peersRef.current.push({
+                            peerID: callerID,
+                            peer: peer,
+                        })   
+
+                        setPeers(users => [...users, peer]);
+            
+                    })
+
+                    socketClient.on("receiving returned signal", ({ signal, id }) => {
+                        const item = peersRef.current.find(p => p.peerID === id);
+                        item.peer.signal(signal);
+                    });
+
                 })
 
-                socketClient.on("receiving returned signal", ({ signal, id }) => {
-                    const item = peersRef.current.find(p => p.peerID === id);
-                    item.peer.signal(signal);
-                });
+            } else {
 
+                if(Stream) {
+                    Stream.getTracks().forEach((track) => {
+                        track.stop();
+                    })
+
+                    peersRef.current.forEach((p) => {
+                        p.peer.destroy()
+                    })
+
+                    socketClient.emit('exit voice', id)
+                }
+                
+            }
+
+            // socketClient.on("user exit voice", ({userId}) => {
+            //     handleDisconnect(userId)
+            //     console.log('user exit voice')
+            // })
+
+        }
+    }, [connectPeer])
+
+    useEffect(() => {
+        if(Stream) {
+            Stream.getAudioTracks().forEach((track) => {
+                track.enabled = !MicisMute
             })
+        }
+    }, [MicisMute])
 
-        } 
-    },[MicisToggled])
+    useEffect(() => {
+        if(Stream) {
+            Stream.getVideoTracks().forEach((track) => {
+                track.enabled = !camOff
+            })
+        }
+    }, [camOff])
 
 
     function createPeer(userToSignal, callerID, stream) {
@@ -157,14 +142,25 @@ export const VideoChatProvider = ({children}) => {
         return peer;
     }
 
+    // function handleDisconnect(userId) {
+    //     delete Peers[userId];
+    // };
+
     return (
         <VideoChatContext.Provider
             value={{
-                MicisToggled,
-                setMicIsToggled,
-                Peers,
-                setPeers,
+                MicisMute,
+                setMicisMute,
+                Mute,
+                setMute,
+                connectPeer,
+                setConnectPeer,
+                camOff,
+                setCamOff,
                 userVideo,
+                peersRef,
+                Peers,
+                setPeers
             }}
         >
             {children}

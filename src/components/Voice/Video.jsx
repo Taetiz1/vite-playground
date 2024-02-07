@@ -1,21 +1,42 @@
-import React, { useRef, useEffect } from "react";    
+import React, { useRef, useEffect } from "react"; 
+import { useVideoChat } from "../voiceContext";   
 
-const Video = ({peer}) => {
+const Video = ({ p, disconnectVoice, Mute, setVoiceConnected }) => {
+
     const ref = useRef();
     
     useEffect(() => {
-        
-        peer.on("stream", (stream) => {
+        p.peer.on("stream", (stream) => {
             ref.current.srcObject = stream;
-
-            console.log("set stream")
         })
 
-    }, []);
+        p.peer.on('close', () => {
+            setVoiceConnected(false)
+            disconnectVoice()
+
+        });
+
+    }, [p]);
+
+    useEffect(() => {
+
+        if(ref.current){
+            ref.current.muted = Mute;
+        }
+
+    }, [Mute])
     
     return (
         <>
-            <video style={{height: '40%', width: '50%'}} playsInline autoPlay ref={ref} />
+            <video 
+                style={{ 
+                    width: "100px",
+                    height: "100px",
+                }} 
+                playsInline 
+                autoPlay    
+                ref={ref} 
+            />
         </>
         
     );

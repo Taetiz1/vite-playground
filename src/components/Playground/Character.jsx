@@ -42,11 +42,12 @@ const directionOffset = ({ forward, backward, left, right}) => {
     return directionOffset;
 }
 
-export const Character = ({socket, inventory, pos}) => {
+export const Character = ({socket}) => {
     const { 
         avatarUrl,
         socketClient,
-        onLoading
+        onLoading,
+        setPosMinimap,
     } = useSocketClient();
 
     const { forward, backward, left, right, shift, } = useInput();
@@ -189,6 +190,8 @@ export const Character = ({socket, inventory, pos}) => {
 
         body.translation().toArray(posArray)
         posArray[1] -= 0.4
+
+        setPosMinimap(posArray)
         
         rotation.toArray(rotArray)
 
@@ -207,7 +210,6 @@ export const Character = ({socket, inventory, pos}) => {
             type="dynamic"
             colliders={false}
             enabledRotations={[false, false, false]} 
-            position={pos}
         >
             <CapsuleCollider args={[0.25, 0.18]} />
             
