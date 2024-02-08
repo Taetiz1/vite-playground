@@ -224,7 +224,7 @@ const UserWrapper = ({ id, position, rotation, name, action, chathead, avatarUrl
 
             {Peer.map((peer, index) => {
               return (
-                <Video key={index} disconnectVoice={disconnectVoice} Peer={peer} Mute={Mute} />
+                <Video key={index}  Peer={peer} Mute={Mute} />
               );
             })}
 
