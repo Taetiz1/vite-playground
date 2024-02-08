@@ -178,6 +178,8 @@ const UserWrapper = ({ id, position, rotation, name, action, chathead, avatarUrl
 
       setPeers(Peers.splice(itemIndex, 1))
     }
+
+    setVoiceConnected(false)
   }
 
   return (
@@ -207,7 +209,7 @@ const UserWrapper = ({ id, position, rotation, name, action, chathead, avatarUrl
               </div>
           </Html>
 
-          {/* {voiceConnected ? <Html 
+          {voiceConnected ? <Html 
             occlude
             position-x={0}
             position-y={1.8}
@@ -218,11 +220,10 @@ const UserWrapper = ({ id, position, rotation, name, action, chathead, avatarUrl
             <Video 
               p={videoRef.current} 
               Mute={Mute} 
-              setVoiceConnected={setVoiceConnected} 
               disconnectVoice={disconnectVoice}
             /> 
 
-          </Html> : null} */}
+          </Html> : null}
 
           <RotatingText 
             position={[0, 1.1, 0]}

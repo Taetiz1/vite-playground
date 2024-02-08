@@ -87,11 +87,6 @@ export const VideoChatProvider = ({children}) => {
                 
             }
 
-            // socketClient.on("user exit voice", ({userId}) => {
-            //     handleDisconnect(userId)
-            //     console.log('user exit voice')
-            // })
-
         }
     }, [connectPeer])
 
@@ -141,10 +136,6 @@ export const VideoChatProvider = ({children}) => {
 
         return peer;
     }
-
-    // function handleDisconnect(userId) {
-    //     delete Peers[userId];
-    // };
 
     return (
         <VideoChatContext.Provider

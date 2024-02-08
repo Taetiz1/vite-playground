@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from "react"; 
 
-const Video = ({ p, disconnectVoice, Mute, setVoiceConnected }) => {
+const Video = ({ p, disconnectVoice, Mute }) => {
 
     const ref = useRef();
     
@@ -9,21 +9,20 @@ const Video = ({ p, disconnectVoice, Mute, setVoiceConnected }) => {
             ref.current.srcObject = stream;
         })
 
-        // p.peer.on('close', () => {
-        //     setVoiceConnected(false)
-        //     disconnectVoice()
+        p.peer.on('close', () => {
+            disconnectVoice()
 
-        // });
+        });
 
     }, [p]);
 
-    // useEffect(() => {
+    useEffect(() => {
 
-    //     if(ref.current){
-    //         ref.current.muted = Mute;
-    //     }
+        if(ref.current){
+            ref.current.muted = Mute;
+        }
 
-    // }, [Mute])
+    }, [Mute])
     
     return (
         <>
