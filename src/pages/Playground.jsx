@@ -177,9 +177,6 @@ const UserWrapper = ({ id, position, rotation, name, action, chathead, avatarUrl
       peersRef.current.splice(itemIndex, 1);
 
       setPeers(Peers.splice(itemIndex, 1))
-
-      console.log(peersRef.current.length)
-      console.log(Peers.length)
     }
   }
 
@@ -210,7 +207,7 @@ const UserWrapper = ({ id, position, rotation, name, action, chathead, avatarUrl
               </div>
           </Html>
 
-          {voiceConnected ? <Html 
+          {/* {voiceConnected ? <Html 
             occlude
             position-x={0}
             position-y={1.8}
@@ -225,7 +222,7 @@ const UserWrapper = ({ id, position, rotation, name, action, chathead, avatarUrl
               disconnectVoice={disconnectVoice}
             /> 
 
-          </Html> : null}
+          </Html> : null} */}
 
           <RotatingText 
             position={[0, 1.1, 0]}
@@ -286,6 +283,8 @@ function Playground() {
     camOff,
     setCamOff,
     userVideo,
+    Peers,
+    peersRef
   } = useVideoChat();
 
   const [clients, setClients] = useState({})
@@ -343,12 +342,6 @@ function Playground() {
       //     const errorMsg = "ID หรือ Password ไม่ถูกต้อง"
       //     pushNotification("ล้มเหลว", errorMsg, "error")
       //   }
-      // });
-      
-      // socketClient.on("receiving returned signal", ({signal, id}) => {
-        
-      //   const item = peersRef.current.find(p => p.peerID === id);
-      //   item.peer.signal(signal);
       // });
 
     }
@@ -659,19 +652,25 @@ function Playground() {
     
             </Affix>
 
-            {/* <Affix position={{bottom: 15, right: 300 }} style={{zIndex: '2',}} >
+            <Affix position={{bottom: 50, right: 300 }} style={{zIndex: '2',}} >
 
               <div style={{
-                transition: 'all 1s',
-                opacity: MicisToggled ? 1 : 0,
-                transform: `scale(${MicisToggled ?  1 : 0.5})`,
-                pointerEvents: 'none',
+                padding: "20px",
+                display: "flex",
+                height: "100vh",
+                width: "90%",
+                margin: "auto",
+                flexWrap: "wrap",
               }}>
-                <video style={{height: 'auto', width: '250px', borderRadius: '28px'}} muted playsInline autoPlay ref={userVideo} />
+                {Peers.map((peer, index) => {
+                  return (
+                    <Video key={index} p={peer} />
+                  );
+                })}
               </div>
               
 
-            </Affix> */}
+            </Affix>
     
             <Affix position={{top: 20, left: 20}} style={{zIndex: '2',}}>
                 <div className={interfacestyles.Exit_button_container}>
