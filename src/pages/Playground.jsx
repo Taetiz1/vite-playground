@@ -19,6 +19,7 @@ import sendingMsg from '/assets/send-message.png'
 import LoadingScene2 from './LoadingScene2'
 import MessagesBox from '../components/Playground/MessagesBox'
 import Video from '../components/Voice/Video'
+import VideoTest from '../components/Voice/VideoTest'
 import Minimap from '../components/Playground/miniMap'
 
 import headset from '/assets/headset.png'
@@ -665,7 +666,7 @@ function Playground() {
               }}>
                 {Peers.map((peer, index) => {
                   return (
-                    <Video key={index} p={peer} />
+                    <VideoTest key={index} p={peer} Mute={Mute} />
                   );
                 })}
               </div>

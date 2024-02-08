@@ -1,18 +1,18 @@
 import React, { useRef, useEffect } from "react"; 
 
-const Video = ({ p, disconnectVoice, Mute }) => {
+const VideoTest = ({ p, Mute }) => {
 
     const ref = useRef();
     
     useEffect(() => {
-        p.peer.on("stream", (stream) => {
+        p.on("stream", (stream) => {
             ref.current.srcObject = stream;
         })
 
-        p.peer.on('close', () => {
-            disconnectVoice()
+        // p.peer.on('close', () => {
+        //     disconnectVoice()
 
-        });
+        // });
 
     }, [p]);
 
@@ -40,4 +40,4 @@ const Video = ({ p, disconnectVoice, Mute }) => {
     );
 }
 
-export default Video
+export default VideoTest
