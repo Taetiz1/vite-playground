@@ -138,6 +138,7 @@ const UserWrapper = ({ id, position, rotation, name, action, chathead, avatarUrl
   
   const [showChatBubble, setShowChatBubble] = useState(true);
   const [voiceConnected, setVoiceConnected] = useState(false);
+  const [Peer, setPeer] = useState([]);
 
   const {
     peersRef,
@@ -145,8 +146,6 @@ const UserWrapper = ({ id, position, rotation, name, action, chathead, avatarUrl
     setPeers,
     Mute,
   } = useVideoChat();
-
-  const videoRef = useRef();
 
   useEffect(() => {
     if(chathead != ''){
@@ -159,13 +158,12 @@ const UserWrapper = ({ id, position, rotation, name, action, chathead, avatarUrl
   }, [chathead])
 
   useEffect(() => {
-    const item = peersRef.current.find(p => p.peerID === id);
+    const peerIndex = peersRef.current.findIndex(p => p.peerID === id);
 
-    if(item) {
+    if(peerIndex !== -1) {
 
+      setPeer(p => [...p, Peers[peerIndex]]);
       setVoiceConnected(true)
-
-      videoRef.current = item
 
       console.log('got item')
 
@@ -224,12 +222,11 @@ const UserWrapper = ({ id, position, rotation, name, action, chathead, avatarUrl
             distanceFactor={5}
           >
 
-            <Video 
-              p={videoRef.current} 
-              Mute={Mute} 
-              disconnectVoice={disconnectVoice}
-              Peers={Peers}
-            /> 
+            {Peer.map((peer, index) => {
+              return (
+                <Video key={index} disconnectVoice={disconnectVoice} Peer={peer} Mute={Mute} />
+              );
+            })}
 
           </Html> : null}
 

@@ -7,6 +7,9 @@ const VideoTest = ({ p, Mute }) => {
     useEffect(() => {
         p.on("stream", (stream) => {
             ref.current.srcObject = stream;
+
+            
+            console.log("set stream")
         })
 
         // p.peer.on('close', () => {
