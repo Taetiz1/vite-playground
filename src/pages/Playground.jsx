@@ -163,12 +163,18 @@ const UserWrapper = ({ id, position, rotation, name, action, chathead, avatarUrl
 
     if(item) {
 
+      setVoiceConnected(true)
+
       videoRef.current = item
 
-      setVoiceConnected(true)
+      console.log('got item')
+
     }
+    
+    console.log('do add peer')
 
   }, [Peers])
+  
 
   function disconnectVoice() {
     
@@ -222,6 +228,7 @@ const UserWrapper = ({ id, position, rotation, name, action, chathead, avatarUrl
               p={videoRef.current} 
               Mute={Mute} 
               disconnectVoice={disconnectVoice}
+              Peers={Peers}
             /> 
 
           </Html> : null}
