@@ -638,7 +638,7 @@ function Playground() {
                       }}
                     >
                       <Video 
-                        peerRef={peerRef} 
+                        peer={peerRef.peer} 
                         peerIndex={index} 
                         Mute={Mute} 
                         disconnectVoice={disconnectVoice} 

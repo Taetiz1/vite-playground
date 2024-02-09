@@ -1,18 +1,18 @@
 import React, { useRef, useEffect } from "react"; 
 
-const Video = ({ peerRef, peerIndex, Mute, disconnectVoice }) => {
+const Video = ({ peer, peerIndex, Mute, disconnectVoice }) => {
 
     const ref = useRef();
     
     useEffect(() => {
 
-        peerRef.peer.on("stream", (stream) => {
+        peer.on("stream", (stream) => {
             ref.current.srcObject = stream;
 
             console.log('setStreaam')
         })
 
-        peerRef.peer.on('close', () => {
+        peer.on('close', () => {
             disconnectVoice(peerIndex)
         });
 
