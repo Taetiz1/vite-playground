@@ -1,24 +1,20 @@
 import React, { useRef, useEffect } from "react"; 
 
-const Video = ({ Peer, Mute }) => {
+const Video = ({ peerRef, peerIndex, Mute, disconnectVoice }) => {
 
     const ref = useRef();
     
     useEffect(() => {
 
-            console.log("got peer")
+        peerRef.peer.on("stream", (stream) => {
+            ref.current.srcObject = stream;
+        })
 
-            Peer.on("stream", (stream) => {
-                ref.current.srcObject = stream;
+        peerRef.peer.on('close', () => {
+            disconnectVoice(peerIndex)
+        });
 
-                console.log("set stream")
-            })
-
-            // Peer.on('close', () => {
-            //     disconnectVoice()
-            // });
-
-    }, [Peer]);
+    }, []);
 
     useEffect(() => {
 
@@ -32,8 +28,9 @@ const Video = ({ Peer, Mute }) => {
         <>
             <video 
                 style={{ 
-                    width: "100px",
-                    height: "100px",
+                    width: "135px",
+                    height: "101.65px",
+                    border: "1px solid #ccc",
                 }} 
                 playsInline 
                 autoPlay    

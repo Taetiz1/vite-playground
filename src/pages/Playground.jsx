@@ -19,7 +19,6 @@ import sendingMsg from '/assets/send-message.png'
 import LoadingScene2 from './LoadingScene2'
 import MessagesBox from '../components/Playground/MessagesBox'
 import Video from '../components/Voice/Video'
-import VideoTest from '../components/Voice/VideoTest'
 import Minimap from '../components/Playground/miniMap'
 
 import headset from '/assets/headset.png'
@@ -137,15 +136,6 @@ function RotatingText(props) {
 const UserWrapper = ({ id, position, rotation, name, action, chathead, avatarUrl}) => {
   
   const [showChatBubble, setShowChatBubble] = useState(true);
-  const [voiceConnected, setVoiceConnected] = useState(false);
-  const [Peer, setPeer] = useState([]);
-
-  const {
-    peersRef,
-    Peers,
-    setPeers,
-    Mute,
-  } = useVideoChat();
 
   useEffect(() => {
     if(chathead != ''){
@@ -157,40 +147,10 @@ const UserWrapper = ({ id, position, rotation, name, action, chathead, avatarUrl
 
   }, [chathead])
 
-  useEffect(() => {
-    const peerIndex = peersRef.current.findIndex(p => p.peerID === id);
-
-    if(peerIndex !== -1) {
-
-      setPeer(p => [...p, Peers[peerIndex]]);
-      setVoiceConnected(true)
-
-      console.log('got item')
-
-    }
-    
-    console.log('do add peer')
-
-  }, [Peers])
-  
-
-  function disconnectVoice() {
-    
-    const itemIndex = peersRef.current.findIndex(p => p.peerID === id);
-
-    if(itemIndex !== '-1') {
-      peersRef.current.splice(itemIndex, 1);
-
-      setPeers(Peers.splice(itemIndex, 1))
-    }
-
-    setVoiceConnected(false)
-  }
-
   return (
       <group
-          position={position}
-          rotation={rotation}
+        position={position}
+        rotation={rotation}
       >
          
         <OtherPlayers action={action} avatarUrl={avatarUrl} />
@@ -213,22 +173,6 @@ const UserWrapper = ({ id, position, rotation, name, action, chathead, avatarUrl
 
               </div>
           </Html>
-
-          {voiceConnected ? <Html 
-            occlude
-            position-x={0}
-            position-y={1.8}
-            zIndexRange={[0, 0]} 
-            distanceFactor={5}
-          >
-
-            {Peer.map((peer, index) => {
-              return (
-                <Video key={index}  Peer={peer} Mute={Mute} />
-              );
-            })}
-
-          </Html> : null}
 
           <RotatingText 
             position={[0, 1.1, 0]}
@@ -428,6 +372,18 @@ function Playground() {
     setMessage((prevValue) => prevValue.replace(/@\S*$/, `@${username} `)); // Replace the last word after "@"
     setShowUserSuggestions(false);
   };
+
+  
+
+  function disconnectVoice(peerIndex) {
+
+    if(peerIndex !== '-1') {
+      peersRef.current.splice(peerIndex, 1);
+
+      setPeers(Peers.splice(peerIndex, 1))
+    }
+
+  }
   
   if(logedIn && configChar){
       return (socketClient &&
@@ -461,9 +417,11 @@ function Playground() {
                     </button>
                   </div>}
 
-                  {connectPeer ? <div style={{
-                    gap: '0px'
-                  }}>
+                  {connectPeer ? <div 
+                    style={{
+                      gap: '0px'
+                    }}
+                  >
                     
                     <video 
                       style={{
@@ -658,23 +616,40 @@ function Playground() {
     
             </Affix>
 
-            <Affix position={{bottom: 50, right: 300 }} style={{zIndex: '2',}} >
+            <Affix position={{top: 100, left: 0 }} style={{zIndex: '2',}} >
 
-              <div style={{
-                padding: "20px",
-                display: "flex",
-                height: "100vh",
-                width: "90%",
-                margin: "auto",
-                flexWrap: "wrap",
-              }}>
-                {Peers.map((peer, index) => {
+              <div 
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "auto auto",
+                  gridTemplateRows: "auto",
+                  gridGap: "0px",
+                }}
+              >
+                {peersRef.current.map((peerRef, index) => {
                   return (
-                    <VideoTest key={index} p={peer} Mute={Mute} />
+                    <div 
+                      style={{
+                        display: 'flex',
+                        padding: "0px",
+                        margin: '0px',
+                        backgroundColor: "rgba(0, 0, 0, .25)",
+                        width: "135px",
+                        height: "101.65",
+                        border: "1px solid #ccc",
+                      }}
+                    >
+                      <Video 
+                        key={index} 
+                        peerRef={peerRef} 
+                        peerIndex={index} 
+                        Mute={Mute} 
+                        disconnectVoice={disconnectVoice} 
+                      />
+                    </div>
                   );
                 })}
               </div>
-              
 
             </Affix>
     
