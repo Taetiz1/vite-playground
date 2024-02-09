@@ -233,8 +233,7 @@ function Playground() {
     camOff,
     setCamOff,
     userVideo,
-    Peers,
-    peersRef
+    peersRef,
   } = useVideoChat();
 
   const [clients, setClients] = useState({})
@@ -267,7 +266,7 @@ function Playground() {
   }, [isGetEmail])
 
   useEffect(() => {
-    if (socketClient) {
+    if(socketClient) {
       socketClient.on("move", (clients) => {
         setClients(clients);
       })
@@ -379,8 +378,6 @@ function Playground() {
 
     if(peerIndex !== '-1') {
       peersRef.current.splice(peerIndex, 1);
-
-      setPeers(Peers.splice(peerIndex, 1))
     }
 
   }
@@ -618,7 +615,7 @@ function Playground() {
 
             <Affix position={{top: 100, left: 0 }} style={{zIndex: '2',}} >
 
-              <div 
+              {connectPeer ? <div 
                 style={{
                   display: "grid",
                   gridTemplateColumns: "auto auto",
@@ -629,6 +626,7 @@ function Playground() {
                 {peersRef.current.map((peerRef, index) => {
                   return (
                     <div 
+                      key={index} 
                       style={{
                         display: 'flex',
                         padding: "0px",
@@ -640,7 +638,6 @@ function Playground() {
                       }}
                     >
                       <Video 
-                        key={index} 
                         peerRef={peerRef} 
                         peerIndex={index} 
                         Mute={Mute} 
@@ -649,13 +646,14 @@ function Playground() {
                     </div>
                   );
                 })}
-              </div>
+              </div>  : null }
 
             </Affix>
     
             <Affix position={{top: 20, left: 20}} style={{zIndex: '2',}}>
                 <div className={interfacestyles.Exit_button_container}>
                   <button onClick={() => {
+                    setConnectPeer(false)
                     window.location.reload()
                   }}>
                     Return

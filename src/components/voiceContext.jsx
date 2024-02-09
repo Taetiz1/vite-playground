@@ -9,8 +9,6 @@ export const VideoChatProvider = ({children}) => {
     const [Mute, setMute] = useState(false)
     const [camOff, setCamOff] = useState(false)
     const [connectPeer, setConnectPeer] = useState(false)
-    const [otherUsers, setOtherUsers] = useState([]);
-    const [Peers, setPeers] = useState([]);
     const [Stream, setStream] = useState();
 
     const userVideo = useRef();
@@ -34,7 +32,7 @@ export const VideoChatProvider = ({children}) => {
                     socketClient.emit("join voice")
 
                     socketClient.on("all users", (users) => {
-                        setOtherUsers(users)
+                        console.log('users:', users)
 
                         const peers = []
                         users.forEach((userID) => {
@@ -47,20 +45,16 @@ export const VideoChatProvider = ({children}) => {
                             peers.push(peer)
                         })
 
-                        if(peers.length > 0) {
-                            setPeers(peers)
-                        }
+                        console.log( peersRef.current.length)
                     })
         
                     socketClient.on("user joined", ({signal, callerID}) => {
-                        setOtherUsers(users => [...users, callerID]);
+
                         const peer = addPeer(signal, callerID, stream);
                         peersRef.current.push({
                             peerID: callerID,
                             peer: peer,
                         })   
-
-                        setPeers(users => [...users, peer]);
             
                     })
 
@@ -71,16 +65,28 @@ export const VideoChatProvider = ({children}) => {
 
                 })
 
+                console.log( peersRef.current.length)
+
             } else {
 
+                
+                socketClient.off("all users")
+                socketClient.off("user joined")
+                socketClient.off("receiving returned signal")
+
                 if(Stream) {
-                    Stream.getTracks().forEach((track) => {
-                        track.stop();
-                    })
 
                     peersRef.current.forEach((p) => {
                         p.peer.destroy()
                     })
+
+                    peersRef.current = []
+                    
+                    Stream.getTracks().forEach((track) => {
+                        track.stop();
+                    })
+
+                    console.log( peersRef.current.length)
 
                     socketClient.emit('exit voice', id)
                 }
@@ -150,8 +156,6 @@ export const VideoChatProvider = ({children}) => {
                 setCamOff,
                 userVideo,
                 peersRef,
-                Peers,
-                setPeers
             }}
         >
             {children}
