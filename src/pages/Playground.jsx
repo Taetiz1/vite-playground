@@ -615,7 +615,7 @@ function Playground() {
 
             <Affix position={{top: 100, left: 0 }} style={{zIndex: '2',}} >
 
-              {connectPeer ? <div 
+              <div 
                 style={{
                   display: "grid",
                   gridTemplateColumns: "auto auto",
@@ -646,7 +646,7 @@ function Playground() {
                     </div>
                   );
                 })}
-              </div>  : null }
+              </div>
 
             </Affix>
     

@@ -8,6 +8,8 @@ const Video = ({ peerRef, peerIndex, Mute, disconnectVoice }) => {
 
         peerRef.peer.on("stream", (stream) => {
             ref.current.srcObject = stream;
+
+            console.log('setStreaam')
         })
 
         peerRef.peer.on('close', () => {

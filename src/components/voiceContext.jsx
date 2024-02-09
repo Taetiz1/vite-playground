@@ -32,7 +32,6 @@ export const VideoChatProvider = ({children}) => {
                     socketClient.emit("join voice")
 
                     socketClient.on("all users", (users) => {
-                        console.log('users:', users)
 
                         const peers = []
                         users.forEach((userID) => {
@@ -81,8 +80,6 @@ export const VideoChatProvider = ({children}) => {
                     Stream.getTracks().forEach((track) => {
                         track.stop();
                     })
-
-                    console.log( peersRef.current.length)
 
                     socketClient.emit('exit voice', id)
                 }
