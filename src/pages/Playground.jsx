@@ -380,6 +380,8 @@ function Playground() {
 
     if(peerIndex !== '-1') {
       peersRef.current.splice(peerIndex, 1);
+
+      setPeers(Peers.splice(peerIndex, 1))
     }
 
   }
