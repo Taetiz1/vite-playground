@@ -9,6 +9,7 @@ export const VideoChatProvider = ({children}) => {
     const [Mute, setMute] = useState(false)
     const [camOff, setCamOff] = useState(false)
     const [connectPeer, setConnectPeer] = useState(false)
+    const [Peers, setPeers] = useState([]);
     const [Stream, setStream] = useState();
 
     const userVideo = useRef();
@@ -43,6 +44,8 @@ export const VideoChatProvider = ({children}) => {
 
                             peers.push(peer)
                         })
+
+                        setPeers(peers);
                     })
         
                     socketClient.on("user joined", ({signal, callerID}) => {
@@ -50,8 +53,10 @@ export const VideoChatProvider = ({children}) => {
                         const peer = addPeer(signal, callerID, stream);
                         peersRef.current.push({
                             peerID: callerID,
-                            peer: peer,
+                            peer,
                         })   
+
+                        setPeers(users => [...users, peer]);
             
                     })
 
@@ -148,6 +153,8 @@ export const VideoChatProvider = ({children}) => {
                 setCamOff,
                 userVideo,
                 peersRef,
+                Peers,
+                setPeers,
             }}
         >
             {children}

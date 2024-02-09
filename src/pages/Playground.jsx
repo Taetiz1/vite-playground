@@ -234,6 +234,8 @@ function Playground() {
     setCamOff,
     userVideo,
     peersRef,
+    Peers,
+    setPeers
   } = useVideoChat();
 
   const [clients, setClients] = useState({})
@@ -623,7 +625,7 @@ function Playground() {
                   gridGap: "0px",
                 }}
               >
-                {peersRef.current.map((peerRef, index) => {
+                {Peers.map((peer, index) => {
                   return (
                     // <div 
                     //   key={index} 
@@ -639,7 +641,7 @@ function Playground() {
                     // >
                       <Video 
                         key={index}
-                        peer={peerRef.peer} 
+                        peer={peer} 
                         peerIndex={index} 
                         Mute={Mute} 
                         disconnectVoice={disconnectVoice} 
