@@ -44,8 +44,6 @@ export const VideoChatProvider = ({children}) => {
 
                             peers.push(peer)
                         })
-
-                        console.log( peersRef.current.length)
                     })
         
                     socketClient.on("user joined", ({signal, callerID}) => {
@@ -64,8 +62,6 @@ export const VideoChatProvider = ({children}) => {
                     });
 
                 })
-
-                console.log( peersRef.current.length)
 
             } else {
 
