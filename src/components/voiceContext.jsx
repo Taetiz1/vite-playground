@@ -63,7 +63,6 @@ export const VideoChatProvider = ({children}) => {
                 })
 
             } else {
-
                 
                 socketClient.off("all users")
                 socketClient.off("user joined")
@@ -108,9 +107,9 @@ export const VideoChatProvider = ({children}) => {
 
     function createPeer(userToSignal, callerID, stream) {
         const peer = new Peer({
-        initiator: true,
-        trickle: false,
-        stream,
+            initiator: true,
+            trickle: false,
+            stream,
         });
 
         peer.on("signal", (signal) => {
@@ -122,9 +121,9 @@ export const VideoChatProvider = ({children}) => {
 
     function addPeer(incomingSignal, callerID, stream) {
         const peer = new Peer({
-        initiator: false,
-        trickle: false,
-        stream,
+            initiator: false,
+            trickle: false,
+            stream,
         })
 
         peer.on("signal", (signal) => {

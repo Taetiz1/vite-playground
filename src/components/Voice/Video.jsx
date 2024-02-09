@@ -5,6 +5,8 @@ const Video = ({ peer, peerIndex, Mute, disconnectVoice }) => {
     const ref = useRef();
     
     useEffect(() => {
+        
+        console.log('peer on')
 
         peer.on("stream", (stream) => {
             ref.current.srcObject = stream;

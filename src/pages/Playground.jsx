@@ -625,25 +625,26 @@ function Playground() {
               >
                 {peersRef.current.map((peerRef, index) => {
                   return (
-                    <div 
-                      key={index} 
-                      style={{
-                        display: 'flex',
-                        padding: "0px",
-                        margin: '0px',
-                        backgroundColor: "rgba(0, 0, 0, .25)",
-                        width: "135px",
-                        height: "101.65",
-                        border: "1px solid #ccc",
-                      }}
-                    >
+                    // <div 
+                    //   key={index} 
+                    //   style={{
+                    //     display: 'flex',
+                    //     padding: "0px",
+                    //     margin: '0px',
+                    //     backgroundColor: "rgba(0, 0, 0, .25)",
+                    //     width: "135px",
+                    //     height: "101.65",
+                    //     border: "1px solid #ccc",
+                    //   }}
+                    // >
                       <Video 
+                        key={index}
                         peer={peerRef.peer} 
                         peerIndex={index} 
                         Mute={Mute} 
                         disconnectVoice={disconnectVoice} 
                       />
-                    </div>
+                    // </div>
                   );
                 })}
               </div>
