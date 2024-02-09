@@ -8,7 +8,7 @@ const Video = ({ peer, peerIndex, Mute, disconnectVoice }) => {
         
         console.log('peer on')
 
-        peer.on("stream", (stream) => {
+        peer.on("stream", stream => {
             ref.current.srcObject = stream;
 
             console.log('setStreaam')
