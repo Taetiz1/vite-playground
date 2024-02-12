@@ -90,6 +90,8 @@ export const VideoChatProvider = ({children}) => {
                 
                 peersRef.current = []
 
+                setPeers([])
+
                 socketClient.emit('exit voice', id)
                 
             }
