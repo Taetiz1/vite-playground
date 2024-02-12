@@ -35,12 +35,12 @@ export const VideoChatProvider = ({children}) => {
                     socketClient.on("all users", (users) => {
 
                         const peers = []
-                        users.forEach((userID) => {
-                            const peer = createPeer(userID, id, stream);
+                        users.forEach((user) => {
+                            const peer = createPeer(user.ID, id, stream);
 
                             peersRef.current.push({
-                                peerID: userID,
-                                name: clients[userID].name,
+                                peerID: user.ID,
+                                name: user.name,
                                 peer: peer,
                             })
 
@@ -50,13 +50,13 @@ export const VideoChatProvider = ({children}) => {
                         setPeers(peers);
                     })
         
-                    socketClient.on("user joined", ({signal, callerID}) => {
+                    socketClient.on("user joined", ({signal, callerID, name}) => {
 
                         const peer = addPeer(signal, callerID, stream);
 
                         peersRef.current.push({
                             peerID: callerID,
-                            name: clients[callerID].name,
+                            name: name,
                             peer: peer,
                         })   
 
