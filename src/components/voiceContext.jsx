@@ -16,8 +16,7 @@ export const VideoChatProvider = ({children}) => {
     const peersRef = useRef([]);
 
     const {
-        socketClient,
-        clients
+        socketClient
     } = useSocketClient();
 
     useEffect(() => {
@@ -71,32 +70,32 @@ export const VideoChatProvider = ({children}) => {
 
                 })
 
-            } else {
-                
-                setMicisMute(false)
-                setMute(false)
-                setCamOff(true)
-
-                socketClient.off("all users")
-                socketClient.off("user joined")
-                socketClient.off("receiving returned signal")       
+            } else {     
 
                 if(Stream) {
+                    
+                    setMicisMute(false)
+                    setMute(false)
+                    setCamOff(true)
+
+                    socketClient.off("all users")
+                    socketClient.off("user joined")
+                    socketClient.off("receiving returned signal")  
 
                     Stream.getTracks().forEach((track) => {
                         track.stop();
                     })
+
+                    Peers.forEach((peer) => {
+                        peer.destroy();
+                    });
+                    
+                    peersRef.current = []
+    
+                    setPeers([])
+    
+                    socketClient.emit('exit voice', id)
                 }
-
-                Peers.forEach((peer) => {
-                    peer.destroy();
-                });
-                
-                peersRef.current = []
-
-                setPeers([])
-
-                socketClient.emit('exit voice', id)
                 
             }
 

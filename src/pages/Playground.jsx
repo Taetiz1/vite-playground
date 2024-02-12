@@ -376,12 +376,12 @@ function Playground() {
 
   function disconnectVoice(peerIndex) {
 
-      peersRef.current.splice(peerIndex, 1);
+    peersRef.current.splice(peerIndex, 1);
 
-      const newPeers = [...Peers];
+    const newPeers = [...Peers];
       newPeers.splice(peerIndex, 1); 
 
-      setPeers(newPeers);
+    setPeers(newPeers);
 
   }
   
@@ -408,7 +408,14 @@ function Playground() {
                   {connectPeer ? null : <div>
                     <button 
                       className={interfacestyles.Micbutton}
-                      onClick={() => {setConnectPeer(!connectPeer)}}
+                      onClick={() => {
+                        if(email !== '' || email !== null) {
+                          setConnectPeer(!connectPeer)
+                        } else {
+                          const errorMsg = "โปรดใช้บัญชี Gmail ในการเข้าสู่ระบบ"
+                          pushNotification("ล้มเหลว", errorMsg, "error")
+                        }
+                      }}
                       style={{
                         backgroundColor: 'rgba(60,179,113)',
                       }}
