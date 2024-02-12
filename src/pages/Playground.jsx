@@ -220,7 +220,9 @@ function Playground() {
     Web_URL,
     currentRoom,
     onLoading,
-    setOnLoading
+    setOnLoading,
+    clients,
+    setClients
   } = useSocketClient();
 
   const {
@@ -237,8 +239,6 @@ function Playground() {
     Peers,
     setPeers
   } = useVideoChat();
-
-  const [clients, setClients] = useState({})
 
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
@@ -374,15 +374,14 @@ function Playground() {
     setShowUserSuggestions(false);
   };
 
-  
-
   function disconnectVoice(peerIndex) {
 
-    if(peerIndex !== '-1') {
       peersRef.current.splice(peerIndex, 1);
 
-      setPeers(Peers.splice(peerIndex, 1))
-    }
+      const newPeers = [...Peers];
+      newPeers.splice(peerIndex, 1); 
+
+      setPeers(newPeers);
 
   }
   
@@ -579,7 +578,7 @@ function Playground() {
     
                 <ul className={interfacestyles.ul_chatBox} ref={messageListRef}>
                     {messages.map((message, index) => (
-                      <MessagesBox message={message} index={index} />
+                      <MessagesBox key={index} message={message} />
                     ))}
                   
                 </ul>
@@ -620,36 +619,32 @@ function Playground() {
             <Affix position={{top: 100, left: 0 }} style={{zIndex: '2',}} >
 
               <div 
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "auto auto",
-                  gridTemplateRows: "auto",
-                  gridGap: "0px",
-                }}
+                className={interfacestyles.otherVideoContainer}
               >
-                {Peers.map((peer, index) => {
+                {connectPeer ? Peers.map((peer, index) => {
                   return (
-                    <div 
-                      key={index} 
-                      style={{
-                        display: 'flex',
-                        padding: "0px",
-                        margin: '0px',
-                        backgroundColor: "rgba(0, 0, 0, .25)",
-                        width: "135px",
-                        height: "101.65",
-                        border: "1px solid #ccc",
-                      }}
-                    >
-                      <Video 
-                        peer={peer} 
-                        peerIndex={index} 
-                        Mute={Mute} 
-                        disconnectVoice={disconnectVoice} 
-                      />
-                    </div>
+                      <div 
+                        key={index} 
+                        className={interfacestyles.otherVideoWrap}
+                      >
+                        <div className={otherVideoAction}>
+
+                        </div>
+
+                        <a>
+                          {peersRef.current[index].name}
+                        </a>
+
+                        <Video 
+                          peer={peer} 
+                          peerIndex={index} 
+                          Mute={Mute} 
+                          disconnectVoice={disconnectVoice} 
+                        />
+
+                      </div>
                   );
-                })}
+                }) : null}
               </div>
 
             </Affix>

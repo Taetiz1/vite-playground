@@ -2,7 +2,7 @@ import React from "react";
 import interfacestyles from '../../pages/Interface.module.css'
 import { useSocketClient } from "../Login/SocketClient";
 
-const MessagesBox = ({message, index}) => {
+const MessagesBox = ({message}) => {
     const { username } = useSocketClient();
     const suggestion = `@${username} `
     let onSuggestion;

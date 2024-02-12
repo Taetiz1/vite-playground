@@ -3,6 +3,7 @@ import { RigidBody } from '@micmania1/react-three-rapier'
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three'
 import { useSocketClient } from '../Login/SocketClient';
+import { useVideoChat } from '../voiceContext';
 import { Text, Sky } from '@react-three/drei';
 import { Suspense } from 'react';
 import Cactus from './Cactus';
@@ -10,11 +11,19 @@ import Front from './Watsuankaew_front';
 
 function EnterScene ({position, setOnLoading}) {
   const {
-          socketClient,  
-          username,
-          avatarUrl,
-          email,
-        } = useSocketClient();
+    socketClient,  
+    username,
+    avatarUrl,
+    email
+
+  } = useSocketClient();
+
+  const {
+    connectPeer,
+    setConnectPeer
+
+  } = useVideoChat();
+        
   
   const { id } = socketClient;
   const textPosition = new THREE.Vector3(position.x, position.y, position.z); 
@@ -50,6 +59,10 @@ function EnterScene ({position, setOnLoading}) {
           roomID: 1,
         })
         setOnLoading()
+
+        if(connectPeer) {
+          setConnectPeer(false)
+        }
       }} >
       </sprite>
     </group>
@@ -59,12 +72,18 @@ function EnterScene ({position, setOnLoading}) {
 
 function EnterScene0 ({position, setOnLoading}) {
   const {
-          socketClient,  
-          username,
-          avatarUrl,
-          email,
+    socketClient,  
+    username,
+    avatarUrl,
+    email
 
-        } = useSocketClient();
+  } = useSocketClient();
+
+  const {
+    connectPeer,
+    setConnectPeer
+
+  } = useVideoChat();
   
   const { id } = socketClient;
   const textPosition = new THREE.Vector3(position.x, position.y, position.z); 
@@ -100,6 +119,11 @@ function EnterScene0 ({position, setOnLoading}) {
           roomID: 0,
         })
         setOnLoading()
+
+        if(connectPeer) {
+          setConnectPeer(false)
+        }
+
       }}>
         
       </sprite>

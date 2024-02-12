@@ -4,6 +4,7 @@ const SocketclientContext = createContext({});
 
 export const SocketclientProvider = ({children}) => {
     const [socketClient, setSocketClient] = useState(null)
+    const [clients, setClients] = useState({})
     const [username, setUsername] = useState('')
     const [logedIn, setLogedIn] = useState(false)
     const [configChar, setconfigChar] = useState(false)
@@ -54,7 +55,9 @@ export const SocketclientProvider = ({children}) => {
                 onLoading,
                 setOnLoading,
                 posMinimap,
-                setPosMinimap
+                setPosMinimap,
+                clients,
+                setClients
             }}
         >
             {children}

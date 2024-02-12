@@ -9,12 +9,15 @@ const Video = ({ peer, peerIndex, Mute, disconnectVoice }) => {
         peer.on("stream", stream => {
             ref.current.srcObject = stream;
 
-            console.log('setStreaam')
         })
 
         peer.on('close', () => {
             disconnectVoice(peerIndex)
         });
+
+        return(() => {
+            peer.removeAllListeners('close')
+        })
 
     }, []);
 
@@ -32,8 +35,7 @@ const Video = ({ peer, peerIndex, Mute, disconnectVoice }) => {
                 style={{ 
                     width: "135px",
                     height: "101.65px",
-                    border: "1px solid #ccc",
-                    backgroundColor: "rgba(0, 0, 0, .25)",
+                    objectFit: "cover",
                 }} 
                 playsInline 
                 autoPlay    

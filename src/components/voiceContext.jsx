@@ -16,7 +16,8 @@ export const VideoChatProvider = ({children}) => {
     const peersRef = useRef([]);
 
     const {
-        socketClient
+        socketClient,
+        clients
     } = useSocketClient();
 
     useEffect(() => {
@@ -25,7 +26,6 @@ export const VideoChatProvider = ({children}) => {
             const { id } = socketClient;
 
             if(connectPeer) {
-                
                 navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => {
                     userVideo.current.srcObject = stream;
                     setStream(stream);
@@ -37,9 +37,11 @@ export const VideoChatProvider = ({children}) => {
                         const peers = []
                         users.forEach((userID) => {
                             const peer = createPeer(userID, id, stream);
+
                             peersRef.current.push({
-                            peerID: userID,
-                            peer: peer,
+                                peerID: userID,
+                                name: clients[userID].name,
+                                peer: peer,
                             })
 
                             peers.push(peer)
@@ -51,9 +53,11 @@ export const VideoChatProvider = ({children}) => {
                     socketClient.on("user joined", ({signal, callerID}) => {
 
                         const peer = addPeer(signal, callerID, stream);
+
                         peersRef.current.push({
                             peerID: callerID,
-                            peer,
+                            name: clients[callerID].name,
+                            peer: peer,
                         })   
 
                         setPeers(users => [...users, peer]);
@@ -71,22 +75,22 @@ export const VideoChatProvider = ({children}) => {
                 
                 socketClient.off("all users")
                 socketClient.off("user joined")
-                socketClient.off("receiving returned signal")
+                socketClient.off("receiving returned signal")       
 
                 if(Stream) {
 
-                    peersRef.current.forEach((p) => {
-                        p.peer.destroy()
-                    })
-
-                    peersRef.current = []
-                    
                     Stream.getTracks().forEach((track) => {
                         track.stop();
                     })
-
-                    socketClient.emit('exit voice', id)
                 }
+
+                Peers.forEach((peer) => {
+                    peer.destroy();
+                });
+                
+                peersRef.current = []
+
+                socketClient.emit('exit voice', id)
                 
             }
 
