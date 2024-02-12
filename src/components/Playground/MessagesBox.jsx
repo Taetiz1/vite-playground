@@ -2,7 +2,7 @@ import React from "react";
 import interfacestyles from '../../pages/Interface.module.css'
 import { useSocketClient } from "../Login/SocketClient";
 
-const MessagesBox = ({message}) => {
+const MessagesBox = ({message, msgIndex}) => {
     const { username } = useSocketClient();
     const suggestion = `@${username} `
     let onSuggestion;
@@ -26,7 +26,7 @@ const MessagesBox = ({message}) => {
     
     
     return(
-        <li key={index} className={interfacestyles.li_chatBox}>
+        <li key={msgIndex} className={interfacestyles.li_chatBox}>
             <div className={interfacestyles.chatBox} >
                 <span style={{
                     backgroundColor: `#a648e5`,

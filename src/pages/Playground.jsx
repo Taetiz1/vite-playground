@@ -409,7 +409,7 @@ function Playground() {
                     <button 
                       className={interfacestyles.Micbutton}
                       onClick={() => {
-                        if(email !== '' || email !== null) {
+                        if(email !== '' && email !== null) {
                           setConnectPeer(!connectPeer)
                         } else {
                           const errorMsg = "โปรดใช้บัญชี Gmail ในการเข้าสู่ระบบ"
@@ -585,7 +585,7 @@ function Playground() {
     
                 <ul className={interfacestyles.ul_chatBox} ref={messageListRef}>
                     {messages.map((message, index) => (
-                      <MessagesBox key={index} message={message} />
+                      <MessagesBox key={index} message={message} msgIndex={index} />
                     ))}
                   
                 </ul>

@@ -22,13 +22,14 @@ const ConfiguratorInterface = ({ socket, onLoading, setOnLoading, setCustomMode}
         username,
         setconfigChar,
         avatarUrl,
+        socketClient,
     } = useSocketClient();
 
     function enterPlaygroud() {
 
         if(avatarUrl){
             const { id } = socket;
-            socket.emit('joinroom', {
+            socketClient.emit('joinroom', {
                 id,
                 name: username,
                 avatarUrl: avatarUrl,

@@ -7,7 +7,7 @@ const VideoChatContext = createContext({});
 export const VideoChatProvider = ({children}) => {
     const [MicisMute, setMicisMute] = useState(false);
     const [Mute, setMute] = useState(false)
-    const [camOff, setCamOff] = useState(true)
+    const [camOff, setCamOff] = useState(false)
     const [connectPeer, setConnectPeer] = useState(false)
     const [Peers, setPeers] = useState([]);
     const [Stream, setStream] = useState();
@@ -76,7 +76,7 @@ export const VideoChatProvider = ({children}) => {
                     
                     setMicisMute(false)
                     setMute(false)
-                    setCamOff(true)
+                    setCamOff(false)
 
                     socketClient.off("all users")
                     socketClient.off("user joined")

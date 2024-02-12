@@ -20,7 +20,7 @@ const LoadingScene = ({username, onLoading, setOnLoading }) => {
             </div> */}
             <div className={styles.board}>
                 {!errorEmail && (<div>
-                    <h1 className={styles.boardTitle}>Welcome <span>{username}!</span> to Wat Suan Kaew.</h1>  
+                    <h1 className={styles.boardTitle}>Welcome to Wat Suan Kaew, <span>{username}!</span>.</h1>  
                     <p>Let's create your avatar.</p>
                 </div>)}
 
