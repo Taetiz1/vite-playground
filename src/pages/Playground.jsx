@@ -627,9 +627,6 @@ function Playground() {
                         key={index} 
                         className={interfacestyles.otherVideoWrap}
                       >
-                        <div className={otherVideoAction}>
-
-                        </div>
 
                         <a>
                           {peersRef.current[index].name}
