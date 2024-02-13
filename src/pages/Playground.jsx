@@ -281,8 +281,8 @@ function Playground() {
       //   setQuestions(selectedQuestions);
       // });
 
-      socketClient.on("alreadyLogin", (error) => {
-        setErrorEmail(error)
+      socketClient.on("alreadyLogin", () => {
+        setErrorEmail(true)
       })
    
       // socketClient.on("Admin_check", (check) => {
