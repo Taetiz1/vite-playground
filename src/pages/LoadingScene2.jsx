@@ -7,15 +7,6 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 
 const LoadingScene2 = ({username, onLoading, setOnLoading }) => {
     const { progress } = useProgress();
-    
-    const loadingManager = new LoadingManager();
-    const loader = new GLTFLoader(loadingManager)
-
-    // loader.load(
-    //     loadingManager.onProgress = (url, loaded, toal) => {
-    //         console.log(`Start loading: ${url}`)
-    //     }
-    // )
 
     return (
         onLoading && (<div className={styles.loadingScene}>
@@ -27,6 +18,7 @@ const LoadingScene2 = ({username, onLoading, setOnLoading }) => {
                     }} 
                 />
             </div>
+            
             <div className={styles.board}>
                 <div>
                     <h1 className={styles.boardTitle}>Tutorial</h1>  

@@ -10,35 +10,46 @@ const LoadingScene = ({username, onLoading, setOnLoading }) => {
 
     return (
         onLoading && (<div className={styles.loadingScene}>
-            {/* <div className={styles.progress}>
+            <div className={styles.progress}>
                 <div
                     className={styles.progressValue}
                     style={{
                         width: `${progress}%`,
                     }} 
                 />
-            </div> */}
+            </div>
             <div className={styles.board}>
-                {!errorEmail && (<div>
-                    <h1 className={styles.boardTitle}>Welcome to Wat Suan Kaew, <span>{username}</span>.</h1>  
-                    <p>Let's create your avatar.</p>
-                </div>)}
 
-                {errorEmail && (<div>
-                    <h1 className={styles.boardTitle}>Sorry </h1>
-                    <p>Sorry, This Gmail is already logged in, please return.</p>
-                </div>)}
+                {errorEmail ? <>
+                    <div>
+                        <h1 className={styles.boardTitle}>Sorry </h1>
+                        <p>Sorry, This Gmail is already logged in, please return.</p>
+                    </div>
 
-                <button 
-                    disabled={progress < 100}
+                    <button 
                     onClick={() => {
-                        if(errorEmail) {
-                            window.location.reload();
-                        } else {setOnLoading()}
+                        window.location.reload();
                     }}
-                >
-                   {errorEmail ? 'Return' : (progress < 100 ? 'Loading...' : 'OK')}
-                </button>
+                    >
+                        Return
+                    </button>
+
+                </> : <>
+                    <div>
+                        <h1 className={styles.boardTitle}>Welcome to Wat Suan Kaew, <span>{username}</span>.</h1>  
+                        <p>Let's create your avatar.</p>
+                    </div> 
+
+                    <button 
+                        disabled={progress < 100}
+                        onClick={() => {
+                            setOnLoading()
+                        }}
+                    >
+                        {progress < 100 ? 'Loading...' : 'OK'}
+                    </button>
+
+                </>}
             </div>
 
         </div>)
