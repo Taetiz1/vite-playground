@@ -7,7 +7,7 @@ const VideoChatContext = createContext({});
 export const VideoChatProvider = ({children}) => {
     const [MicisMute, setMicisMute] = useState(false);
     const [Mute, setMute] = useState(false)
-    const [camOff, setCamOff] = useState(false)
+    const [camOff, setCamOff] = useState(true)
     const [connectPeer, setConnectPeer] = useState(false)
     const [Peers, setPeers] = useState([]);
     const [Stream, setStream] = useState();
@@ -28,6 +28,9 @@ export const VideoChatProvider = ({children}) => {
                 navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => {
                     userVideo.current.srcObject = stream;
                     setStream(stream);
+                    stream.getVideoTracks().forEach((track) => {
+                        track.enabled = false
+                    })
 
                     socketClient.emit("join voice")
 
@@ -76,15 +79,11 @@ export const VideoChatProvider = ({children}) => {
                     
                     setMicisMute(false)
                     setMute(false)
-                    setCamOff(false)
+                    setCamOff(true)
 
                     socketClient.off("all users")
                     socketClient.off("user joined")
                     socketClient.off("receiving returned signal")  
-
-                    Stream.getTracks().forEach((track) => {
-                        track.stop();
-                    })
 
                     Peers.forEach((peer) => {
                         peer.destroy();
@@ -95,6 +94,10 @@ export const VideoChatProvider = ({children}) => {
                     setPeers([])
     
                     socketClient.emit('exit voice', id)
+
+                    Stream.getTracks().forEach((track) => {
+                        track.stop();
+                    })
                 }
                 
             }

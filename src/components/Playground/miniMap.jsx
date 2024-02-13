@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
-import { OrthographicCamera } from "@react-three/drei";
+import { OrthographicCamera, Box } from "@react-three/drei";
 import { useSocketClient } from "../Login/SocketClient";
 
 const Minimap = (props) => {
@@ -52,7 +52,7 @@ const Minimap = (props) => {
     }, 1);
 
     return (
-        <>
+        <group>
             <OrthographicCamera
                 ref={miniMapCameraRef}
                 makeDefault={false}
@@ -65,7 +65,8 @@ const Minimap = (props) => {
                 far={500}
                 near={0.1}
             />
-        </>
+            <Box position={[0, 0, 0]} args={[1, 1, 1]} color="red" />
+        </group>
     )
 }
 
