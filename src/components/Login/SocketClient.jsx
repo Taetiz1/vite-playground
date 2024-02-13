@@ -7,6 +7,7 @@ export const SocketclientProvider = ({children}) => {
     const [clients, setClients] = useState({})
     const [username, setUsername] = useState('')
     const [logedIn, setLogedIn] = useState(false)
+    const [connectServer, setConnectServer] = useState(false)
     const [configChar, setconfigChar] = useState(false)
     const [email, setEmail] = useState(null)
     const [errorEmail, setErrorEmail] = useState(null)
@@ -57,7 +58,9 @@ export const SocketclientProvider = ({children}) => {
                 posMinimap,
                 setPosMinimap,
                 clients,
-                setClients
+                setClients,
+                connectServer,
+                setConnectServer,
             }}
         >
             {children}

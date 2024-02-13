@@ -20,13 +20,13 @@ const LoadingScene = ({username, onLoading, setOnLoading }) => {
             </div> */}
             <div className={styles.board}>
                 {!errorEmail && (<div>
-                    <h1 className={styles.boardTitle}>Welcome to Wat Suan Kaew, <span>{username}!</span>.</h1>  
+                    <h1 className={styles.boardTitle}>Welcome to Wat Suan Kaew, <span>{username}</span>.</h1>  
                     <p>Let's create your avatar.</p>
                 </div>)}
 
                 {errorEmail && (<div>
                     <h1 className={styles.boardTitle}>Sorry </h1>
-                    <p>Sorry, This email is already logged in, please return.</p>
+                    <p>Sorry, This Gmail is already logged in, please return.</p>
                 </div>)}
 
                 <button 

@@ -213,6 +213,7 @@ function Playground() {
     email,
     configChar, 
     logedIn,
+    setLogedIn,
     username,
     socketClient,
     setSocketClient,
@@ -222,7 +223,8 @@ function Playground() {
     onLoading,
     setOnLoading,
     clients,
-    setClients
+    setClients,
+    connectServer,
   } = useSocketClient();
 
   const {
@@ -254,15 +256,15 @@ function Playground() {
   // const [questions, setQuestions] = useState([{}])
 
   useEffect(() => {
-    if (logedIn) { 
+    if(connectServer) { 
       setSocketClient(io.connect(Web_URL))
       setIsGetEmail(true)
     }
 
-  }, [logedIn])
+  }, [connectServer])
   
   useEffect(() => {
-    if (isGetEmail) {
+    if(isGetEmail) {
       socketClient.emit("getEmail", {email})
     } 
   }, [isGetEmail])
@@ -281,8 +283,12 @@ function Playground() {
       //   setQuestions(selectedQuestions);
       // });
 
-      socketClient.on("alreadyLogin", () => {
-        setErrorEmail(true)
+      socketClient.on("alreadyLogin", (check) => {
+        if(check) {
+          setErrorEmail(true)
+        } 
+
+        setLogedIn(true)
       })
    
       // socketClient.on("Admin_check", (check) => {
@@ -790,7 +796,7 @@ function Playground() {
      
   }
 
-  if ( logedIn ) {
+  if( logedIn ) {
     return ( <Configurator />)
   }
 

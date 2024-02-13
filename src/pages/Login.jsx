@@ -15,11 +15,11 @@ function Login () {
     setEmail,
     username, 
     setUsername,  
-    setLogedIn, 
+    setConnectServer, 
   } = useSocketClient();
 
   const login = useGoogleLogin({
-    onSuccess: async (response) => {
+    onSuccess: async(response) => {
       try {
         const res = await axios.get(
           "https://www.googleapis.com/oauth2/v3/userinfo",
@@ -35,9 +35,9 @@ function Login () {
 
         setEmail(sanitizedEmail)
         setUsername(username)
-        setLogedIn(true)
+        setConnectServer(true)
         
-      } catch (err) {
+      } catch(err) {
         console.log(err)
       }
     }
@@ -47,7 +47,7 @@ function Login () {
     const filter = new badWords();
 
     let errorMsg
-    if(!username){
+    if(!username) {
     
       errorMsg = "Please enter Nickname."
       pushNotification("ล้มเหลว", errorMsg, "error")
@@ -56,7 +56,7 @@ function Login () {
           
     } else {
           
-      if (containsTHBadWords(username) || filter.isProfane(username)) {
+      if(containsTHBadWords(username) || filter.isProfane(username)) {
             
         errorMsg = "Please don't use any bad words in your nickname."
         pushNotification("ล้มเหลว", errorMsg, "error")
@@ -65,7 +65,7 @@ function Login () {
     
       } else {
         errorMsg = ""
-        setLogedIn(true)
+        setConnectServer(true)
       }
     
     }
