@@ -8,7 +8,27 @@ const LoadingScene = ({username, onLoading, setOnLoading }) => {
 
     const { errorEmail } = useSocketClient();
 
-    if(errorEmail !== null) {
+    // if(errorEmail === null) {
+        
+    //     return (
+    //         onLoading && (<div className={styles.board}>
+    //                 <div>
+    //                     <h1 className={styles.boardTitle}>Error</h1>
+    //                     <p>The server may not be running or is unreachable, please try again later.</p>
+    //                 </div>
+
+    //                     <button 
+    //                     onClick={() => {
+    //                         window.location.reload();
+    //                     }}
+    //                     >
+    //                         Return
+    //                     </button>
+    //         </div>)
+    //     )
+
+    // } else {
+
         return (
             onLoading && (<div className={styles.loadingScene}>
                 <div className={styles.progress}>
@@ -55,24 +75,7 @@ const LoadingScene = ({username, onLoading, setOnLoading }) => {
 
             </div>)
         )
-    } else {
-        return (
-            onLoading && (<div className={styles.board}>
-                    <div>
-                        <h1 className={styles.boardTitle}>Error</h1>
-                        <p>The server may not be running or is unreachable, please try again later.</p>
-                    </div>
-
-                        <button 
-                        onClick={() => {
-                            window.location.reload();
-                        }}
-                        >
-                            Return
-                        </button>
-            </div>)
-        )
-    }
+    // }
 }
 
 export default LoadingScene

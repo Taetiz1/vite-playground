@@ -286,6 +286,9 @@ function Playground() {
       socketClient.on("alreadyLogin", (check) => {
         if(check) {
           setErrorEmail(true)
+          
+
+          setLogedIn(true)
         } 
 
         setLogedIn(true)
@@ -301,11 +304,11 @@ function Playground() {
       //   }
       // });
 
-      socketClient.on('connect_error', (error) => {
-        if(error.message === 'xhr poll error') {
-          setLogedIn(true)
-        }
-      })
+      // socketClient.on('connect_error', (error) => {
+      //   if(error.message === 'xhr poll error') {
+      //     setLogedIn(true)
+      //   }
+      // })
 
     }
     
