@@ -85,7 +85,8 @@ const VideoCall = (props) => {
                     height: 'auto', 
                     width: '240px', 
                     borderRadius: '16px 16px 0px 0', 
-                    margin: '0px'
+                    margin: '0px',
+                    zIndex: '9999999'
                 }}  
                 videoTrack={tracks[1]} 
             />

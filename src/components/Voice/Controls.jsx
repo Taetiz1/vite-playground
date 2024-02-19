@@ -18,7 +18,8 @@ const Controls = ({tracks}) => {
         setMute,
         camOff,
         setCamOff,
-        leaveChannel
+        leaveChannel,
+        user
     } = useVideoChat();
 
     useEffect(() => {

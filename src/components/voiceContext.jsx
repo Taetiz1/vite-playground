@@ -32,6 +32,7 @@ export const VideoChatProvider = ({children}) => {
         tracks[0].close();
         tracks[1].close();
         setStart(false);
+        setVideoUsers([])
         setConnectPeer(false)
     };
 
