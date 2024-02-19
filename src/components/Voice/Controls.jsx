@@ -1,0 +1,164 @@
+import React, { useState, useEffect } from "react";
+import { useVideoChat } from "../voiceContext";
+
+import mute from '/assets/mute.png'
+import unmute from '/assets/unmute.png'
+import micMute from '/assets/micMute.png'
+import micUnmute from '/assets/micUnmute.png'
+import cam from '/assets/cam.png'
+import CamOff from '/assets/camOff.png'
+import disconnectBT from '/assets/disconnect.png'
+
+const Controls = ({tracks}) => {
+
+    const {
+        MicisMute,
+        setMicisMute,
+        Mute,
+        setMute,
+        camOff,
+        setCamOff,
+        leaveChannel
+    } = useVideoChat();
+
+    useEffect(() => {
+        if(MicisMute) {
+            tracks[0].setEnabled(false);
+            
+        }   else {
+            tracks[0].setEnabled(true);
+        }
+
+    }, [MicisMute])
+
+    useEffect(() => {
+        if(camOff) {  
+            tracks[1].setEnabled(false);
+        } else {
+            tracks[1].setEnabled(true);
+        }
+
+    }, [camOff])
+
+    // const Onmute = async (type) => {
+    //     if (type === "audio") {
+    //       await tracks[0].setEnabled(!trackState.audio);
+    //       setTrackState((ps) => {
+    //         return { ...ps, audio: !ps.audio };
+    //       });
+    //     } else if (type === "video") {
+    //       await tracks[1].setEnabled(!trackState.video);
+    //       setTrackState((ps) => {
+    //         return { ...ps, video: !ps.video };
+    //       });
+    //     }
+    // };
+
+    return(
+        <div 
+            style={{
+                display: "grid",
+                gridAutoFlow: "column",
+                gridColumnGap: "8px",
+                columnFap: "8px",
+                alignItems: "center",
+                justifyItems: "center",
+                borderColor: "#eee",
+                padding: "0px 16px",
+                height: "48px",
+                width: "100%",
+                marginTop: "-7px"
+            }}
+        >
+
+            <button
+                onClick={() => {
+                    if(!Mute) {
+                        setMicisMute(!MicisMute)
+                    }
+                }}
+                style={{
+                    width: '30px',
+                    height: '30px',
+                    display: 'inline-block',
+                    outline: 'none',
+                    border: 'none',
+                    borderRadius: '24px',
+                    color: '#fff',
+                    cursor: 'pointer',
+                    backgroundColor: 'rgb(225, 225, 225)',
+                }}
+            >
+                {MicisMute ? <img src={micMute} style={{pointerEvents: 'none', userSelect: 'none', width: '18px', height: 'auto',}} />
+                    : <img src={micUnmute} style={{pointerEvents: 'none', userSelect: 'none', width: '18px', height: 'auto',}} />}
+            </button>
+
+            <button
+                onClick={() => {
+                          
+                    if(!Mute){
+                        setMute(true)
+                        setMicisMute(true)
+                    } else {
+                        setMute(false)
+                        setMicisMute(false)
+                    }
+                }}
+                style={{
+                    width: '30px',
+                    height: '30px',
+                    display: 'inline-block',
+                    outline: 'none',
+                    border: 'none',
+                    borderRadius: '24px',
+                    color: '#fff',
+                    cursor: 'pointer',
+                    backgroundColor: 'rgb(225, 225, 225)' 
+                }}
+            >
+                {Mute ? <img src={mute} style={{pointerEvents: 'none', userSelect: 'none', width: '18px', height: 'auto',}} />
+                    : <img src={unmute} style={{pointerEvents: 'none', userSelect: 'none', width: '18px', height: 'auto',}} />}
+            </button>
+
+            <button
+                onClick={() => {setCamOff(!camOff)}}
+                style={{
+                    width: '30px',
+                    height: '30px',
+                    display: 'inline-block',
+                    outline: 'none',
+                    border: 'none',
+                    borderRadius: '24px',
+                    color: '#fff',
+                    cursor: 'pointer',
+                    backgroundColor: 'rgb(225, 225, 225)' 
+                    }}
+            >
+                { camOff ? <img src={CamOff} style={{pointerEvents: 'none', userSelect: 'none', width: 'auto', height: '20px',}} />
+                    : <img src={cam} style={{pointerEvents: 'none', userSelect: 'none', width: '20px', height: 'auto',}} />}
+            </button>
+
+            <button
+                onClick={() => {
+                    leaveChannel(tracks)
+                }}
+                style={{
+                    width: '30px',
+                    height: '30px',
+                    display: 'inline-block',
+                    outline: 'none',
+                    border: 'none',
+                    borderRadius: '24px',
+                    color: '#fff',
+                    cursor: 'pointer',
+                    backgroundColor: 'rgb(220, 20, 60)' 
+                }}
+            >
+                <img src={disconnectBT} style={{pointerEvents: 'none', userSelect: 'none', width: '18px', height: 'auto',}}/>
+            </button>
+
+        </div>
+    )
+}
+
+export default Controls

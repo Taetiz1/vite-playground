@@ -19,17 +19,11 @@ import sendingMsg from '/assets/send-message.png'
 import LoadingScene2 from './LoadingScene2'
 import MessagesBox from '../components/Playground/MessagesBox'
 import Video from '../components/Voice/Video'
+import VideoCall from '../components/Voice/VideoCall'
 import Minimap from '../components/Playground/miniMap'
 
 import headset from '/assets/headset.png'
-import mute from '/assets/mute.png'
-import unmute from '/assets/unmute.png'
-import micMute from '/assets/micMute.png'
-import micUnmute from '/assets/micUnmute.png'
-import cam from '/assets/cam.png'
-import CamOff from '/assets/camOff.png'
-import disconnectBT from '/assets/disconnect.png'
-
+import { AgoraVideoPlayer } from 'agora-rtc-react'
 
 import interfacestyles from './Interface.module.css'
 import quizStyles from './QuizGane.module.css'
@@ -239,7 +233,10 @@ function Playground() {
     userVideo,
     peersRef,
     Peers,
-    setPeers
+    setPeers,
+    VideoUsers,
+    tracks
+    
   } = useVideoChat();
 
   const [message, setMessage] = useState('');
@@ -389,16 +386,16 @@ function Playground() {
     setShowUserSuggestions(false);
   };
 
-  function disconnectVoice(peerIndex) {
+  // function disconnectVoice(peerIndex) {
 
-    peersRef.current.splice(peerIndex, 1);
+  //   peersRef.current.splice(peerIndex, 1);
 
-    const newPeers = [...Peers];
-      newPeers.splice(peerIndex, 1); 
+  //   const newPeers = [...Peers];
+  //     newPeers.splice(peerIndex, 1); 
 
-    setPeers(newPeers);
+  //   setPeers(newPeers);
 
-  }
+  // }
   
   if(logedIn && configChar){
       return (socketClient &&
@@ -424,12 +421,13 @@ function Playground() {
                     <button 
                       className={interfacestyles.Micbutton}
                       onClick={() => {
-                        if(email !== '' && email !== null) {
-                          setConnectPeer(!connectPeer)
-                        } else {
-                          const errorMsg = "โปรดใช้บัญชี Gmail ในการเข้าสู่ระบบ"
-                          pushNotification("ล้มเหลว", errorMsg, "error")
-                        }
+                        setConnectPeer(true)
+                        // if(email !== '' && email !== null) {
+                        //   setConnectPeer(!connectPeer)
+                        // } else {
+                        //   const errorMsg = "โปรดใช้บัญชี Gmail ในการเข้าสู่ระบบ"
+                        //   pushNotification("ล้มเหลว", errorMsg, "error")
+                        // }
                       }}
                       style={{
                         backgroundColor: 'rgba(60,179,113)',
@@ -441,11 +439,15 @@ function Playground() {
 
                   {connectPeer ? <div 
                     style={{
-                      gap: '0px'
+                      display: 'grid',
+                      gap: '0px',
+                      height: 'auto', 
+                      width: '240px',
                     }}
                   >
+                    <VideoCall /> 
                     
-                    <video 
+                    {/* <video 
                       style={{
                         height: 'auto', 
                         width: '240px', 
@@ -456,95 +458,9 @@ function Playground() {
                       playsInline 
                       autoPlay
                       ref={userVideo} 
-                    />
+                    /> */}
 
-                    <div className={interfacestyles.VideoInteractiveContainer}>
-
-                      <button
-                        onClick={() => {
-                          if(!Mute) {
-                            setMicisMute(!MicisMute)
-                          }
-                        }}
-                        style={{
-                          width: '30px',
-                          height: '30px',
-                          display: 'inline-block',
-                          outline: 'none',
-                          border: 'none',
-                          borderRadius: '24px',
-                          color: '#fff',
-                          cursor: 'pointer',
-                          backgroundColor: 'rgb(225, 225, 225)',
-                        }}
-                      >
-                        {MicisMute ? <img src={micMute} style={{pointerEvents: 'none', userSelect: 'none', width: '18px', height: 'auto',}} />
-                        : <img src={micUnmute} style={{pointerEvents: 'none', userSelect: 'none', width: '18px', height: 'auto',}} />}
-                      </button>
-
-                      <button
-                        onClick={() => {
-                          
-                          if(!Mute){
-                            setMute(true)
-                            setMicisMute(true)
-                          } else {
-                            setMute(false)
-                            setMicisMute(false)
-                          }
-                        }}
-                        style={{
-                          width: '30px',
-                          height: '30px',
-                          display: 'inline-block',
-                          outline: 'none',
-                          border: 'none',
-                          borderRadius: '24px',
-                          color: '#fff',
-                          cursor: 'pointer',
-                          backgroundColor: 'rgb(225, 225, 225)' 
-                        }}
-                      >
-                        {Mute ? <img src={mute} style={{pointerEvents: 'none', userSelect: 'none', width: '18px', height: 'auto',}} />
-                        : <img src={unmute} style={{pointerEvents: 'none', userSelect: 'none', width: '18px', height: 'auto',}} />}
-                      </button>
-
-                      <button
-                        onClick={() => {setCamOff(!camOff)}}
-                        style={{
-                          width: '30px',
-                          height: '30px',
-                          display: 'inline-block',
-                          outline: 'none',
-                          border: 'none',
-                          borderRadius: '24px',
-                          color: '#fff',
-                          cursor: 'pointer',
-                          backgroundColor: 'rgb(225, 225, 225)' 
-                        }}
-                      >
-                        { camOff ? <img src={CamOff} style={{pointerEvents: 'none', userSelect: 'none', width: 'auto', height: '20px',}} />
-                        : <img src={cam} style={{pointerEvents: 'none', userSelect: 'none', width: '20px', height: 'auto',}} />}
-                      </button>
-
-                      <button
-                        onClick={() => {setConnectPeer(!connectPeer)}}
-                        style={{
-                          width: '30px',
-                          height: '30px',
-                          display: 'inline-block',
-                          outline: 'none',
-                          border: 'none',
-                          borderRadius: '24px',
-                          color: '#fff',
-                          cursor: 'pointer',
-                          backgroundColor: 'rgb(220, 20, 60)' 
-                        }}
-                      >
-                        <img src={disconnectBT} style={{pointerEvents: 'none', userSelect: 'none', width: '18px', height: 'auto',}}/>
-                      </button>
-
-                    </div>
+                    
                   </div> : null}
                 </div>
 
@@ -643,7 +559,7 @@ function Playground() {
               <div 
                 className={interfacestyles.otherVideoContainer}
               >
-                {connectPeer ? Peers.map((peer, index) => {
+                {/* {connectPeer ? Peers.map((peer, index) => {
                   return (
                       <div 
                         key={index} 
@@ -663,7 +579,34 @@ function Playground() {
 
                       </div>
                   );
-                }) : null}
+                }) : null} */}
+                {VideoUsers.length > 0 &&
+                  VideoUsers.map((user, index) => {
+                    if(user.videoTrack) {
+                      return (
+                        <div
+                          key={index} 
+                          className={interfacestyles.otherVideoWrap}
+                        >
+                        <a>
+                          {clients[user.uid].name}
+                        </a>
+
+                          <AgoraVideoPlayer 
+                            videoTrack={user.videoTrack}
+                            style={{ 
+                              width: "135px",
+                              height: "101.65px",
+                              objectFit: "cover",
+                            }} 
+                          />
+                          {/* <Video user={user} /> */}
+                        
+                        </div>
+                      )
+                    }
+                  })
+                }
               </div>
 
             </Affix>

@@ -83,6 +83,7 @@
     width: 135px;
     height: 101.65px;
     border: 1px solid #ccc;
+    display: grid;
 }
 
 .otherVideoWrap a {
@@ -95,26 +96,13 @@
     background-color: rgba(0, 0, 0, .5);
     border-radius: 4px;
     padding: 2px 6px;
+    z-index: 9999999;
 }
 
 .otherVideoWrap video {
     width: 135px;
     height: 101.65px;
     object-fit: cover;
-}
-
-.VideoInteractiveContainer {
-    display: grid;
-    grid-auto-flow: column;
-    grid-column-gap: 8px;
-    column-gap: 8px;
-    align-items: center;
-    justify-items: center;
-    border-color: #eee;
-    padding: 0 16px;
-    height: 48px;
-    width: 100%;
-    margin-top: -7px;
 }
 
 .Micbutton {

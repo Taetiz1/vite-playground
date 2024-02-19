@@ -64,8 +64,10 @@ const Minimap = (props) => {
                 bottom={frustumSize / 2}
                 far={500}
                 near={0.1}
-            />
-            <Box position={[0, 0, 0]} args={[1, 1, 1]} color="red" />
+            > 
+                
+            
+            </OrthographicCamera>
         </group>
     )
 }

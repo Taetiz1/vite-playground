@@ -1,33 +1,16 @@
 import React, { useRef, useEffect } from "react"; 
 
-const Video = ({ peer, peerIndex, Mute, disconnectVoice }) => {
+const Video = ({ user }) => {
 
     const ref = useRef();
     
     useEffect(() => {
 
-        peer.on("stream", stream => {
-            ref.current.srcObject = stream;
-
-        })
-
-        peer.on('close', () => {
-            disconnectVoice(peerIndex)
-        });
-
-        return(() => {
-            peer.removeAllListeners('close')
-        })
-
-    }, []);
-
-    useEffect(() => {
-
-        if(ref.current){
-            ref.current.muted = Mute;
+        if(user) {
+            ref.current.srcObject =  MediaStream(user.videoTrack, user.audioTrack)
         }
 
-    }, [Mute])
+    }, [user]);
     
     return (
         <>

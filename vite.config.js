@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      "simple-peer": "simple-peer/simplepeer.min.js",
+      "simple-peer": "simple-peer/simplepeer.min.js"
     },
   },
 })
