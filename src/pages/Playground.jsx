@@ -583,27 +583,31 @@ function Playground() {
                 {VideoUsers.length > 0 &&
                   VideoUsers.map((user, index) => {
                     if(user.videoTrack) {
-                      return (
-                        <div
-                          key={index} 
-                          className={interfacestyles.otherVideoWrap}
-                        >
-                        <a>
-                          {clients[user.uid].name}
-                        </a>
+                      if(clients[user.uid].name) {
+                        return (
+                          <div
+                            key={index} 
+                            className={interfacestyles.otherVideoWrap}
+                          >
+                          <a>
+                            {clients[user.uid].name}
+                          </a>
 
-                          <AgoraVideoPlayer 
-                            videoTrack={user.videoTrack}
-                            style={{ 
-                              width: "135px",
-                              height: "101.65px",
-                              objectFit: "cover",
-                            }} 
-                          />
-                          {/* <Video user={user} /> */}
-                        
-                        </div>
-                      )
+                            <AgoraVideoPlayer 
+                              videoTrack={user.videoTrack}
+                              style={{ 
+                                width: "135px",
+                                height: "101.65px",
+                                objectFit: "cover",
+                              }} 
+                            />
+                            {/* <Video user={user} /> */}
+                          
+                          </div>
+                        )
+                      } else {
+                        return null
+                      }
                     }
                   })
                 }

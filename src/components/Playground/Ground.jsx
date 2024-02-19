@@ -154,14 +154,23 @@ export const Ground = ({x, z, currentRoom, setOnLoading}) => {
       case 1: 
         return (
           <>
-            <Cactus />
+            {/* <Cactus />
             
             <group position={[0, 0, 0]}>
               <mesh rotation-x={Math.PI * -0.5} receiveShadow  >
                 <planeGeometry args={[x, z]}/>
                 <meshStandardMaterial color={"#458745"}/>
               </mesh>
-            </group>
+            </group> */}
+
+            <RigidBody colliders="cuboid" type="fixed">
+                <group position={[0, 0, 0]}>
+                  <mesh rotation-x={Math.PI * -0.5} receiveShadow  >
+                    <planeGeometry args={[x, z]}/>
+                    <meshStandardMaterial color={"#458745"}/>
+                  </mesh>
+                </group>
+            </RigidBody>
             <EnterScene0  position={[3, 3, 3]} setOnLoading={setOnLoading} />
           </>
         )
