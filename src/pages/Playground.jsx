@@ -228,7 +228,6 @@ function Playground() {
     setMute,
     connectPeer,
     setConnectPeer,
-    channelName,
     camOff,
     setCamOff,
     userVideo,
@@ -236,7 +235,6 @@ function Playground() {
     Peers,
     setPeers,
     VideoUsers,
-    tracks,
     setChannelName
     
   } = useVideoChat();
@@ -421,10 +419,10 @@ function Playground() {
                   borderRadius: connectPeer ? "20px" : "28px",
                   alignContent: 'center',
                   alignItems: 'end',
-                  height: connectPeer ? "228.2px" : "48px"
+                  height: connectPeer ? "228.2px" : "48px",
                 }}>
 
-                  {connectPeer ? null : <div>
+                  {!connectPeer && <div>
                     <button 
                       className={interfacestyles.Micbutton}
                       onClick={() => {
@@ -451,20 +449,8 @@ function Playground() {
                       width: '240px',
                     }}
                   >
-                    <VideoCall channelName={channelName} /> 
-                    
-                    {/* <video 
-                      style={{
-                        height: 'auto', 
-                        width: '240px', 
-                        borderRadius: '16px 16px 0px 0', 
-                        margin: '0px'
-                      }} 
-                      muted 
-                      playsInline 
-                      autoPlay
-                      ref={userVideo} 
-                    /> */}
+       
+                    <VideoCall /> 
                     
                   </div>}
                 </div>
@@ -564,27 +550,6 @@ function Playground() {
               <div 
                 className={interfacestyles.otherVideoContainer}
               >
-                {/* {connectPeer ? Peers.map((peer, index) => {
-                  return (
-                      <div 
-                        key={index} 
-                        className={interfacestyles.otherVideoWrap}
-                      >
-
-                        <a>
-                          {peersRef.current[index].name}
-                        </a>
-
-                        <Video 
-                          peer={peer} 
-                          peerIndex={index} 
-                          Mute={Mute} 
-                          disconnectVoice={disconnectVoice} 
-                        />
-
-                      </div>
-                  );
-                }) : null} */}
                 {VideoUsers.length > 0 &&
                   VideoUsers.map((user, index) => {
                     if(user.videoTrack) {
@@ -603,11 +568,9 @@ function Playground() {
                               videoTrack={user.videoTrack}
                               style={{ 
                                 width: "135px",
-                                height: "101.65px",
-                                objectFit: "cover",
+                                height: "101px",
                               }} 
                             />
-                            {/* <Video user={user} /> */}
                           
                           </div>
                         )

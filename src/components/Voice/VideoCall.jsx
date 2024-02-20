@@ -5,11 +5,13 @@ import { useSocketClient } from "../Login/SocketClient";
 import Controls from "./Controls";
 import { AgoraVideoPlayer } from "agora-rtc-react";
 
-const VideoCall = ({channelName}) => {
+const VideoCall = () => {
     const {
         setVideoUsers,
         start,
         setStart,
+        channelName,
+        userVideo
     } = useVideoChat();
 
     const { socketClient } = useSocketClient();
@@ -71,24 +73,24 @@ const VideoCall = ({channelName}) => {
             init(channelName);
         }
 
-}, [channelName, videoClient, ready, tracks])
+}, [videoClient, ready, tracks])
     
     return (<>
-        {start && tracks && (
-
-            <AgoraVideoPlayer 
-                style={{
-                    height: 'auto', 
-                    width: '240px', 
-                    borderRadius: '16px 16px 0px 0', 
-                    margin: '0px',
-                    zIndex: '99999999'
-                }}  
-                videoTrack={tracks[1]} 
-            />
-        ) && (
+        {start && tracks && 
+        
+                <AgoraVideoPlayer 
+                    videoTrack={tracks[1]}
+                    
+                    style={{ 
+                        width: "240px",
+                        height: "165px",
+                    }} 
+                />
+        }
+        
+        {start && tracks && 
             <Controls tracks={tracks}/>
-        )}
+        }
     </>)
 }
 

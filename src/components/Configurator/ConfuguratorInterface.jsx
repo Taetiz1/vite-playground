@@ -34,13 +34,14 @@ const ConfiguratorInterface = ({ socket, onLoading, setOnLoading, setCustomMode}
 
         if(avatarUrl){
             const { id } = socket;
+            
+            setChannelName(roomID)
             socketClient.emit('joinroom', {
                 id,
                 name: username,
                 avatarUrl: avatarUrl,
                 roomID: roomID,
             })
-            setChannelName(roomID)
             setconfigChar(true)
             setOnLoading()
         } 

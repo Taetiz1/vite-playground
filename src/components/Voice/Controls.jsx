@@ -78,7 +78,7 @@ const Controls = ({tracks}) => {
                 padding: "0px 16px",
                 height: "48px",
                 width: "100%",
-                marginTop: "-7px"
+                marginTop: "-1px"
             }}
         >
 

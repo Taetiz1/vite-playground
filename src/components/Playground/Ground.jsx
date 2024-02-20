@@ -27,7 +27,8 @@ function EnterSceneBT ({position, setOnLoading, roomID}) {
 
   function JoinRoom(roomID) {
     const setJoin = () => {
-
+      
+      setChannelName(roomID)
       socketClient.emit('joinroom', {
         id,
         name: username,
@@ -35,7 +36,6 @@ function EnterSceneBT ({position, setOnLoading, roomID}) {
         email: email,
         roomID: roomID,
       })
-      setChannelName(roomID)
       setOnLoading()
     }
 
