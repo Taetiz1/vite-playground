@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useVideoChat } from "../voiceContext";
+import { useVideoClient } from "./settings";
 
 import mute from '/assets/mute.png'
 import unmute from '/assets/unmute.png'
@@ -18,9 +19,14 @@ const Controls = ({tracks}) => {
         setMute,
         camOff,
         setCamOff,
-        leaveChannel,
-        user
+        setStart,
+        setConnectPeer,
+        setVideoUsers,
+        onDisconnect,
+        setOnDisconnect
     } = useVideoChat();
+
+    const videoClient = useVideoClient();
 
     useEffect(() => {
         if(MicisMute) {
@@ -41,19 +47,23 @@ const Controls = ({tracks}) => {
 
     }, [camOff])
 
-    // const Onmute = async (type) => {
-    //     if (type === "audio") {
-    //       await tracks[0].setEnabled(!trackState.audio);
-    //       setTrackState((ps) => {
-    //         return { ...ps, audio: !ps.audio };
-    //       });
-    //     } else if (type === "video") {
-    //       await tracks[1].setEnabled(!trackState.video);
-    //       setTrackState((ps) => {
-    //         return { ...ps, video: !ps.video };
-    //       });
-    //     }
-    // };
+    useEffect(() => {
+        if(onDisconnect) {
+            leaveChannel()
+        }
+    }, [onDisconnect])
+
+    const leaveChannel = async () => {
+        
+        await videoClient.leave();
+        videoClient.removeAllListeners();
+        tracks[0].close();
+        tracks[1].close();
+        setVideoUsers([])
+        setOnDisconnect(false)
+        setStart(false)
+        setConnectPeer(false)
+    };
 
     return(
         <div 
@@ -141,7 +151,7 @@ const Controls = ({tracks}) => {
 
             <button
                 onClick={() => {
-                    leaveChannel(tracks)
+                    setOnDisconnect(true)
                 }}
                 style={{
                     width: '30px',

@@ -2,16 +2,14 @@ import React, { useState, useEffect } from "react";
 import { useVideoChat } from "../voiceContext";
 import { useVideoClient, useVideoTracks, appConfig } from "./settings";
 import { useSocketClient } from "../Login/SocketClient";
-import Controls from "./controls";
+import Controls from "./Controls";
 import { AgoraVideoPlayer } from "agora-rtc-react";
 
-const VideoCall = (props) => {
+const VideoCall = ({channelName}) => {
     const {
         setVideoUsers,
-        channelName,
         start,
         setStart,
-        connectPeer
     } = useVideoChat();
 
     const { socketClient } = useSocketClient();
@@ -20,7 +18,6 @@ const VideoCall = (props) => {
     
     const videoClient = useVideoClient();
     const { ready, tracks } = useVideoTracks();
-    const [userTrack, setUserTrack] = useState([]);
 
     useEffect(() => {
         let init = async (name) => {
@@ -66,7 +63,6 @@ const VideoCall = (props) => {
             await videoClient.join(appConfig.appId, name, appConfig.token, id)    
             if(tracks) { 
                 await videoClient.publish([tracks[0], tracks[1]]);
-                setUserTrack(tracks[1])
             }
             setStart(true)
         }
@@ -86,15 +82,13 @@ const VideoCall = (props) => {
                     width: '240px', 
                     borderRadius: '16px 16px 0px 0', 
                     margin: '0px',
-                    zIndex: '9999999'
+                    zIndex: '99999999'
                 }}  
                 videoTrack={tracks[1]} 
             />
         ) && (
-            
-            <Controls tracks={tracks} />
-        )
-        }
+            <Controls tracks={tracks}/>
+        )}
     </>)
 }
 

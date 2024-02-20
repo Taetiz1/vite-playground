@@ -10,7 +10,7 @@ export const SocketclientProvider = ({children}) => {
     const [connectServer, setConnectServer] = useState(false)
     const [configChar, setconfigChar] = useState(false)
     const [email, setEmail] = useState(null)
-    const [errorEmail, setErrorEmail] = useState(null)
+    const [errorEmail, setErrorEmail] = useState(false)
     const [adminLogedIn, setAdminLogedIn] = useState(false)
     const [avatarUrl, setAvatarUrl] = useState("https://models.readyplayer.me/655a5d4e9b792809cdac419d.glb")
     const [currentRoom, setCurrentRoom] = useState()

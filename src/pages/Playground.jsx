@@ -228,6 +228,7 @@ function Playground() {
     setMute,
     connectPeer,
     setConnectPeer,
+    channelName,
     camOff,
     setCamOff,
     userVideo,
@@ -235,7 +236,8 @@ function Playground() {
     Peers,
     setPeers,
     VideoUsers,
-    tracks
+    tracks,
+    setChannelName
     
   } = useVideoChat();
 
@@ -283,12 +285,17 @@ function Playground() {
       socketClient.on("alreadyLogin", (check) => {
         if(check) {
           setErrorEmail(true)
-          
-
           setLogedIn(true)
         } 
 
         setLogedIn(true)
+      })
+
+      socketClient.on("enabled Join Voice", ({enabled}) => {
+        if(enabled) {
+
+          setConnectPeer(true)
+        }
       })
    
       // socketClient.on("Admin_check", (check) => {
@@ -421,13 +428,12 @@ function Playground() {
                     <button 
                       className={interfacestyles.Micbutton}
                       onClick={() => {
-                        setConnectPeer(true)
-                        // if(email !== '' && email !== null) {
-                        //   setConnectPeer(!connectPeer)
-                        // } else {
-                        //   const errorMsg = "โปรดใช้บัญชี Gmail ในการเข้าสู่ระบบ"
-                        //   pushNotification("ล้มเหลว", errorMsg, "error")
-                        // }
+                        if(email !== '' && email !== null) {
+                          socketClient.emit("join voice", {id: socketClient.id})
+                        } else {
+                          const errorMsg = "โปรดใช้บัญชี Gmail ในการเข้าสู่ระบบ"
+                          pushNotification("ล้มเหลว", errorMsg, "error")
+                        }
                       }}
                       style={{
                         backgroundColor: 'rgba(60,179,113)',
@@ -437,7 +443,7 @@ function Playground() {
                     </button>
                   </div>}
 
-                  {connectPeer ? <div 
+                  {connectPeer && <div 
                     style={{
                       display: 'grid',
                       gap: '0px',
@@ -445,7 +451,7 @@ function Playground() {
                       width: '240px',
                     }}
                   >
-                    <VideoCall /> 
+                    <VideoCall channelName={channelName} /> 
                     
                     {/* <video 
                       style={{
@@ -459,9 +465,8 @@ function Playground() {
                       autoPlay
                       ref={userVideo} 
                     /> */}
-
                     
-                  </div> : null}
+                  </div>}
                 </div>
 
                 <div className={interfacestyles.InteractiveContainer}>
@@ -583,15 +588,16 @@ function Playground() {
                 {VideoUsers.length > 0 &&
                   VideoUsers.map((user, index) => {
                     if(user.videoTrack) {
-                      if(clients[user.uid].name) {
                         return (
                           <div
                             key={index} 
                             className={interfacestyles.otherVideoWrap}
                           >
-                          <a>
-                            {clients[user.uid].name}
-                          </a>
+                          {(clients[user.uid] !== null && clients[user.uid] !== undefined) && 
+                            <a>
+                              {clients[user.uid].name}
+                            </a>
+                          }
 
                             <AgoraVideoPlayer 
                               videoTrack={user.videoTrack}
@@ -605,9 +611,6 @@ function Playground() {
                           
                           </div>
                         )
-                      } else {
-                        return null
-                      }
                     }
                   })
                 }

@@ -9,7 +9,7 @@ import { Suspense } from 'react';
 import Cactus from './Cactus';
 import Front from './Watsuankaew_front';
 
-function EnterScene ({position, setOnLoading}) {
+function EnterSceneBT ({position, setOnLoading, roomID}) {
   const {
     socketClient,  
     username,
@@ -20,9 +20,33 @@ function EnterScene ({position, setOnLoading}) {
 
   const {
     connectPeer,
-    setConnectPeer
+    setChannelName,
+    setOnDisconnect,
 
   } = useVideoChat();
+
+  function JoinRoom(roomID) {
+    const setJoin = () => {
+
+      socketClient.emit('joinroom', {
+        id,
+        name: username,
+        avatarUrl: avatarUrl,
+        email: email,
+        roomID: roomID,
+      })
+      setChannelName(roomID)
+      setOnLoading()
+    }
+
+    if(connectPeer) {
+      setOnDisconnect(true)
+
+      setJoin()
+    } else {
+      setJoin()
+    }
+  }
         
   
   const { id } = socketClient;
@@ -33,11 +57,11 @@ function EnterScene ({position, setOnLoading}) {
   const buttonRef = useRef()
   useFrame(({ camera }) => {
     const distance = camera.position.distanceTo(textPosition);
-    if (buttonRef.current) {
+    if(buttonRef.current) {
       buttonRef.current.lookAt(camera.position);
     }
 
-    if (distance > maxDistanceToShowText) {
+    if(distance > maxDistanceToShowText) {
       setTextVisibility(false);
     } else {
       setTextVisibility(true);
@@ -51,91 +75,17 @@ function EnterScene ({position, setOnLoading}) {
       visible={textVisible} 
     >
       <sprite onClick={() => {
-        socketClient.emit('joinroom', {
-          id,
-          name: username,
-          avatarUrl: avatarUrl,
-          email: email,
-          roomID: 1,
-        })
-        setOnLoading()
-
-        if(connectPeer) {
-          setConnectPeer(false)
-        }
+        JoinRoom(roomID)
       }} >
       </sprite>
     </group>
     
   );
 }
-
-function EnterScene0 ({position, setOnLoading}) {
-  const {
-    socketClient,  
-    username,
-    avatarUrl,
-    email
-
-  } = useSocketClient();
-
-  const {
-    connectPeer,
-    setConnectPeer
-
-  } = useVideoChat();
-  
-  const { id } = socketClient;
-  const textPosition = new THREE.Vector3(position.x, position.y, position.z); 
-  const maxDistanceToShowText = 5;
-  const [textVisible, setTextVisibility] = useState(true);
-
-  const buttonRef = useRef()
-  useFrame(({ camera }) => {
-    const distance = camera.position.distanceTo(textPosition);
-    if (buttonRef.current) {
-      buttonRef.current.lookAt(camera.position);
-    }
-
-    if (distance > maxDistanceToShowText) {
-      setTextVisibility(false);
-    } else {
-      setTextVisibility(true);
-    }
-  })
-
-  return (
-    <group
-      ref={buttonRef} 
-      position={position}
-      visible={textVisible}
-    >
-      <sprite onClick={() => {
-        socketClient.emit('joinroom', {
-          id,
-          name: username,
-          avatarUrl: avatarUrl,
-          email: email,
-          roomID: 0,
-        })
-        setOnLoading()
-
-        if(connectPeer) {
-          setConnectPeer(false)
-        }
-
-      }}>
-        
-      </sprite>
-    </group>
-    
-  );
-}
-
 export const Ground = ({x, z, currentRoom, setOnLoading}) => {
 
   switch (currentRoom) {
-    case 0: 
+    case "0": 
       return (
         <>
           <RigidBody colliders="cuboid" type="fixed">
@@ -148,10 +98,10 @@ export const Ground = ({x, z, currentRoom, setOnLoading}) => {
           </RigidBody>
           {/* <Front /> */}
 
-          <EnterScene  position={[0, 1.5, 0]} setOnLoading={setOnLoading} />
+          <EnterSceneBT  position={[0, 1.5, 0]} setOnLoading={setOnLoading} roomID={"1"} />
         </>
       )
-      case 1: 
+      case "1": 
         return (
           <>
             {/* <Cactus />
@@ -171,7 +121,7 @@ export const Ground = ({x, z, currentRoom, setOnLoading}) => {
                   </mesh>
                 </group>
             </RigidBody>
-            <EnterScene0  position={[3, 3, 3]} setOnLoading={setOnLoading} />
+            <EnterSceneBT  position={[3, 3, 3]} setOnLoading={setOnLoading} roomID={"0"} />
           </>
         )
   }

@@ -2,6 +2,7 @@ import { Affix, Button, Group } from "@mantine/core"
 import React, { useState } from "react"
 import { useCharacterAnimations } from "./CharacterAnimations"
 import { CameraModes, useCharacterCustomization } from "./CharacterCustomization";
+import { useVideoChat } from "../voiceContext";
 import { useSocketClient } from "../Login/SocketClient";
 
 const ConfiguratorInterface = ({ socket, onLoading, setOnLoading, setCustomMode}) => {
@@ -25,7 +26,11 @@ const ConfiguratorInterface = ({ socket, onLoading, setOnLoading, setCustomMode}
         socketClient,
     } = useSocketClient();
 
-    function enterPlaygroud() {
+    const {
+        setChannelName
+    } = useVideoChat();
+
+    function enterPlaygroud(roomID) {
 
         if(avatarUrl){
             const { id } = socket;
@@ -33,8 +38,9 @@ const ConfiguratorInterface = ({ socket, onLoading, setOnLoading, setCustomMode}
                 id,
                 name: username,
                 avatarUrl: avatarUrl,
-                roomID: 0,
+                roomID: roomID,
             })
+            setChannelName(roomID)
             setconfigChar(true)
             setOnLoading()
         } 
@@ -85,7 +91,11 @@ const ConfiguratorInterface = ({ socket, onLoading, setOnLoading, setCustomMode}
                             ) : null
                         ))
                     }
-                    <Button onClick={enterPlaygroud}>
+                    <Button 
+                        onClick={() => {
+                            enterPlaygroud("0")
+                        }}
+                    >
                         Go!
                     </Button>
                 </Group>
