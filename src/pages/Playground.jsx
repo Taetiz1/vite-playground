@@ -404,12 +404,12 @@ function Playground() {
                     <button 
                       className={interfacestyles.Micbutton}
                       onClick={() => {
-                        // if(email !== '' && email !== null) {
+                        if(email !== '' && email !== null) {
                           socketClient.emit("join voice", {id: socketClient.id})
-                        // } else {
-                        //   const errorMsg = "โปรดใช้บัญชี Gmail ในการเข้าสู่ระบบ"
-                        //   pushNotification("ล้มเหลว", errorMsg, "error")
-                        // }
+                        } else {
+                          const errorMsg = "โปรดใช้บัญชี Gmail ในการเข้าสู่ระบบ"
+                          pushNotification("ล้มเหลว", errorMsg, "error")
+                        }
                       }}
                       style={{
                         backgroundColor: 'rgba(60,179,113)',
