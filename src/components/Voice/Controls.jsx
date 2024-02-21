@@ -67,6 +67,9 @@ const Controls = ({tracks}) => {
         setOnDisconnect(false)
         setStart(false)
         setConnectPeer(false)
+        setMicisMute(false)
+        setMute(false)
+        setCamOff(false)
         setMutedUser({})
     };
 
@@ -91,6 +94,10 @@ const Controls = ({tracks}) => {
                 onClick={() => {
                     if(!Mute) {
                         setMicisMute(!MicisMute)
+                    } else {
+                        setMute(false)
+                        setMicisMute(false)
+                        socketClient.emit("setMute", {onMute: false, from: socketClient.id})
                     }
                 }}
                 style={{
