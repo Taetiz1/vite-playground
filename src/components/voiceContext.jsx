@@ -31,6 +31,12 @@ export const VideoChatProvider = ({children}) => {
                     user.audioTrack.stop()
                 }
             })
+        } else {
+            VideoUsers.forEach((user) => {
+                if(user.audioTrack) {
+                    user.audioTrack.play()
+                }
+            })
         }
 
     }, [Mute])
