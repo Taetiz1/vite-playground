@@ -22,11 +22,12 @@ import VideoCall from '../components/Voice/VideoCall'
 import Minimap from '../components/Playground/miniMap'
 
 import headset from '/assets/headset.png'
+import micMute from '/assets/micMute.png'
+import mute from '/assets/mute.png'
 import { AgoraVideoPlayer } from 'agora-rtc-react'
 
 import interfacestyles from './Interface.module.css'
 import quizStyles from './QuizGane.module.css'
-
 import { useSocketClient } from '../components/Login/SocketClient'
 import { useVideoChat } from '../components/voiceContext'
 import Login from './Login'
@@ -222,7 +223,8 @@ function Playground() {
   const {
     connectPeer,
     setConnectPeer,
-    VideoUsers
+    VideoUsers,
+    mutedUser
 
   } = useVideoChat();
 
@@ -402,12 +404,12 @@ function Playground() {
                     <button 
                       className={interfacestyles.Micbutton}
                       onClick={() => {
-                        if(email !== '' && email !== null) {
+                        // if(email !== '' && email !== null) {
                           socketClient.emit("join voice", {id: socketClient.id})
-                        } else {
-                          const errorMsg = "โปรดใช้บัญชี Gmail ในการเข้าสู่ระบบ"
-                          pushNotification("ล้มเหลว", errorMsg, "error")
-                        }
+                        // } else {
+                        //   const errorMsg = "โปรดใช้บัญชี Gmail ในการเข้าสู่ระบบ"
+                        //   pushNotification("ล้มเหลว", errorMsg, "error")
+                        // }
                       }}
                       style={{
                         backgroundColor: 'rgba(60,179,113)',
@@ -425,9 +427,7 @@ function Playground() {
                       width: '240px',
                     }}
                   >
-       
-                    <VideoCall /> 
-                    
+                    <VideoCall />  
                   </div>}
                 </div>
 
@@ -529,7 +529,7 @@ function Playground() {
                   VideoUsers.map((user, index) => {
                       return (
                         <div
-                          key={index} 
+                          key={user.uid} 
                           className={interfacestyles.otherVideoWrap}
                         >
                           {(clients[user.uid] !== null && clients[user.uid] !== undefined) && 
@@ -537,6 +537,14 @@ function Playground() {
                               {clients[user.uid].name}
                             </a>
                           }
+
+                          {!user.audioTrack && <div className={interfacestyles.micOffAlert}>
+                            <img src={micMute} style={{pointerEvents: 'none', userSelect: 'none', width: '16px'}} />
+                          </div>}
+
+                          {mutedUser.find((User) => User === user.uid)  && <div className={interfacestyles.muteAlert}>
+                            <img src={mute} style={{pointerEvents: 'none', userSelect: 'none', width: '16px'}} />
+                          </div>}
                           
                           {user.videoTrack &&
                             <AgoraVideoPlayer 

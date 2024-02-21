@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { useSocketClient } from "./Login/SocketClient";
 
 const VideoChatContext = createContext({});
 
@@ -11,6 +12,28 @@ export const VideoChatProvider = ({children}) => {
     const [start, setStart] = useState(false);
     const [onDisconnect, setOnDisconnect] = useState(false);
     const [VideoUsers, setVideoUsers] = useState([]);
+    const [mutedUser, setMutedUser] = useState([])
+    
+    const {socketClient} = useSocketClient();
+
+    useEffect(() => {
+        if(socketClient) {
+            socketClient.on("mutedUser", (mutedUser) => {
+                setMutedUser(mutedUser)
+            })
+        }
+    }, [socketClient])
+
+    useEffect(() => {
+        if(Mute) {
+            VideoUsers.forEach((user) => {
+                if(user.audioTrack) {
+                    user.audioTrack.stop()
+                }
+            })
+        }
+
+    }, [Mute])
 
     return (
         <VideoChatContext.Provider
@@ -30,7 +53,9 @@ export const VideoChatProvider = ({children}) => {
                 start,
                 setStart,
                 onDisconnect,
-                setOnDisconnect
+                setOnDisconnect,
+                mutedUser,
+                setMutedUser
             }}
         >
             {children}

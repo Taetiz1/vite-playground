@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useVideoChat } from "../voiceContext";
 import { useVideoClient } from "./settings";
+import { useSocketClient } from "../Login/SocketClient";
 
 import mute from '/assets/mute.png'
 import unmute from '/assets/unmute.png'
@@ -26,7 +27,8 @@ const Controls = ({tracks}) => {
         setOnDisconnect
     } = useVideoChat();
 
-    const videoClient = useVideoClient();
+    const {videoClient} = useVideoClient();
+    const {socketClient} = useSocketClient();
 
     useEffect(() => {
         if(MicisMute) {
@@ -63,6 +65,8 @@ const Controls = ({tracks}) => {
         setOnDisconnect(false)
         setStart(false)
         setConnectPeer(false)
+        socketClient.emit("exit voice", {id: socketClient.id})
+        setMutedUser({})
     };
 
     return(
@@ -110,9 +114,12 @@ const Controls = ({tracks}) => {
                     if(!Mute){
                         setMute(true)
                         setMicisMute(true)
+                        socketClient.emit("setMute", {onMute: true, from: socketClient.id})
+
                     } else {
                         setMute(false)
                         setMicisMute(false)
+                        socketClient.emit("setMute", {onMute: false, from: socketClient.id})
                     }
                 }}
                 style={{

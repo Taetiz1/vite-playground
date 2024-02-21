@@ -53,12 +53,6 @@ const VideoCall = () => {
                     }
                 }
 
-                // if(mediaType === "video") {
-                //     setVideoUsers((prevUsers) => {
-                //         return prevUsers.filter((User) => User.uid !== user.uid);
-                //     });
-                // }
-
             })
 
             videoClient.on("user-left", (user) => {
