@@ -28,7 +28,14 @@ const VideoCall = () => {
                 if(mediaType === "video") {
                         
                     setVideoUsers((prevUsers) => {
-                        return [...prevUsers, user];
+                        const check = prevUsers.filter((User) => User.uid === user.uid);
+
+                        if(!check) {
+                            return [...prevUsers, user];
+                        } else {
+                            return [...prevUsers]
+                        } 
+
                     });
                             
                 }
@@ -46,14 +53,11 @@ const VideoCall = () => {
                     }
                 }
 
-                if(mediaType === "video") {
-                    // setVideoUsers((prevUsers) => {
-                    //     return prevUsers.filter((User) => User.uid !== user.uid);
-                    // });
-                    if(user.videoTrack) {
-                        useEffect.videoTrack.stop()
-                    }
-                }
+                // if(mediaType === "video") {
+                //     setVideoUsers((prevUsers) => {
+                //         return prevUsers.filter((User) => User.uid !== user.uid);
+                //     });
+                // }
 
             })
 

@@ -527,17 +527,18 @@ function Playground() {
               >
                 {VideoUsers.length > 0 &&
                   VideoUsers.map((user, index) => {
-                        return (
-                          <div
-                            key={index} 
-                            className={interfacestyles.otherVideoWrap}
-                          >
+                      return (
+                        <div
+                          key={index} 
+                          className={interfacestyles.otherVideoWrap}
+                        >
                           {(clients[user.uid] !== null && clients[user.uid] !== undefined) && 
                             <a>
                               {clients[user.uid].name}
                             </a>
                           }
-
+                          
+                          {user.videoTrack &&
                             <AgoraVideoPlayer 
                               videoTrack={user.videoTrack}
                               style={{ 
@@ -545,9 +546,9 @@ function Playground() {
                                 height: "101px",
                               }} 
                             />
-                          
-                          </div>
-                        )
+                          }
+                        </div>
+                      )
                   })
                 }
               </div>

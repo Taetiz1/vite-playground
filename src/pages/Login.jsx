@@ -34,11 +34,11 @@ function Login () {
 
         const sanitizedEmail = res.data.email.replace(/\./g, "_");
         const username = res.data.given_name;
-
+        
+        setOnLoader(true)
         setEmail(sanitizedEmail)
         setUsername(username)
         setConnectServer(true)
-        setOnLoader(true)
         
       } catch(err) {
         console.log(err)
