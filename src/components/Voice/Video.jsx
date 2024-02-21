@@ -1,16 +1,6 @@
-import React, { useRef, useEffect } from "react"; 
+import React from "react"; 
 
-const Video = ({ user }) => {
-
-    const ref = useRef();
-    
-    useEffect(() => {
-
-        if(user) {
-            ref.current.srcObject =  MediaStream(user.videoTrack, user.audioTrack)
-        }
-
-    }, [user]);
+const Video = () => {
     
     return (
         <>
@@ -22,7 +12,6 @@ const Video = ({ user }) => {
                 }} 
                 playsInline 
                 autoPlay    
-                ref={ref} 
             />
         </>
         

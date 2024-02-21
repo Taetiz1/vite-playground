@@ -60,7 +60,7 @@ export const SocketclientProvider = ({children}) => {
                 clients,
                 setClients,
                 connectServer,
-                setConnectServer,
+                setConnectServer
             }}
         >
             {children}

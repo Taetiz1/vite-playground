@@ -21,8 +21,8 @@ function Configurator() {
     const [avatarMode, setAvatarMode] = useState(false);
 
     return (
-        <>
-          <div className={configuratorStyles.container}>
+      <>
+        <div className={configuratorStyles.container}>
 
             {avatarMode && (
               <AvatarCreator 

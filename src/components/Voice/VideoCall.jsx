@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"; 
+import React, { useEffect } from "react"; 
 import { useVideoChat } from "../voiceContext";
 import { useVideoClient, useVideoTracks, appConfig } from "./settings";
 import { useSocketClient } from "../Login/SocketClient";
@@ -10,8 +10,7 @@ const VideoCall = () => {
         setVideoUsers,
         start,
         setStart,
-        channelName,
-        userVideo
+        channelName
     } = useVideoChat();
 
     const { socketClient } = useSocketClient();
@@ -48,9 +47,12 @@ const VideoCall = () => {
                 }
 
                 if(mediaType === "video") {
-                    setVideoUsers((prevUsers) => {
-                        return prevUsers.filter((User) => User.uid !== user.uid);
-                    });
+                    // setVideoUsers((prevUsers) => {
+                    //     return prevUsers.filter((User) => User.uid !== user.uid);
+                    // });
+                    if(user.videoTrack) {
+                        useEffect.videoTrack.stop()
+                    }
                 }
 
             })

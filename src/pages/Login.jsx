@@ -6,17 +6,19 @@ import { containsTHBadWords } from "../components/handleTHBadwords";
 import badWords from 'bad-words';
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
+import Loader from "../components/Login/loader";
 
 import loginstyles from './Login.module.css'
 
 function Login () {
-
   const {
     setEmail,
     username, 
     setUsername,  
     setConnectServer, 
   } = useSocketClient();
+
+  const [onLoader, setOnLoader] = useState(false)
 
   const login = useGoogleLogin({
     onSuccess: async(response) => {
@@ -36,6 +38,7 @@ function Login () {
         setEmail(sanitizedEmail)
         setUsername(username)
         setConnectServer(true)
+        setOnLoader(true)
         
       } catch(err) {
         console.log(err)
@@ -66,6 +69,7 @@ function Login () {
       } else {
         errorMsg = ""
         setConnectServer(true)
+        setOnLoader(true)
       }
     
     }
@@ -79,7 +83,6 @@ function Login () {
 
   return (
     <div className={loginstyles.container}>
-      
       <div className={loginstyles.innerBox}>
             
         <div className={loginstyles.logo}>
@@ -98,7 +101,9 @@ function Login () {
         />
 
         <div className={loginstyles.footer}>
-          <button onClick={handleSubmission}>Login</button>
+          <button onClick={() => {
+            handleSubmission()
+          }}>Login</button>
         </div>
 
         <div className={loginstyles.bottom}>
@@ -107,14 +112,17 @@ function Login () {
           <button 
             type="button" 
             className={loginstyles.google_btn} 
-            onClick={() => login()}
+            onClick={() => {
+              login()
+            }}
           >
             Google
           </button>
         </div>
 
       </div>
-
+      
+      {onLoader && <Loader />}
     </div>
   )
 }

@@ -1,15 +1,14 @@
 import React , { useState, useEffect, useRef, useMemo }from 'react'
 import { Canvas } from '@react-three/fiber'
 import { Ground } from '../components/Playground/Ground'
-import { Stats, Sky, useHelper, useGLTF, Html, OrthographicCamera, MapControls } from '@react-three/drei'
+import { Stats, Sky, useHelper, useGLTF, Html } from '@react-three/drei'
 import { Character } from '../components/Playground/Character'
 import { io } from 'socket.io-client'
 import { Text, useAnimations } from '@react-three/drei'
 import * as SkeletonUtils from 'three/examples/jsm/utils/SkeletonUtils'
 import { Physics, Debug } from '@micmania1/react-three-rapier'
 import { useFrame } from '@react-three/fiber'
-import { Affix, Modal, Container, Grid, Col, Text as MantineText } from '@mantine/core'
-import { useDisclosure } from '@mantine/hooks';
+import { Affix } from '@mantine/core'
 import { containsTHBadWords, filterTHBadWords } from '../components/handleTHBadwords'
 import badWords from 'bad-words';
 import TextareaAutosize  from 'react-textarea-autosize'
@@ -27,10 +26,8 @@ import { AgoraVideoPlayer } from 'agora-rtc-react'
 
 import interfacestyles from './Interface.module.css'
 import quizStyles from './QuizGane.module.css'
-import loginstyles from './Login.module.css'
 
 import { useSocketClient } from '../components/Login/SocketClient'
-import { useCharacterCustomization } from '../components/Configurator/CharacterCustomization'
 import { useVideoChat } from '../components/voiceContext'
 import Login from './Login'
 import Configurator from './Configurator'
@@ -218,25 +215,15 @@ function Playground() {
     setOnLoading,
     clients,
     setClients,
-    connectServer,
+    connectServer
+
   } = useSocketClient();
 
   const {
-    MicisMute,
-    setMicisMute,
-    Mute,
-    setMute,
     connectPeer,
     setConnectPeer,
-    camOff,
-    setCamOff,
-    userVideo,
-    peersRef,
-    Peers,
-    setPeers,
-    VideoUsers,
-    setChannelName
-    
+    VideoUsers
+
   } = useVideoChat();
 
   const [message, setMessage] = useState('');
@@ -291,7 +278,6 @@ function Playground() {
 
       socketClient.on("enabled Join Voice", ({enabled}) => {
         if(enabled) {
-
           setConnectPeer(true)
         }
       })
@@ -306,11 +292,12 @@ function Playground() {
       //   }
       // });
 
-      // socketClient.on('connect_error', (error) => {
-      //   if(error.message === 'xhr poll error') {
-      //     setLogedIn(true)
-      //   }
-      // })
+      socketClient.on('connect_error', (error) => {
+        if(error.message === 'xhr poll error') {
+          const errorMsg = "The server may not be running or is unreachable, please try again later."
+          pushNotification("ล้มเหลว", errorMsg, "error")
+        }
+      })
 
     }
     
@@ -390,17 +377,6 @@ function Playground() {
     setMessage((prevValue) => prevValue.replace(/@\S*$/, `@${username} `)); // Replace the last word after "@"
     setShowUserSuggestions(false);
   };
-
-  // function disconnectVoice(peerIndex) {
-
-  //   peersRef.current.splice(peerIndex, 1);
-
-  //   const newPeers = [...Peers];
-  //     newPeers.splice(peerIndex, 1); 
-
-  //   setPeers(newPeers);
-
-  // }
   
   if(logedIn && configChar){
       return (socketClient &&

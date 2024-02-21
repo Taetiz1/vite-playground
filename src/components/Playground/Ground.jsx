@@ -21,7 +21,7 @@ function EnterSceneBT ({position, setOnLoading, roomID}) {
   const {
     connectPeer,
     setChannelName,
-    setOnDisconnect,
+    setOnDisconnect
 
   } = useVideoChat();
 

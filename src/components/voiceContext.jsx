@@ -1,9 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useRef } from "react";
-// import { createClient, createMicrophoneAndCameraTracks } from "agora-rtc-react"
-import { useSocketClient } from "./Login/SocketClient";
-import { useVideoClient } from "./Voice/settings";
-import { useVideoTracks } from "./Voice/settings";
-import Peer from 'simple-peer';
+import React, { createContext, useContext, useState } from "react";
 
 const VideoChatContext = createContext({});
 
@@ -12,16 +7,10 @@ export const VideoChatProvider = ({children}) => {
     const [Mute, setMute] = useState(false)
     const [camOff, setCamOff] = useState(false)
     const [connectPeer, setConnectPeer] = useState(false)
-    const [Peers, setPeers] = useState([]);
-    const [Stream, setStream] = useState();
     const [channelName, setChannelName] = useState("");
     const [start, setStart] = useState(false);
     const [onDisconnect, setOnDisconnect] = useState(false);
-
     const [VideoUsers, setVideoUsers] = useState([]);
-
-    const userVideo = useRef();
-    const peersRef = useRef([]);
 
     return (
         <VideoChatContext.Provider
@@ -34,10 +23,6 @@ export const VideoChatProvider = ({children}) => {
                 setConnectPeer,
                 camOff,
                 setCamOff,
-                userVideo,
-                peersRef,
-                Peers,
-                setPeers,
                 channelName,
                 setChannelName,
                 VideoUsers,
