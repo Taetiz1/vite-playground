@@ -6,7 +6,7 @@ import { containsTHBadWords } from "../components/handleTHBadwords";
 import badWords from 'bad-words';
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
-import Loader from "../components/Login/loader";
+import Loader from "../components/Login/Loader";
 
 import loginstyles from './Login.module.css'
 
