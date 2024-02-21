@@ -24,11 +24,13 @@ const Controls = ({tracks}) => {
         setConnectPeer,
         setVideoUsers,
         onDisconnect,
-        setOnDisconnect
+        setOnDisconnect,
+        setMutedUser
+        
     } = useVideoChat();
 
-    const {videoClient} = useVideoClient();
-    const {socketClient} = useSocketClient();
+    const videoClient = useVideoClient();
+    const { socketClient } = useSocketClient();
 
     useEffect(() => {
         if(MicisMute) {
@@ -56,7 +58,7 @@ const Controls = ({tracks}) => {
     }, [onDisconnect])
 
     const leaveChannel = async () => {
-        
+        socketClient.emit("exit voice", {id: socketClient.id})
         await videoClient.leave();
         videoClient.removeAllListeners();
         tracks[0].close();
@@ -65,7 +67,6 @@ const Controls = ({tracks}) => {
         setOnDisconnect(false)
         setStart(false)
         setConnectPeer(false)
-        socketClient.emit("exit voice", {id: socketClient.id})
         setMutedUser({})
     };
 
