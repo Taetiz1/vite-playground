@@ -498,8 +498,7 @@ function Playground() {
     
                         if(name !== ''){
                           return (
-                            <p key={client} onClick={() => handleUserSelect(name)}>
-                                    
+                            <p key={client} onClick={() => handleUserSelect(name)}>  
                               {name}
                             </p>
                           )
@@ -528,7 +527,6 @@ function Playground() {
               >
                 {VideoUsers.length > 0 &&
                   VideoUsers.map((user, index) => {
-                    if(user.videoTrack) {
                         return (
                           <div
                             key={index} 
@@ -550,7 +548,6 @@ function Playground() {
                           
                           </div>
                         )
-                    }
                   })
                 }
               </div>
