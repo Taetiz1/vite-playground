@@ -28,12 +28,12 @@ const VideoCall = () => {
                 if(mediaType === "video") {
                         
                     setVideoUsers((prevUsers) => {
-                        const check = prevUsers.filter((User) => User.uid === user.uid);
+                        const check = prevUsers.find((User) => User.uid === user.uid);
 
-                        if(!check) {
-                            return [...prevUsers, user];
-                        } else {
+                        if(check) {
                             return [...prevUsers]
+                        } else {
+                            return [...prevUsers, user]
                         } 
 
                     });
