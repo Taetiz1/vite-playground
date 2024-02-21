@@ -10,7 +10,8 @@ const VideoCall = () => {
         setVideoUsers,
         start,
         setStart,
-        channelName
+        channelName,
+        Mute
     } = useVideoChat();
 
     const { socketClient } = useSocketClient();
@@ -41,7 +42,9 @@ const VideoCall = () => {
                 }
                     
                 if(mediaType === "audio") {
-                    user.audioTrack.play();
+                    if(!Mute) {
+                        user.audioTrack.play();
+                    }
                 }
 
             })
