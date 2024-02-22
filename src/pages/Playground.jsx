@@ -42,8 +42,9 @@ const OtherPlayers = ({action, avatarUrl}) => {
 
   const { animations: walkAnimation} = useGLTF("/models/animations/M_Walk_001.glb")
   const { animations: idleAnimation} = useGLTF("/models/animations/M_Standing_Idle_001.glb")
+  const { animations: runAnimation } = useGLTF("/models/animations/F_Jog_001.glb")
 
-  const { actions } = useAnimations([walkAnimation[0], idleAnimation[0]], cloneRef)
+  const { actions } = useAnimations([walkAnimation[0], idleAnimation[0], runAnimation[0]], cloneRef)
   
   const currentAction = useRef("");
   
@@ -403,12 +404,12 @@ function Playground() {
                     <button 
                       className={interfacestyles.Micbutton}
                       onClick={() => {
-                        // if(email !== '' && email !== null) {
+                        if(email !== '' && email !== null) {
                           socketClient.emit("join voice", {id: socketClient.id})
-                        // } else {
-                        //   const errorMsg = "โปรดใช้บัญชี Gmail ในการเข้าสู่ระบบ"
-                        //   pushNotification("ล้มเหลว", errorMsg, "error")
-                        // }
+                        } else {
+                          const errorMsg = "โปรดใช้บัญชี Gmail ในการเข้าสู่ระบบ"
+                          pushNotification("ล้มเหลว", errorMsg, "error")
+                        }
                       }}
                       style={{
                         backgroundColor: 'rgba(60,179,113)',
@@ -548,6 +549,7 @@ function Playground() {
                           {user.videoTrack &&
                             <AgoraVideoPlayer 
                               videoTrack={user.videoTrack}
+                              audioLevel={user.audioLevel}
                               style={{ 
                                 width: "135px",
                                 height: "101px",

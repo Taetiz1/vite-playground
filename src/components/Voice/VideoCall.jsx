@@ -42,9 +42,9 @@ const VideoCall = () => {
                 }
                     
                 if(mediaType === "audio") {
-                    if(!Mute) {
-                        user.audioTrack.play();
-                    }
+                    user.audioTrack.play();
+                    
+                    console.log(user.audioTrack)
                 }
 
             })
@@ -55,7 +55,6 @@ const VideoCall = () => {
                         user.audioTrack.stop()
                     }
                 }
-
             })
 
             videoClient.on("user-left", (user) => {

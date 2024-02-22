@@ -58,10 +58,11 @@ export const Character = ({socket}) => {
     
     const modelRef = useRef();
 
-    const { animations: walkAnimation} = useGLTF("/models/animations/M_Walk_001.glb")
-    const { animations: idleAnimation} = useGLTF("/models/animations/M_Standing_Idle_001.glb")
+    const { animations: walkAnimation } = useGLTF("/models/animations/M_Walk_001.glb")
+    const { animations: idleAnimation } = useGLTF("/models/animations/M_Standing_Idle_001.glb")
+    const { animations: runAnimation } = useGLTF("/models/animations/F_Jog_001.glb")
 
-    const { actions } = useAnimations([walkAnimation[0], idleAnimation[0]], scene)
+    const { actions } = useAnimations([walkAnimation[0], idleAnimation[0], runAnimation[0]], scene)
 
     const bodyRef = useRef(null);
     const { id } = socket
@@ -133,9 +134,9 @@ export const Character = ({socket}) => {
         if(forward || backward || left || right) {
             action = "M_Walk_001"
 
-            // if(shift) {
-            //     action = "running"
-            // }
+            if(shift) {
+                action = "F_Jog_001"
+            }
 
         } else {
             action = "M_Standing_Idle_001"
@@ -160,7 +161,7 @@ export const Character = ({socket}) => {
         const hips = modelRef.current.getObjectByName("Hips");
         hips.position.set(0, hips.position.y, 0);
 
-            if(currentAction.current === 'running' || 
+            if(currentAction.current === 'F_Jog_001' || 
             currentAction.current === 'M_Walk_001'){
                 let angleYCameraDirection = Math.atan2(
                     camera.position.x - body.translation().x,
@@ -185,7 +186,7 @@ export const Character = ({socket}) => {
                 walkDirection.normalize();
                 walkDirection.applyAxisAngle(rotateAngle, newDirectionOffset);
 
-                const velocity = currentAction.current == "running" ? 3 : 2;
+                const velocity = currentAction.current == "F_Jog_001" ? 3 : 2;
 
                 const moveX = walkDirection.x * velocity * delta;
                 const moveY = walkDirection.y * velocity * delta;
@@ -251,8 +252,8 @@ export const Character = ({socket}) => {
             </Suspense>  
 
             <OrbitControls 
-                enablePan={false} 
                 enableRotate={true} 
+                enablePan={true} 
                 enableDamping={true} 
                 enableZoom={false}
                 dampingFactor={0.1}
@@ -260,8 +261,8 @@ export const Character = ({socket}) => {
                 args={[camera, gl.domElement]}
                 minDistance={minDistance}
                 maxDistance={minDistance}
-                minPolarAngle={Math.PI / 2}
-                maxPolarAngle={Math.PI / 4}
+                minPolarAngle={Math.PI / 4}
+                maxPolarAngle={Math.PI / 2}
             />
         </RigidBody>
     )
