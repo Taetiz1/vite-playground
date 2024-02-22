@@ -24,23 +24,6 @@ export const VideoChatProvider = ({children}) => {
         }
     }, [socketClient])
 
-    useEffect(() => {
-        if(Mute) {
-            VideoUsers.forEach((user) => {
-                if(user.audioTrack) {
-                    user.audioTrack.setVolume(0)
-                }
-            })
-        } else {
-            VideoUsers.forEach((user) => {
-                if(user.audioTrack) {
-                    user.audioTrack.setVolume(100)
-                }
-            })
-        }
-
-    }, [Mute])
-
     return (
         <VideoChatContext.Provider
             value={{

@@ -25,7 +25,8 @@ const Controls = ({tracks}) => {
         setVideoUsers,
         onDisconnect,
         setOnDisconnect,
-        setMutedUser
+        setMutedUser,
+        VideoUsers
         
     } = useVideoChat();
 
@@ -50,6 +51,32 @@ const Controls = ({tracks}) => {
         }
 
     }, [camOff])
+
+    useEffect(() => {
+        if(Mute) {
+            
+            setMicisMute(true)
+            VideoUsers.forEach((user) => {
+                if(user.audioTrack) {
+                    user.audioTrack.setVolume(0)
+                }
+            })
+            
+            socketClient.emit("setMute", {onMute: true, from: socketClient.id})
+            
+        } else {
+
+            setMicisMute(false)
+            VideoUsers.forEach((user) => {
+                if(user.audioTrack) {
+                    user.audioTrack.setVolume(100)
+                }
+            })
+
+            socketClient.emit("setMute", {onMute: false, from: socketClient.id})
+        }
+
+    }, [Mute])
 
     useEffect(() => {
         if(onDisconnect) {
@@ -97,7 +124,6 @@ const Controls = ({tracks}) => {
                     } else {
                         setMute(false)
                         setMicisMute(false)
-                        socketClient.emit("setMute", {onMute: false, from: socketClient.id})
                     }
                 }}
                 style={{
@@ -117,18 +143,8 @@ const Controls = ({tracks}) => {
             </button>
 
             <button
-                onClick={() => {
-                          
-                    if(!Mute){
-                        setMute(true)
-                        setMicisMute(true)
-                        socketClient.emit("setMute", {onMute: true, from: socketClient.id})
-
-                    } else {
-                        setMute(false)
-                        setMicisMute(false)
-                        socketClient.emit("setMute", {onMute: false, from: socketClient.id})
-                    }
+                onClick={() => { 
+                    setMute(!Mute)
                 }}
                 style={{
                     width: '30px',
