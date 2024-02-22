@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, useMemo, Suspense } from "react";
+import React, { useRef, useEffect, useState, Suspense } from "react";
 import { useInput, } from "../../hooks/useInput";
 import { useAnimations, useGLTF, OrbitControls, } from "@react-three/drei";
 import { useThree, useFrame,  } from "@react-three/fiber";
@@ -50,6 +50,9 @@ export const Character = ({socket}) => {
         setPosMinimap,
     } = useSocketClient();
 
+    const [oldPos, setOldPos] = useState([])
+    const [oldRot, setOldRot] = useState([])
+
     const { forward, backward, left, right, shift, } = useInput();
     const { scene } = useGLTF(avatarUrl);
     
@@ -62,6 +65,20 @@ export const Character = ({socket}) => {
 
     const bodyRef = useRef(null);
     const { id } = socket
+
+    const arraysEqual = (array1, array2) => {
+        // ตรวจสอบว่ามีจำนวนสมาชิกเท่ากันหรือไม่
+        if (array1.length !== array2.length) return false;
+        
+        // ตรวจสอบสมาชิกแต่ละตัวในอาร์เรย์
+        for (let i = 0; i < array1.length; i++) {
+          // ถ้ามีสมาชิกใดที่มีค่าไม่เท่ากัน ให้คืนค่าเป็น false
+          if (array1[i] !== array2[i]) return false;
+        }
+        
+        // ถ้าผ่านการตรวจสอบทั้งหมด ให้คืนค่าเป็น true
+        return true;
+    };
 
     useEffect(() => {
         if(socketClient){
@@ -134,6 +151,7 @@ export const Character = ({socket}) => {
   
     }, [forward, backward, left, right, shift])
 
+
     useFrame((state, delta) => {
         const body = bodyRef.current;
         const movement = new Vector3;
@@ -179,28 +197,40 @@ export const Character = ({socket}) => {
                 
                 body.setTranslation(translation.add(movement), true)
                 
-                
                 updateCameraTarget(moveX, moveY, moveZ);
             } 
         
         const { rotation } = modelRef.current
-        
+
         const posArray = []
         const rotArray = []
 
         body.translation().toArray(posArray)
         posArray[1] -= 0.4
-
-        setPosMinimap(posArray)
         
-        rotation.toArray(rotArray)
+        rotation.toArray(rotArray) 
 
         socket.emit('move', {
             id,
             rotation: rotArray,
             position: posArray,
-            action: currentAction.current,
+            action: currentAction.current
         })
+
+        // if(!arraysEqual(oldPos, posArray) || !arraysEqual(oldRot, rotArray)) {
+
+        //     socket.emit('move', {
+        //         id,
+        //         rotation: rotArray,
+        //         position: posArray,
+        //         action: currentAction.current
+        //     })
+
+        //     setOldPos(posArray)
+        //     setOldRot(rotArray)
+        // }
+
+        setPosMinimap(posArray)
 
     })
   
