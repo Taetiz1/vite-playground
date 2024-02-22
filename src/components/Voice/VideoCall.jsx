@@ -44,8 +44,6 @@ const VideoCall = () => {
                 if(mediaType === "audio") {
                     if(!Mute) {
                         user.audioTrack.play();
-                    } else {
-                        user.audioTrack.stop();
                     }
                 }
 

@@ -28,13 +28,13 @@ export const VideoChatProvider = ({children}) => {
         if(Mute) {
             VideoUsers.forEach((user) => {
                 if(user.audioTrack) {
-                    user.audioTrack.stop()
+                    user.audioTrack.setVolume(0)
                 }
             })
         } else {
             VideoUsers.forEach((user) => {
                 if(user.audioTrack) {
-                    user.audioTrack.play()
+                    user.audioTrack.setVolume(100)
                 }
             })
         }
