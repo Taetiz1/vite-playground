@@ -223,8 +223,7 @@ function Playground() {
   const {
     connectPeer,
     setConnectPeer,
-    VideoUsers,
-    mutedUser
+    VideoUsers
 
   } = useVideoChat();
 
@@ -526,7 +525,7 @@ function Playground() {
                 className={interfacestyles.otherVideoContainer}
               >
                 {VideoUsers.length > 0 &&
-                  VideoUsers.map((user, index) => {
+                  VideoUsers.map((user) => {
                       return (
                         <div
                           key={user.uid} 
@@ -542,9 +541,9 @@ function Playground() {
                             <img src={micMute} style={{pointerEvents: 'none', userSelect: 'none', width: '16px'}} />
                           </div>}
 
-                          {mutedUser.find((User) => User === user.uid)  && <div className={interfacestyles.muteAlert}>
+                          {/* {mutedUser.find((User) => User === user.uid)  && <div className={interfacestyles.muteAlert}>
                             <img src={mute} style={{pointerEvents: 'none', userSelect: 'none', width: '16px'}} />
-                          </div>}
+                          </div>} */}
                           
                           {user.videoTrack &&
                             <AgoraVideoPlayer 

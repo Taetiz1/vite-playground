@@ -25,7 +25,6 @@ const Controls = ({tracks}) => {
         setVideoUsers,
         onDisconnect,
         setOnDisconnect,
-        setMutedUser,
         VideoUsers
         
     } = useVideoChat();
@@ -62,8 +61,6 @@ const Controls = ({tracks}) => {
                 }
             })
             
-            socketClient.emit("setMute", {onMute: true, from: socketClient.id})
-            
         } else {
 
             setMicisMute(false)
@@ -72,11 +69,9 @@ const Controls = ({tracks}) => {
                     user.audioTrack.setVolume(100)
                 }
             })
-
-            socketClient.emit("setMute", {onMute: false, from: socketClient.id})
         }
 
-    }, [Mute])
+    }, [Mute, VideoUsers])
 
     useEffect(() => {
         if(onDisconnect) {
@@ -97,7 +92,6 @@ const Controls = ({tracks}) => {
         setMicisMute(false)
         setMute(false)
         setCamOff(false)
-        setMutedUser({})
     };
 
     return(
