@@ -23,21 +23,20 @@ export const Ground = ({ currentRoom, setOnLoading}) => {
     } else { 
         return (
           <>
-            {currentRoom.id && <Scene settings={currentRoom} />}
-            
-            <group position={[0, -4, 0]}>
+            {currentRoom && <Scene settings={currentRoom} /> &&
+
+            {currentRoom.enterBT.map((bt, index) => (
+                <EnterSceneBT key={index}  position={bt.pos} setOnLoading={setOnLoading} roomID={bt.roomID} />
+            ))} &&
+
+            <group position={[0, -4, 0]}> 
               <mesh rotation-x={Math.PI * -0.5}>
                 <planeGeometry args={[200, 200]} />
                 <meshStandardMaterial color={"#458745"} />
               </mesh>
             </group>
-            {currentRoom.enterBT && 
 
-              currentRoom.enterBT.map((bt, index) => (
-                <EnterSceneBT key={index}  position={bt.pos} setOnLoading={setOnLoading} roomID={bt.roomID} />
-              ))
-              
-            }
+          }
           </>
         )
     }
