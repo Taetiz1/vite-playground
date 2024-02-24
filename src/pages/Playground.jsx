@@ -677,7 +677,7 @@ function Playground() {
               <Sky />
               <Physics timeStep="vary" >
                 {/* <Debug /> */}
-                {currentRoom && <Ground key={currentRoom.id} currentRoom={currentRoom} setOnLoading={() => setOnLoading(true)} />}
+                <Ground key={currentRoom.id} currentRoom={currentRoom} setOnLoading={() => setOnLoading(true)} />
                 <Character socket={socketClient} />
                 
               </Physics>

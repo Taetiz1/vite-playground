@@ -233,7 +233,7 @@ export const Character = ({socket}) => {
             <CapsuleCollider args={[0.25, 0.18]} />
             
             <Suspense>   
-                <group dispose={null} position={[0, -0.40, 0]} rotation={[0, -9.4, 0]}> 
+                <group dispose={null} position={[0, -0.4, 0]} rotation={[0, -9.4, 0]}> 
                     <primitive object={scene} ref={modelRef} />  
                 </group>
             </Suspense>  
