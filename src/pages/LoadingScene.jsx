@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useProgress } from "@react-three/drei"
 import styles from './LoadingScene.module.css'
 import { useSocketClient } from "../components/Login/SocketClient";

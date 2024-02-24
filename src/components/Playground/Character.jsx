@@ -68,16 +68,13 @@ export const Character = ({socket}) => {
     const { id } = socket
 
     const arraysEqual = (array1, array2) => {
-        // ตรวจสอบว่ามีจำนวนสมาชิกเท่ากันหรือไม่
-        if (array1.length !== array2.length) return false;
+
+        if(array1.length !== array2.length) return false;
         
-        // ตรวจสอบสมาชิกแต่ละตัวในอาร์เรย์
-        for (let i = 0; i < array1.length; i++) {
-          // ถ้ามีสมาชิกใดที่มีค่าไม่เท่ากัน ให้คืนค่าเป็น false
-          if (array1[i] !== array2[i]) return false;
+        for(let i = 0; i < array1.length; i++) {
+          if(array1[i] !== array2[i]) return false;
         }
         
-        // ถ้าผ่านการตรวจสอบทั้งหมด ให้คืนค่าเป็น true
         return true;
     };
 
@@ -122,14 +119,13 @@ export const Character = ({socket}) => {
         camera.position.z += moveZ
 
         cameraTarget.x = body.translation().x;
-        cameraTarget.y = body.translation().y + 0.5;
+        cameraTarget.y = body.translation().y + 0.6;
         cameraTarget.z = body.translation().z;
         if(controlsRef.current){ controlsRef.current.target = cameraTarget; }
     }
 
     useEffect(() => {
         let action = ""
-        // actions?.idle?.play();
 
         if(forward || backward || left || right) {
             action = "M_Walk_001"
@@ -211,28 +207,20 @@ export const Character = ({socket}) => {
         
         rotation.toArray(rotArray) 
 
-        socket.emit('move', {
-            id,
-            rotation: rotArray,
-            position: posArray,
-            action: currentAction.current
-        })
+        if(!arraysEqual(oldPos, posArray) || !arraysEqual(oldRot, rotArray)) {
 
-        // if(!arraysEqual(oldPos, posArray) || !arraysEqual(oldRot, rotArray)) {
+            socket.emit('move', {
+                id,
+                rotation: rotArray,
+                position: posArray,
+                action: currentAction.current
+            })
 
-        //     socket.emit('move', {
-        //         id,
-        //         rotation: rotArray,
-        //         position: posArray,
-        //         action: currentAction.current
-        //     })
-
-        //     setOldPos(posArray)
-        //     setOldRot(rotArray)
-        // }
+            setOldPos(posArray)
+            setOldRot(rotArray)
+        }
 
         setPosMinimap(posArray)
-
     })
   
     return (
@@ -248,7 +236,6 @@ export const Character = ({socket}) => {
                 <group dispose={null} position={[0, -0.40, 0]} rotation={[0, -9.4, 0]}> 
                     <primitive object={scene} ref={modelRef} />  
                 </group>
-
             </Suspense>  
 
             <OrbitControls 
@@ -262,7 +249,7 @@ export const Character = ({socket}) => {
                 minDistance={minDistance}
                 maxDistance={minDistance}
                 minPolarAngle={Math.PI / 4}
-                maxPolarAngle={Math.PI / 2}
+                maxPolarAngle={Math.PI / 1.5}
             />
         </RigidBody>
     )

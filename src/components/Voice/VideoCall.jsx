@@ -43,8 +43,6 @@ const VideoCall = () => {
                     
                 if(mediaType === "audio") {
                     user.audioTrack.play();
-                    
-                    console.log(user.audioTrack)
                 }
 
             })

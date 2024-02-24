@@ -13,8 +13,9 @@ export const SocketclientProvider = ({children}) => {
     const [errorEmail, setErrorEmail] = useState(false)
     const [adminLogedIn, setAdminLogedIn] = useState(false)
     const [avatarUrl, setAvatarUrl] = useState("https://models.readyplayer.me/655a5d4e9b792809cdac419d.glb")
-    const [currentRoom, setCurrentRoom] = useState()
+    const [currentRoom, setCurrentRoom] = useState({})
     const [onLoading, setOnLoading] = useState(true);
+    const [onConnectionFailed, setOnConnectionFailed] = useState(false)
     const [posMinimap, setPosMinimap] = useState([0, 0, 0])
     
     const Web_URL = import.meta.env.VITE_SERVER_URL || "http://localhost:3000";
@@ -25,8 +26,8 @@ export const SocketclientProvider = ({children}) => {
             setAvatarUrl(config)
           })
 
-          socketClient.on('currentRoom', (roomId) => {
-            setCurrentRoom(roomId)
+          socketClient.on('currentRoom', (settings) => {
+            setCurrentRoom(settings)
           })
         }
         
@@ -60,7 +61,9 @@ export const SocketclientProvider = ({children}) => {
                 clients,
                 setClients,
                 connectServer,
-                setConnectServer
+                setConnectServer,
+                onConnectionFailed,
+                setOnConnectionFailed
             }}
         >
             {children}

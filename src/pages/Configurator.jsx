@@ -66,11 +66,11 @@ function Configurator() {
                 <ambientLight />
                 <directionalLight position={[4, 5, 4.5]} intensity={1}  castShadow shadow-mapSize={1024} />
 
-                <Suspense>
                   <group>
-                    <Body_character rotation={[0, -18.5, 0]} position={[0, -1, 0]} />
+                    <Suspense>
+                      <Body_character rotation={[0, -18.5, 0]} position={[0, -1, 0]} />
+                    </Suspense>
                   </group>
-                </Suspense>
       
                 <mesh rotation={[-0.5 * Math.PI, 0, 0]} position={[0, -0.9, 0]} receiveShadow>
                   <planeBufferGeometry args={[10, 10, 1, 1]} />

@@ -1,5 +1,5 @@
+import React from "react"
 import { Affix, Button, Group } from "@mantine/core"
-import React, { useState } from "react"
 import { useCharacterAnimations } from "./CharacterAnimations"
 import { CameraModes, useCharacterCustomization } from "./CharacterCustomization";
 import { useVideoChat } from "../voiceContext";
@@ -94,7 +94,7 @@ const ConfiguratorInterface = ({ socket, onLoading, setOnLoading, setCustomMode}
                     }
                     <Button 
                         onClick={() => {
-                            enterPlaygroud("0")
+                            enterPlaygroud("1")
                         }}
                     >
                         Go!

@@ -1,11 +1,8 @@
-import React, {useEffect} from "react";
+import React from "react";
 import { useProgress } from "@react-three/drei"
 import styles from './LoadingScene.module.css'
-import { useSocketClient } from "../components/Login/SocketClient";
-import { LoadingManager } from "three";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 
-const LoadingScene2 = ({username, onLoading, setOnLoading }) => {
+const LoadingScene2 = ({onLoading, setOnLoading }) => {
     const { progress } = useProgress();
 
     return (

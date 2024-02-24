@@ -1,4 +1,4 @@
-import React , { useState, useEffect, useRef, useMemo }from 'react'
+import React , { useState, useEffect, useRef, useMemo, Suspense }from 'react'
 import { Canvas } from '@react-three/fiber'
 import { Ground } from '../components/Playground/Ground'
 import { Stats, Sky, useHelper, useGLTF, Html } from '@react-three/drei'
@@ -16,8 +16,8 @@ import EmojiPicker from '@emoji-mart/react'
 import data from '@emoji-mart/data'
 import sendingMsg from '/assets/send-message.png'
 import LoadingScene2 from './LoadingScene2'
+import ConnectionFailed from './ConnectionFailed'
 import MessagesBox from '../components/Playground/MessagesBox'
-import Video from '../components/Voice/Video'
 import VideoCall from '../components/Voice/VideoCall'
 import Minimap from '../components/Playground/miniMap'
 
@@ -67,7 +67,9 @@ const OtherPlayers = ({action, avatarUrl}) => {
 
   return (
     <group ref={cloneRef} >
-      <primitive object={clone} scale={[0.5, 0.5, 0.5]} rotation={[0, 9.4, 0]}/>
+      <Suspense>
+        <primitive object={clone} scale={[0.5, 0.5, 0.5]} rotation={[0, 9.4, 0]}/>
+      </Suspense>
     </group>
   )
 }
@@ -215,6 +217,8 @@ function Playground() {
     currentRoom,
     onLoading,
     setOnLoading,
+    onConnectionFailed,
+    setOnConnectionFailed,
     clients,
     setClients,
     connectServer
@@ -293,6 +297,10 @@ function Playground() {
       //     pushNotification("ล้มเหลว", errorMsg, "error")
       //   }
       // });
+
+      socketClient.on("failed move", () => {
+        setOnConnectionFailed(true)
+      })
 
       socketClient.on('connect_error', (error) => {
         if(error.message === 'xhr poll error') {
@@ -567,10 +575,9 @@ function Playground() {
             <Affix position={{top: 20, left: 20}} style={{zIndex: '2',}}>
                 <div className={interfacestyles.Exit_button_container}>
                   <button onClick={() => {
-                    setConnectPeer(false)
                     window.location.reload()
                   }}>
-                    Return
+                    Exit
                   </button>
                 </div>
             </Affix>
@@ -670,7 +677,7 @@ function Playground() {
               <Sky />
               <Physics timeStep="vary" >
                 {/* <Debug /> */}
-                <Ground x={200} z={200} currentRoom={currentRoom} setOnLoading={() => setOnLoading(true)}/>
+                <Ground key={currentRoom.id} currentRoom={currentRoom} setOnLoading={() => setOnLoading(true)} />
                 <Character socket={socketClient} />
                 
               </Physics>
@@ -695,7 +702,8 @@ function Playground() {
                 {/* <QuestionButton position={[4, 3, 4]} setshowQuestion={setshowQuestion} /> */}
             </Canvas>
             
-            <LoadingScene2 onLoading={onLoading} setOnLoading={() => setOnLoading(false)}/>  
+            <LoadingScene2 onLoading={onLoading} setOnLoading={() => setOnLoading(false)} />
+            {onConnectionFailed && <ConnectionFailed />}
           </div>
       )
      
