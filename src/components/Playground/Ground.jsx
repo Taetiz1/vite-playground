@@ -23,11 +23,11 @@ export const Ground = ({ currentRoom, setOnLoading}) => {
     } else { 
         return (
           <>
-            {currentRoom && <Scene settings={currentRoom} /> &&
+            {currentRoom.id && <Scene settings={currentRoom} />}
 
-            (currentRoom.enterBT.map((bt, index) => (
+            {currentRoom.enterBT && currentRoom.enterBT.map((bt, index) => (
                 <EnterSceneBT key={index}  position={bt.pos} setOnLoading={setOnLoading} roomID={bt.roomID} />
-            )) ) &&
+            ))}
 
             <group position={[0, -4, 0]}> 
               <mesh rotation-x={Math.PI * -0.5}>
@@ -36,7 +36,6 @@ export const Ground = ({ currentRoom, setOnLoading}) => {
               </mesh>
             </group>
 
-          }
           </>
         )
     }
