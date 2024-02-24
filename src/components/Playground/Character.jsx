@@ -230,6 +230,7 @@ export const Character = ({socket}) => {
             type="dynamic"
             colliders={false}
             enabledRotations={[false, false, false]} 
+            position={[0, 3, 0]}
         >
             <CapsuleCollider args={[0.25, 0.18]} />
             

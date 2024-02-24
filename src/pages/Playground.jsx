@@ -679,7 +679,6 @@ function Playground() {
                 {/* <Debug /> */}
                 <Ground key={currentRoom.id} currentRoom={currentRoom} setOnLoading={() => setOnLoading(true)} />
                 <Character socket={socketClient} />
-                
               </Physics>
                 {Object.keys(clients)
                   .filter((clientKey) => clientKey !== socketClient.id)
