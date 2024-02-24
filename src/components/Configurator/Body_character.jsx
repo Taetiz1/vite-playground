@@ -59,18 +59,6 @@ const Body_character = ({
     }
   })
 
-  // useEffect(() => {
-  //   setAnimations(names);
-  // }, [names])
-
-  // useEffect(() => {
-  //   actions[names[animationIndex]].reset().fadeIn(0.2).play();
-
-  //   return () => {
-  //     actions[names[animationIndex]].fadeOut(0.2).play()
-  //   }
-  // }, [animationIndex])
-
   return (
     <group>
       <primitive object={clone} position={props.position} rotation={props.rotation} ref={cloneRef} />

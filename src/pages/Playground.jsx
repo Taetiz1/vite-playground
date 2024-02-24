@@ -67,9 +67,9 @@ const OtherPlayers = ({action, avatarUrl}) => {
 
   return (
     <group ref={cloneRef} >
-      <Suspense>
+      {/* <Suspense> */}
         <primitive object={clone} scale={[0.5, 0.5, 0.5]} rotation={[0, 9.4, 0]}/>
-      </Suspense>
+      {/* </Suspense> */}
     </group>
   )
 }
@@ -677,8 +677,10 @@ function Playground() {
               <Sky />
               <Physics timeStep="vary" >
                 {/* <Debug /> */}
-                <Ground key={currentRoom.id} currentRoom={currentRoom} setOnLoading={() => setOnLoading(true)} />
-                <Character socket={socketClient} />
+                <Suspense> 
+                  <Ground key={currentRoom.id} currentRoom={currentRoom} setOnLoading={() => setOnLoading(true)} />
+                  <Character socket={socketClient} spawnPos={currentRoom.spawnPos} />
+                </Suspense>
               </Physics>
                 {Object.keys(clients)
                   .filter((clientKey) => clientKey !== socketClient.id)

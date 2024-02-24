@@ -3,7 +3,7 @@ import { useInput, } from "../../hooks/useInput";
 import { useAnimations, useGLTF, OrbitControls, } from "@react-three/drei";
 import { useThree, useFrame,  } from "@react-three/fiber";
 import { Quaternion, Vector3, } from "three";
-import { RigidBody, CapsuleCollider, } from "@micmania1/react-three-rapier";
+import { RigidBody, CapsuleCollider } from "@micmania1/react-three-rapier";
 import { useSocketClient } from "../Login/SocketClient";
 
 let walkDirection = new Vector3();
@@ -42,7 +42,7 @@ const directionOffset = ({ forward, backward, left, right}) => {
     return directionOffset;
 }
 
-export const Character = ({socket}) => {
+export const Character = ({socket, spawnPos}) => {
     const { 
         avatarUrl,
         socketClient,
@@ -230,15 +230,13 @@ export const Character = ({socket}) => {
             type="dynamic"
             colliders={false}
             enabledRotations={[false, false, false]} 
-            position={[0, 3, 0]}
+            position={spawnPos}
         >
-            <CapsuleCollider args={[0.25, 0.18]} />
-            
-            <Suspense>   
-                <group dispose={null} position={[0, -0.4, 0]} rotation={[0, -9.4, 0]}> 
-                    <primitive object={scene} ref={modelRef} />  
-                </group>
-            </Suspense>  
+            <CapsuleCollider args={[0.3, 0.18]} />
+              
+            <group dispose={null} position={[0, -0.48, 0]} rotation={[0, -9.4, 0]}> 
+                <primitive object={scene} ref={modelRef} />  
+            </group> 
 
             <OrbitControls 
                 enableRotate={true} 
