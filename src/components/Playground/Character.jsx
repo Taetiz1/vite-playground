@@ -83,6 +83,7 @@ export const Character = ({socket}) => {
             socketClient.on('respawn', (pos) => {
                 const body = bodyRef.current;
                 const movement = new Vector3;
+                console.log('respwan')
 
                 movement.x =  pos[0]
                 movement.y =  pos[1]
