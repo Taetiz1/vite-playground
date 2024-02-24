@@ -31,13 +31,13 @@ export const Ground = ({ currentRoom, setOnLoading}) => {
                 <meshStandardMaterial color={"#458745"} />
               </mesh>
             </group>
-            {currentRoom.enterBT.length > 0  && 
+            {/* {currentRoom.enterBT.length > 0  && 
 
               currentRoom.enterBT.map((bt, index) => (
                 <EnterSceneBT key={index}  position={bt.pos} setOnLoading={setOnLoading} roomID={bt.roomID} />
               ))
               
-            }
+            } */}
           </>
         )
     }
