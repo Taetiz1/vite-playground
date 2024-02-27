@@ -27,7 +27,7 @@ export const Ground = ({ currentRoom, setOnLoading}) => {
             {currentRoom.id && <Scene settings={currentRoom} />}
 
             {currentRoom.enterBT && currentRoom.enterBT.map((bt, index) => (
-                <EnterSceneBT key={index}  position={[28, 2, 21]} setOnLoading={setOnLoading} roomID={bt.roomID} />
+                <EnterSceneBT key={index}  position={bt.pos} setOnLoading={setOnLoading} roomID={bt.roomID} />
             ))}
 
             <CuboidCollider position={[0, 0, 0]} args={[200, 0.4, 200]} />

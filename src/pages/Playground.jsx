@@ -194,10 +194,10 @@ const Lights = ({x, y, z}) => {
   return (
       <group position={[x, y, z]}>
           <pointLight  color="#bdefff" intensity={0.3}  />
-          <mesh>
+          {/* <mesh>
             <boxBufferGeometry />
             <meshStandardMaterial wireframe/>
-          </mesh>
+          </mesh> */}
       </group>
   )
 }
@@ -671,8 +671,8 @@ function Playground() {
               <ambientLight intensity={0.4} position={[0, 10, 0]} />
               <Sky />
               <Physics >
-                {/* <Debug /> */}
-                {/* <OrbitControls enableRotate={true} 
+                {/* <Debug />
+                <OrbitControls enableRotate={true} 
                 enablePan={true} 
                 enableDamping={true} 
                 enableZoom={true}

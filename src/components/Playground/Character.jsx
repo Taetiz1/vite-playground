@@ -124,6 +124,18 @@ export const Character = ({socket, spawnPos}) => {
     }
 
     useEffect(() => {
+        
+        const body = bodyRef.current;
+        camera.position.x += spawnPos[0]
+        camera.position.y += spawnPos[1]
+        camera.position.z += spawnPos[2]
+
+        cameraTarget.x = body.translation().x;
+        cameraTarget.y = body.translation().y + 0.6;
+        cameraTarget.z = body.translation().z;
+    }, [spawnPos])
+
+    useEffect(() => {
         let action = "M_Standing_Idle_001"
 
         if(!onLoading){
@@ -240,7 +252,7 @@ export const Character = ({socket, spawnPos}) => {
 
             <OrbitControls 
                 enableRotate={true} 
-                enablePan={true} 
+                enablePan={false} 
                 enableDamping={false} 
                 enableZoom={false}
                 dampingFactor={0.1}
