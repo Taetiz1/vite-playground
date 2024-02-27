@@ -94,6 +94,7 @@ function Login () {
         <InputControl 
           label="Nickname" 
           placeholder="Enter Nickname" 
+          type="text"
           onChange={(event) =>
             setUsername(event.target.value)
           }

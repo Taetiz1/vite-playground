@@ -1,7 +1,7 @@
 import React , { useState, useEffect, useRef, useMemo, Suspense }from 'react'
 import { Canvas } from '@react-three/fiber'
 import { Ground } from '../components/Playground/Ground'
-import { Stats, Sky, useHelper, useGLTF, Html } from '@react-three/drei'
+import { Stats, Sky, useHelper, useGLTF, Html, OrbitControls } from '@react-three/drei'
 import { Character } from '../components/Playground/Character'
 import { io } from 'socket.io-client'
 import { Text, useAnimations } from '@react-three/drei'
@@ -194,10 +194,10 @@ const Lights = ({x, y, z}) => {
   return (
       <group position={[x, y, z]}>
           <pointLight  color="#bdefff" intensity={0.3}  />
-          {/* <mesh>
+          <mesh>
             <boxBufferGeometry />
             <meshStandardMaterial wireframe/>
-          </mesh> */}
+          </mesh>
       </group>
   )
 }
@@ -326,6 +326,7 @@ function Playground() {
           id, 
           username: username, 
           message: filter.clean(message),
+          time: Date.now()
         }
         socketClient.emit("message", msg);
         setMessage("");
@@ -664,19 +665,18 @@ function Playground() {
               {testing ? <Stats/> : null}
               {testing ? <axesHelper args={[2]}/> : null}
               {testing ? <gridHelper args={[10, 10]}/> : null}
-              {/* <Lights x={-15} y={10} z={-17}/> */}
-              {/* <Lights x={8} y={10} z={7}/> */}
-              {/* <Lights x={-15} y={10} z={7}/> */}
-              <Lights x={10} y={10} z={10}/>
-              {/* <Lights x={8} y={10} z={11}/>
-              <Lights x={8} y={10} z={22}/> */}
-              <Lights x={-10} y={10} z={-10}/>
-              <Lights x={0} y={10} z={0}/>
+              <Lights x={40} y={25} z={20} />
+              <Lights x={-60} y={25} z={-10} />
               
               <ambientLight intensity={0.4} position={[0, 10, 0]} />
               <Sky />
-              <Physics timeStep="vary" >
+              <Physics >
                 {/* <Debug /> */}
+                {/* <OrbitControls enableRotate={true} 
+                enablePan={true} 
+                enableDamping={true} 
+                enableZoom={true}
+                dampingFactor={0.1} /> */}
                 <Suspense> 
                   <Ground key={currentRoom.id} currentRoom={currentRoom} setOnLoading={() => setOnLoading(true)} />
                   <Character socket={socketClient} spawnPos={currentRoom.spawnPos} />

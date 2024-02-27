@@ -10,8 +10,8 @@ function Mobile() {
             <div className={mobilestyles.innerBox}>
                     
                 <div className={mobilestyles.logo}>
-                <h3>Metaverse</h3>
-                <p>Wat•suan•kaew</p>
+                    <h3>Metaverse</h3>
+                    <p>Wat•suan•kaew</p>
                 </div>
                         
                 <p>*กรุณาเข้าสู่ระบบผ่านคอมพิวเตอร์*</p>

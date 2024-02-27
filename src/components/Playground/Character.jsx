@@ -83,14 +83,12 @@ export const Character = ({socket, spawnPos}) => {
             socketClient.on('respawn', (pos) => {
                 const body = bodyRef.current;
                 const movement = new Vector3;
-                console.log('respwan')
 
                 movement.x =  pos[0]
                 movement.y =  pos[1]
                 movement.z =  pos[2]
                 
                 body.setTranslation(movement, true)
-                updateCameraTarget(pos[0], pos[1], pos[2]);
             })
         }
     }, [socketClient])
@@ -126,17 +124,19 @@ export const Character = ({socket, spawnPos}) => {
     }
 
     useEffect(() => {
-        let action = ""
+        let action = "M_Standing_Idle_001"
 
-        if(forward || backward || left || right) {
-            action = "M_Walk_001"
+        if(!onLoading){
+            if(forward || backward || left || right) {
+                action = "M_Walk_001"
 
-            if(shift) {
-                action = "F_Jog_001"
+                if(shift) {
+                    action = "F_Jog_001"
+                }
+
+            } else {
+                action = "M_Standing_Idle_001"
             }
-
-        } else {
-            action = "M_Standing_Idle_001"
         }
     
         if(currentAction.current != action) {
@@ -241,7 +241,7 @@ export const Character = ({socket, spawnPos}) => {
             <OrbitControls 
                 enableRotate={true} 
                 enablePan={true} 
-                enableDamping={true} 
+                enableDamping={false} 
                 enableZoom={false}
                 dampingFactor={0.1}
                 ref={controlsRef}
