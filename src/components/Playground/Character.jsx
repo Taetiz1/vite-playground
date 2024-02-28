@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, Suspense } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { useInput, } from "../../hooks/useInput";
 import { useAnimations, useGLTF, OrbitControls, } from "@react-three/drei";
 import { useThree, useFrame,  } from "@react-three/fiber";
@@ -42,12 +42,13 @@ const directionOffset = ({ forward, backward, left, right}) => {
     return directionOffset;
 }
 
-export const Character = ({socket, spawnPos}) => {
+export const Character = ({socket, spawnPos, spawnRot}) => {
     const { 
         avatarUrl,
         socketClient,
         onLoading,
         setPosMinimap,
+        currentRoom,
     } = useSocketClient();
 
     const [oldPos, setOldPos] = useState([])
@@ -124,16 +125,16 @@ export const Character = ({socket, spawnPos}) => {
     }
 
     useEffect(() => {
-        
         const body = bodyRef.current;
-        camera.position.x += spawnPos[0]
-        camera.position.y += spawnPos[1]
-        camera.position.z += spawnPos[2]
+        camera.position.x === body.translation().x;
+        camera.position.y === body.translation().y + 1;
+        camera.position.z === body.translation().z
 
         cameraTarget.x = body.translation().x;
         cameraTarget.y = body.translation().y + 0.6;
         cameraTarget.z = body.translation().z;
-    }, [spawnPos])
+        if(controlsRef.current){ controlsRef.current.target = cameraTarget; }
+    }, [currentRoom.id])
 
     useEffect(() => {
         let action = "M_Standing_Idle_001"
@@ -160,7 +161,6 @@ export const Character = ({socket, spawnPos}) => {
         }
   
     }, [forward, backward, left, right, shift])
-
 
     useFrame((state, delta) => {
         const body = bodyRef.current;

@@ -8,10 +8,10 @@ const Scene = ({settings}) => {
     scene.scale.set(settings.scale[0], settings.scale[1], settings.scale[2]);
 
     return(
-        <group>
-            <RigidBody type="fixed" colliders="trimesh" >
+        <group position={settings.pos} rotation={settings.rot}>
+            <RigidBody type="fixed" colliders="trimesh">
                 <Suspense>
-                    <primitive object={scene} position={settings.pos} />
+                    <primitive object={scene} />
                 </Suspense>
             </RigidBody>
         </group>

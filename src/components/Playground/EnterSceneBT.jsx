@@ -6,7 +6,7 @@ import { useFrame, useLoader } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
 import EnterIcon from '/assets/enter.png'
 
-const EnterSceneBT = ({position, setOnLoading, roomID}) => {
+const EnterSceneBT = ({position, setOnLoading, roomID, atPos, atRot}) => {
     const {
       socketClient,  
       username,
@@ -34,6 +34,8 @@ const EnterSceneBT = ({position, setOnLoading, roomID}) => {
           avatarUrl: avatarUrl,
           email: email,
           roomID: roomID,
+          atPos: atPos,
+          atRot: atRot
         })
         setOnLoading()
       }

@@ -18,7 +18,7 @@ export const Ground = ({ currentRoom, setOnLoading}) => {
               </group>
           </RigidBody>
 
-          <EnterSceneBT  position={[0, 1.5, 0]} setOnLoading={setOnLoading} roomID={"1"} />
+          <EnterSceneBT position={[0, 1.5, 0]} setOnLoading={setOnLoading} roomID={"1"} atPos={[0, 2, 0]} />
         </>
       )
     } else { 
@@ -27,7 +27,13 @@ export const Ground = ({ currentRoom, setOnLoading}) => {
             {currentRoom.id && <Scene settings={currentRoom} />}
 
             {currentRoom.enterBT && currentRoom.enterBT.map((bt, index) => (
-                <EnterSceneBT key={index}  position={bt.pos} setOnLoading={setOnLoading} roomID={bt.roomID} />
+              <EnterSceneBT 
+                key={index} 
+                position={bt.pos} 
+                setOnLoading={setOnLoading} 
+                roomID={bt.roomID} 
+                atPos={bt.atPos} 
+              />
             ))}
 
             <CuboidCollider position={[0, 0, 0]} args={[200, 0.4, 200]} />

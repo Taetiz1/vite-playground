@@ -26,8 +26,14 @@ export const SocketclientProvider = ({children}) => {
             setAvatarUrl(config)
           })
 
-          socketClient.on('currentRoom', (settings) => {
-            setCurrentRoom(settings)
+          socketClient.on('currentRoom', ({settings, atPos, atRot}) => {
+            if(atPos) {
+                settings.spawnPos = atPos
+                settings.spawnROt = atRot
+                setCurrentRoom(settings)
+            } else {
+                setCurrentRoom(settings)
+            }   
           })
         }
         

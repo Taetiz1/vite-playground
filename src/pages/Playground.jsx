@@ -668,7 +668,7 @@ function Playground() {
               <Lights x={40} y={25} z={20} />
               <Lights x={-60} y={25} z={-10} />
               
-              <ambientLight intensity={0.4} position={[0, 10, 0]} />
+              <ambientLight intensity={0.4} position={[0, 25, 0]} />
               <Sky />
               <Physics >
                 {/* <Debug />
@@ -679,7 +679,7 @@ function Playground() {
                 dampingFactor={0.1} /> */}
                 <Suspense> 
                   <Ground key={currentRoom.id} currentRoom={currentRoom} setOnLoading={() => setOnLoading(true)} />
-                  <Character socket={socketClient} spawnPos={currentRoom.spawnPos} />
+                  <Character socket={socketClient} spawnPos={currentRoom.spawnPos} spawnRot={currentRoom.spawnRot} />
                 </Suspense>
               </Physics>
                 {Object.keys(clients)

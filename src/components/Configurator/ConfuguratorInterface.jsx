@@ -94,7 +94,7 @@ const ConfiguratorInterface = ({ socket, onLoading, setOnLoading, setCustomMode}
                     }
                     <Button 
                         onClick={() => {
-                            enterPlaygroud("2")
+                            enterPlaygroud("1")
                         }}
                     >
                         Go!
