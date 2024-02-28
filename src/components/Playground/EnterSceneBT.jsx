@@ -51,34 +51,29 @@ const EnterSceneBT = ({position, setOnLoading, roomID, atPos, atRot}) => {
           
     
     const { id } = socketClient;
-    // const textPosition = new Vector3(position.x, position.y, position.z); 
-    // const maxDistanceToShowText = 5;
-    // const [textVisible, setTextVisibility] = useState(true);
+    const iconPos = new Vector3(position[0], position[1], position[2]); 
+    const maxDistanceToShowText = 5;
+    const [enabledClick, setEnabledClick] = useState(false);
+
+    useFrame(({ camera }) => {
+      const distance = camera.position.distanceTo(iconPos);
   
-    const buttonRef = useRef()
-    // useFrame(({ camera }) => {
-    //   const distance = camera.position.distanceTo(textPosition);
-    //   if(buttonRef.current) {
-    //     buttonRef.current.lookAt(camera.position);
-    //   }
-  
-    //   if(distance > maxDistanceToShowText) {
-    //     setTextVisibility(false);
-    //   } else {
-    //     setTextVisibility(true);
-    //   }
-    // })
+      if(distance > maxDistanceToShowText) {
+        setEnabledClick(false);
+      } else {
+        setEnabledClick(true);
+      }
+    })
   
     return (
       <group 
-        // ref={buttonRef}
         position={position}
-        // visible={textVisible} 
-        scale={[0.6, 0.6, 0.6]}
+        scale={[0.7, 0.7, 0.7]}
+        onClick={() => {
+          if(enabledClick) {JoinRoom()}
+        }} 
       >
-        <sprite 
-          onClick={JoinRoom} 
-        >
+        <sprite>
           <spriteMaterial attach="material" map={texture} />
         </sprite>
       </group>

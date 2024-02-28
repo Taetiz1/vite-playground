@@ -42,7 +42,7 @@ const directionOffset = ({ forward, backward, left, right}) => {
     return directionOffset;
 }
 
-export const Character = ({socket, spawnPos, spawnRot}) => {
+export const Character = ({socket, spawnPos}) => {
     const { 
         avatarUrl,
         socketClient,
@@ -126,6 +126,13 @@ export const Character = ({socket, spawnPos, spawnRot}) => {
 
     useEffect(() => {
         const body = bodyRef.current;
+        const movement = new Vector3;
+
+        movement.x =  currentRoom.spawnPos[0]
+        movement.y =  currentRoom.spawnPos[1]
+        movement.z =  currentRoom.spawnPos[2]    
+        body.setTranslation(movement, true)
+
         camera.position.x === body.translation().x;
         camera.position.y === body.translation().y + 1;
         camera.position.z === body.translation().z
@@ -134,7 +141,7 @@ export const Character = ({socket, spawnPos, spawnRot}) => {
         cameraTarget.y = body.translation().y + 0.6;
         cameraTarget.z = body.translation().z;
         if(controlsRef.current){ controlsRef.current.target = cameraTarget; }
-    }, [currentRoom.id])
+    }, [currentRoom])
 
     useEffect(() => {
         let action = "M_Standing_Idle_001"
@@ -171,7 +178,8 @@ export const Character = ({socket, spawnPos, spawnRot}) => {
         hips.position.set(0, hips.position.y, 0);
 
             if(currentAction.current === 'F_Jog_001' || 
-            currentAction.current === 'M_Walk_001'){
+                currentAction.current === 'M_Walk_001')
+            {
                 let angleYCameraDirection = Math.atan2(
                     camera.position.x - body.translation().x,
                     camera.position.z - body.translation().z
@@ -242,7 +250,6 @@ export const Character = ({socket, spawnPos, spawnRot}) => {
             type="dynamic"
             colliders={false}
             enabledRotations={[false, false, false]} 
-            position={spawnPos}
         >
             <CapsuleCollider args={[0.3, 0.18]} />
               

@@ -679,7 +679,7 @@ function Playground() {
                 dampingFactor={0.1} /> */}
                 <Suspense> 
                   <Ground key={currentRoom.id} currentRoom={currentRoom} setOnLoading={() => setOnLoading(true)} />
-                  <Character socket={socketClient} spawnPos={currentRoom.spawnPos} spawnRot={currentRoom.spawnRot} />
+                  <Character socket={socketClient} />
                 </Suspense>
               </Physics>
                 {Object.keys(clients)

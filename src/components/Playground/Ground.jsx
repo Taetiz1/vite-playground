@@ -36,7 +36,7 @@ export const Ground = ({ currentRoom, setOnLoading}) => {
               />
             ))}
 
-            <CuboidCollider position={[0, 0, 0]} args={[200, 0.4, 200]} />
+            {/* <CuboidCollider position={[0, 0, 0]} args={[200, 0.4, 200]} /> */}
 
             <group position={[0, -4, 0]}> 
               <mesh rotation-x={Math.PI * -0.5}>
