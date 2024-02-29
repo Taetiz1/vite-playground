@@ -26,7 +26,8 @@ export const SocketclientProvider = ({children}) => {
                 setAvatarUrl(config)
             })
 
-            socketClient.on('currentRoom', ({settings}) => {
+            socketClient.on('currentRoom', (settings) => {
+                console.log(settings)
                 setCurrentRoom(settings)  
             })
         }
