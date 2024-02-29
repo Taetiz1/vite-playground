@@ -24,7 +24,7 @@ export const Ground = ({ currentRoom, setOnLoading}) => {
     } else { 
         return (
           <>
-            {currentRoom.id && <Scene settings={currentRoom} />}
+            {currentRoom.id && <Scene key={currentRoom.id} settings={currentRoom} />}
 
             {currentRoom.enterBT && currentRoom.enterBT.map((bt, index) => (
               <EnterSceneBT 

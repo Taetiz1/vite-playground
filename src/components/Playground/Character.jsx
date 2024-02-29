@@ -125,7 +125,6 @@ export const Character = ({socket}) => {
     }
 
     useEffect(() => {
-        if(currentRoom.spawnPos !== undefined || currentRoom.spawnPos !== null) {
             const body = bodyRef.current;
             const movement = new Vector3;
 
@@ -142,7 +141,6 @@ export const Character = ({socket}) => {
             cameraTarget.y = body.translation().y + 0.6;
             cameraTarget.z = body.translation().z;
             if(controlsRef.current){ controlsRef.current.target = cameraTarget; }
-        }
     }, [currentRoom])
 
     useEffect(() => {
@@ -248,7 +246,6 @@ export const Character = ({socket}) => {
   
     return (
         <RigidBody
-            position={[0, -50, 0]}
             ref={bodyRef}
             type="dynamic"
             colliders={false}

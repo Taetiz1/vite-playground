@@ -27,7 +27,6 @@ export const SocketclientProvider = ({children}) => {
             })
 
             socketClient.on('currentRoom', (settings) => {
-                console.log(settings)
                 setCurrentRoom(settings)  
             })
         }
