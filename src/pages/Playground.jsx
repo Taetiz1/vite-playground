@@ -130,7 +130,7 @@ function RotatingText(props) {
 
 const UserWrapper = ({ id, position, rotation, name, action, chathead, avatarUrl}) => {
   
-  const [showChatBubble, setShowChatBubble] = useState(true);
+  const [showChatBubble, setShowChatBubble] = useState(false);
 
   useEffect(() => {
     if(chathead != ''){
