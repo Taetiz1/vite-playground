@@ -458,8 +458,8 @@ function Playground() {
                         }} 
                         onKeyDown={(e) => {
     
-                          if (e.keyCode === 13 ) { // 13 is the code for the "Enter" key
-                            e.preventDefault(); // Prevent the default action of the "Enter" key
+                          if(e.keyCode === 13 ) { 
+                            e.preventDefault();
                             e.target.value = ''
                             sendMessage()
                           }

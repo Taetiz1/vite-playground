@@ -40,7 +40,8 @@ const ConfiguratorInterface = ({ socket, onLoading, setOnLoading, setCustomMode}
                 id,
                 name: username,
                 avatarUrl: avatarUrl,
-                roomID: roomID,
+                roomID: "1",
+                atPos: 0,
             })
             setconfigChar(true)
             setOnLoading()
@@ -94,7 +95,7 @@ const ConfiguratorInterface = ({ socket, onLoading, setOnLoading, setCustomMode}
                     }
                     <Button 
                         onClick={() => {
-                            enterPlaygroud("1")
+                            enterPlaygroud()
                         }}
                     >
                         Go!

@@ -6,7 +6,7 @@ import { useFrame, useLoader } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
 import EnterIcon from '/assets/enter.png'
 
-const EnterSceneBT = ({position, setOnLoading, roomID, atPos, atRot}) => {
+const EnterSceneBT = ({position, setOnLoading, roomID, atPos}) => {
     const {
       socketClient,  
       username,
@@ -35,7 +35,6 @@ const EnterSceneBT = ({position, setOnLoading, roomID, atPos, atRot}) => {
           email: email,
           roomID: roomID,
           atPos: atPos,
-          atRot: atRot
         })
         setOnLoading()
       }
@@ -68,7 +67,7 @@ const EnterSceneBT = ({position, setOnLoading, roomID, atPos, atRot}) => {
     return (
       <group 
         position={position}
-        scale={[0.7, 0.7, 0.7]}
+        scale={[1, 1, 1]}
         onClick={() => {
           if(enabledClick) {JoinRoom()}
         }} 

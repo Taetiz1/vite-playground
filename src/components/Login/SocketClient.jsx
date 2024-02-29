@@ -21,19 +21,14 @@ export const SocketclientProvider = ({children}) => {
     const Web_URL = import.meta.env.VITE_SERVER_URL || "http://localhost:3000";
 
     useEffect(() => {
-        if (socketClient) {
-          socketClient.on('configSetting', (config) => {
-            setAvatarUrl(config)
-          })
+        if(socketClient) {
+            socketClient.on('configSetting', (config) => {
+                setAvatarUrl(config)
+            })
 
-          socketClient.on('currentRoom', ({settings, atPos}) => {
-            if(atPos) {
-                settings.spawnPos = atPos
-                setCurrentRoom(settings)
-            } else {
-                setCurrentRoom(settings)
-            }   
-          })
+            socketClient.on('currentRoom', ({settings}) => {
+                setCurrentRoom(settings)  
+            })
         }
         
     }, [socketClient])
