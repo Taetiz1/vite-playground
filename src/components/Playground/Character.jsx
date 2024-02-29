@@ -42,7 +42,7 @@ const directionOffset = ({ forward, backward, left, right}) => {
     return directionOffset;
 }
 
-export const Character = ({socket, spawnPos}) => {
+export const Character = ({socket}) => {
     const { 
         avatarUrl,
         socketClient,
@@ -125,7 +125,7 @@ export const Character = ({socket, spawnPos}) => {
     }
 
     useEffect(() => {
-        if(currentRoom) {
+        if(currentRoom.spawnPos !== undefined || currentRoom.spawnPos !== null) {
             const body = bodyRef.current;
             const movement = new Vector3;
 
@@ -248,6 +248,7 @@ export const Character = ({socket, spawnPos}) => {
   
     return (
         <RigidBody
+            position={[0, -50, 0]}
             ref={bodyRef}
             type="dynamic"
             colliders={false}
