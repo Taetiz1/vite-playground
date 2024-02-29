@@ -125,22 +125,24 @@ export const Character = ({socket, spawnPos}) => {
     }
 
     useEffect(() => {
-        const body = bodyRef.current;
-        const movement = new Vector3;
+        if(currentRoom) {
+            const body = bodyRef.current;
+            const movement = new Vector3;
 
-        movement.x =  currentRoom.spawnPos[0]
-        movement.y =  currentRoom.spawnPos[1]
-        movement.z =  currentRoom.spawnPos[2]    
-        body.setTranslation(movement, true)
+            movement.x =  currentRoom.spawnPos[0]
+            movement.y =  currentRoom.spawnPos[1]
+            movement.z =  currentRoom.spawnPos[2]    
+            body.setTranslation(movement, true)
 
-        camera.position.x === body.translation().x;
-        camera.position.y === body.translation().y + 1;
-        camera.position.z === body.translation().z
+            camera.position.x === body.translation().x;
+            camera.position.y === body.translation().y + 1;
+            camera.position.z === body.translation().z
 
-        cameraTarget.x = body.translation().x;
-        cameraTarget.y = body.translation().y + 0.6;
-        cameraTarget.z = body.translation().z;
-        if(controlsRef.current){ controlsRef.current.target = cameraTarget; }
+            cameraTarget.x = body.translation().x;
+            cameraTarget.y = body.translation().y + 0.6;
+            cameraTarget.z = body.translation().z;
+            if(controlsRef.current){ controlsRef.current.target = cameraTarget; }
+        }
     }, [currentRoom])
 
     useEffect(() => {
