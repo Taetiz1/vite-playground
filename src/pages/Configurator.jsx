@@ -10,28 +10,27 @@ import { useSocketClient } from "../components/Login/SocketClient";
 import { AvatarCreator } from "@readyplayerme/react-avatar-creator";
 import Loader from "../components/Configurator/Loader";
 import { useProgress } from "@react-three/drei"
-
 function Configurator() {
-    const { 
-      socketClient,
-      username,
-      setAvatarUrl,
-      avatarUrl,
-    } = useSocketClient();
+  const { 
+    socketClient,
+    username,
+    setAvatarUrl,
+    avatarUrl,
+  } = useSocketClient();
 
-    const { progress } = useProgress();
-    const [onLoading, setOnLoading] = useState(true);
-    const [onLoader, setOnLoader] = useState(false);
-    const [avatarMode, setAvatarMode] = useState(false);
+  const { progress } = useProgress();
+  const [onLoading, setOnLoading] = useState(true);
+  const [onLoader, setOnLoader] = useState(false);
+  const [avatarMode, setAvatarMode] = useState(false);
 
-    useEffect(() => {
-      if(progress < 100) {
-        setOnLoader(true)
-      } else {
-        setOnLoader(false)
-      }
+  useEffect(() => {
+    if(progress < 100) {
+      setOnLoader(true)
+    } else {
+      setOnLoader(false)
+    }
 
-    }, [progress])
+  }, [progress])
 
   return (
     <>

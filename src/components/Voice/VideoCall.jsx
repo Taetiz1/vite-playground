@@ -42,8 +42,9 @@ const VideoCall = () => {
                 }
                     
                 if(mediaType === "audio") {
-                    if(!Mute) {
-                        user.audioTrack.play();
+                    user.audioTrack.play();
+                    if(Mute) {
+                        user.audioTrack.setVolume(0)
                     }
                 }
 
@@ -80,14 +81,14 @@ const VideoCall = () => {
     return (<>
         {start && tracks && 
         
-                <AgoraVideoPlayer 
-                    videoTrack={tracks[1]}
-                    
-                    style={{ 
-                        width: "240px",
-                        height: "165px",
-                    }} 
-                />
+            <AgoraVideoPlayer 
+                videoTrack={tracks[1]}
+                
+                style={{ 
+                    width: "240px",
+                    height: "165px",
+                }} 
+            />
         }
         
         {start && tracks && 
