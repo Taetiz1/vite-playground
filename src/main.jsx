@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client'
 import App from './App'
 import './index.css'
 import { MantineProvider } from '@mantine/core'
-import { CharacterAnimationsProvider } from './components/Configurator/CharacterAnimations'
 import { CharacterCustomizationProvider } from './components/Configurator/CharacterCustomization'
 import { SocketclientProvider } from './components/Login/SocketClient'
 import { GoogleOAuthProvider } from '@react-oauth/google'
@@ -19,9 +18,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <SocketclientProvider>
           <VideoChatProvider>
             <CharacterCustomizationProvider>
-              <CharacterAnimationsProvider>
                 <App />
-              </CharacterAnimationsProvider>
             </CharacterCustomizationProvider>
           </VideoChatProvider>
         </SocketclientProvider>

@@ -1,17 +1,10 @@
 import React from "react"
 import { Affix, Button, Group } from "@mantine/core"
-import { useCharacterAnimations } from "./CharacterAnimations"
 import { CameraModes, useCharacterCustomization } from "./CharacterCustomization";
 import { useVideoChat } from "../voiceContext";
 import { useSocketClient } from "../Login/SocketClient";
 
-const ConfiguratorInterface = ({ socket, onLoading, setOnLoading, setCustomMode}) => {
-
-    const { 
-        animations, 
-        animationIndex, 
-        setAnimationIndex 
-    } = useCharacterAnimations();
+const ConfiguratorInterface = ({ socket, onLoading, setOnLoading, setCustomMode, avatarMode, setAvatarMode }) => {
 
     const { 
         isMode,
@@ -40,7 +33,7 @@ const ConfiguratorInterface = ({ socket, onLoading, setOnLoading, setCustomMode}
                 id,
                 name: username,
                 avatarUrl: avatarUrl,
-                roomID: "1",
+                roomID: roomID,
                 atPos: 0,
             })
             setconfigChar(true)
@@ -48,8 +41,8 @@ const ConfiguratorInterface = ({ socket, onLoading, setOnLoading, setCustomMode}
         } 
     }
 
-    return (
-        !onLoading && <>
+    if(!avatarMode) {
+        return (!onLoading && <>
             <Affix position={{top: 20, left:20}}>
                 <img src="/assets/MetaverseLogo.png" alt="icon" width="200" height="74" style={{pointerEvents: 'none', userSelect: 'none'}}/>
             </Affix>
@@ -81,29 +74,32 @@ const ConfiguratorInterface = ({ socket, onLoading, setOnLoading, setCustomMode}
 
             <Affix position={{ bottom: 20, right: 20 }}>
                 <Group>
-                    {
-                        animations.map((animation, index) => (
-                            index === 3 || index === 4 || index === 7   ? (
-                                <Button 
-                                    variant={index === animationIndex ? "filled" : "light"}
-                                    onClick={() => setAnimationIndex(index) }
-                                >
-                                    {animation}
-                                </Button>
-                            ) : null
-                        ))
-                    }
                     <Button 
                         onClick={() => {
-                            enterPlaygroud()
+                            enterPlaygroud("0")
                         }}
                     >
                         Go!
                     </Button>
                 </Group>
             </Affix>
-        </>
-    )
+        </>)
+    } else {
+        return(<>
+            <Affix position={{ bottom: 20, left: 20 }}>
+                <Group>
+                    <Button 
+                        onClick={() => {
+                            setAvatarMode(false)
+                        }}
+                    >
+                        Back
+                    </Button>
+                </Group>
+            </Affix>
+
+        </>)
+    }
 }
 
 export default ConfiguratorInterface

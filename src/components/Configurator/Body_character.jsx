@@ -1,12 +1,10 @@
 import React, { useEffect, useRef, useMemo, useState } from 'react'
 import { useAnimations, useGLTF } from '@react-three/drei'
 import * as SkeletonUtils from 'three/examples/jsm/utils/SkeletonUtils'
-import { useCharacterCustomization } from './CharacterCustomization'
 import { useSocketClient } from '../Login/SocketClient'
 const Body_character = ({
   ...props
 }) => {
-  // const { setAnimations, animationIndex } = useCharacterAnimations();
 
   const { 
     avatarUrl,
@@ -60,9 +58,7 @@ const Body_character = ({
   })
 
   return (
-    <group>
-      <primitive object={clone} position={props.position} rotation={props.rotation} ref={cloneRef} />
-    </group>
+    <primitive object={clone} position={props.position} rotation={props.rotation} ref={cloneRef} />
   )
 }
 

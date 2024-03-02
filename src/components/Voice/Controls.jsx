@@ -33,10 +33,12 @@ const Controls = ({tracks}) => {
     const { socketClient } = useSocketClient();
 
     useEffect(() => {
+        
         if(MicisMute) {
+            console.log(tracks)
             tracks[0].setEnabled(false);
             
-        }   else {
+        } else {
             tracks[0].setEnabled(true);
         }
 

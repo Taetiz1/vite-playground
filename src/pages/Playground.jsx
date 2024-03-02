@@ -21,7 +21,8 @@ import MessagesBox from '../components/Playground/MessagesBox'
 import VideoCall from '../components/Voice/VideoCall'
 import Minimap from '../components/Playground/miniMap'
 
-import headset from '/assets/headset.png'
+import { IconHeadset } from '@tabler/icons-react'
+import { IconMicrophoneOff } from '@tabler/icons-react'
 import micMute from '/assets/micMute.png'
 import mute from '/assets/mute.png'
 import { AgoraVideoPlayer } from 'agora-rtc-react'
@@ -222,14 +223,12 @@ function Playground() {
     clients,
     setClients,
     connectServer
-
   } = useSocketClient();
 
   const {
     connectPeer,
     setConnectPeer,
     VideoUsers
-
   } = useVideoChat();
 
   const [message, setMessage] = useState('');
@@ -287,16 +286,6 @@ function Playground() {
           setConnectPeer(true)
         }
       })
-   
-      // socketClient.on("Admin_check", (check) => {
-      //   if (check) {
-      //     setAdminLogedIn(true)
-      //   } else {
-      //     setAdminLogedIn(false)
-      //     const errorMsg = "ID หรือ Password ไม่ถูกต้อง"
-      //     pushNotification("ล้มเหลว", errorMsg, "error")
-      //   }
-      // });
 
       socketClient.on("failed move", () => {
         setOnConnectionFailed(true)
@@ -415,10 +404,14 @@ function Playground() {
                         }
                       }}
                       style={{
-                        backgroundColor: 'rgba(60,179,113)',
+                        backgroundColor: 'rgba(0, 0, 0, .25)',
+                        alignItems: 'center',
+                        justifyItems: 'center'
                       }}
                     >
-                      <img src={headset} style={{pointerEvents: 'none', userSelect: 'none', width: '25px', height: 'auto',}}/>
+                      <IconHeadset 
+                        strokeWidth={1.5} 
+                      />
                     </button>
                   </div>}
 
@@ -485,9 +478,9 @@ function Playground() {
             <Affix position={{bottom: 80, right: 20, }} style={{zIndex: '2',}} >
     
                 <ul className={interfacestyles.ul_chatBox} ref={messageListRef}>
-                    {messages.map((message, index) => (
-                      <MessagesBox key={index} message={message} msgIndex={index} />
-                    ))}
+                  {messages.map((message, index) => (
+                    <MessagesBox key={index} message={message} msgIndex={index} />
+                  ))}
                   
                 </ul>
     
