@@ -18,7 +18,15 @@ export const Ground = ({ currentRoom, setOnLoading}) => {
               </group>
           </RigidBody>
 
-          <EnterSceneBT position={[0, 1.5, 0]} setOnLoading={setOnLoading} roomID={"1"} atPos={[0, 2, 0]} />
+          {currentRoom.enterBT && currentRoom.enterBT.map((bt, index) => (
+            <EnterSceneBT 
+              key={index} 
+              position={bt.pos} 
+              setOnLoading={setOnLoading} 
+              roomID={bt.roomID} 
+              atPos={bt.atPos} 
+            />
+          ))}
         </>
       )
     } else { 
@@ -36,7 +44,7 @@ export const Ground = ({ currentRoom, setOnLoading}) => {
               />
             ))}
 
-            {/* <CuboidCollider position={[0, 0, 0]} args={[200, 0.4, 200]} /> */}
+            <CuboidCollider position={[0, 0, 0]} args={[200, 0.4, 200]} />
 
             <group position={[0, -4, 0]}> 
               <mesh rotation-x={Math.PI * -0.5}>

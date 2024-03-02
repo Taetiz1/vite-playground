@@ -3,7 +3,6 @@ import { Vector3, TextureLoader }from 'three'
 import { useSocketClient } from '../Login/SocketClient';
 import { useVideoChat } from '../voiceContext';
 import { useFrame, useLoader } from '@react-three/fiber';
-import { Html } from '@react-three/drei';
 import EnterIcon from '/assets/enter.png'
 
 const EnterSceneBT = ({position, setOnLoading, roomID, atPos}) => {

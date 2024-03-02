@@ -143,46 +143,46 @@ const UserWrapper = ({ id, position, rotation, name, action, chathead, avatarUrl
   }, [chathead])
 
   return (
-      <group
-        position={position}
-        rotation={rotation}
-      >
-         
-        <OtherPlayers action={action} avatarUrl={avatarUrl} />
-          <Html 
-            occlude 
-            position-y={1.6} 
-            zIndexRange={[1, 0]} 
-            distanceFactor={5} 
-            style={{
-              transition: 'all 0.5s',
-              opacity: showChatBubble ? 1 : 0,
-              transform: `scale(${showChatBubble ?  1 : 0.5})`,
-            }}
-          >
-              <div className={interfacestyles.ChatBubble}>
-                  
-                <p className={interfacestyles.chatBubbleText}>
-                  {chathead}
-                </p>
+    <group
+      position={position}
+      rotation={rotation}
+    >
+        
+      <OtherPlayers action={action} avatarUrl={avatarUrl} />
+        <Html 
+          occlude 
+          position-y={1.6} 
+          zIndexRange={[1, 0]} 
+          distanceFactor={5} 
+          style={{
+            transition: 'all 0.5s',
+            opacity: showChatBubble ? 1 : 0,
+            transform: `scale(${showChatBubble ?  1 : 0.5})`,
+          }}
+        >
+            <div className={interfacestyles.ChatBubble}>
+                
+              <p className={interfacestyles.chatBubbleText}>
+                {chathead}
+              </p>
 
-              </div>
-          </Html>
+            </div>
+        </Html>
 
-          <RotatingText 
-            position={[0, 1.1, 0]}
-            color="black"
-            anchorX="center"
-            anchorY="middle"
-            fontSize={0.2}
-            font="/fonts/kanit/kanit-light.otf"
-            outlineWidth={0.025}
-            outlineColor="white"
-          > 
-            {name} 
-          </RotatingText>
-              
-      </group>
+        <RotatingText 
+          position={[0, 1.1, 0]}
+          color="black"
+          anchorX="center"
+          anchorY="middle"
+          fontSize={0.2}
+          font="/fonts/kanit/kanit-light.otf"
+          outlineWidth={0.025}
+          outlineColor="white"
+        > 
+          {name} 
+        </RotatingText>
+            
+    </group>
   )
 }
 
@@ -192,13 +192,13 @@ const Lights = ({x, y, z}) => {
   // useHelper(light, THREE.DirectionalLightHelper, 'cyan')
 
   return (
-      <group position={[x, y, z]}>
-          <pointLight  color="#bdefff" intensity={0.3}  />
-          {/* <mesh>
-            <boxBufferGeometry />
-            <meshStandardMaterial wireframe/>
-          </mesh> */}
-      </group>
+    <group position={[x, y, z]}>
+        <pointLight  color="#bdefff" intensity={0.3}  />
+        {/* <mesh>
+          <boxBufferGeometry />
+          <meshStandardMaterial wireframe/>
+        </mesh> */}
+    </group>
   )
 }
 
@@ -320,35 +320,29 @@ function Playground() {
     setShowPicker(false)
 
     if(message !== ""){
+      
+      let cleanMsg
+
       if(filter.isProfane(message)) {
-        // handle bad message
-        const msg = {
-          id, 
-          username: username, 
-          message: filter.clean(message),
-          time: Date.now()
-        }
-        socketClient.emit("message", msg);
-        setMessage("");
+
+        cleanMsg = filter.clean(message)
+        
       } else if(containsTHBadWords(message)) {
-        // handle bad message
-        const msg = {
-          id, 
-          username: username, 
-          message: filterTHBadWords(message),
-        }
-        socketClient.emit("message", msg);
-        setMessage("");
+        
+        cleanMsg = filterTHBadWords(message)
+
       } else {
-        // handle good message
-        const msg = {
-          id, 
-          username: username, 
-          message: message,
-        }
-        socketClient.emit("message", msg);
-        setMessage("");
+        cleanMsg = message
       }
+      
+      const msg = {
+        id, 
+        username: username, 
+        message: cleanMsg,
+        time: Date.now()
+      }
+      socketClient.emit("message", msg);
+      setMessage("");
     }
   };
 
