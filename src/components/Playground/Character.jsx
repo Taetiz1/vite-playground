@@ -251,9 +251,9 @@ export const Character = ({socket}) => {
             colliders={false}
             enabledRotations={[false, false, false]} 
         >
-            <CapsuleCollider args={[0.3, 0.18]} />
+            <CapsuleCollider args={[0.3, 0.2]} />
               
-            <group dispose={null} position={[0, -0.48, 0]} rotation={[0, -9.4, 0]}> 
+            <group dispose={null} position={[0, -0.5, 0]} rotation={[0, -9.4, 0]}> 
                 <primitive object={scene} ref={modelRef} />  
             </group> 
 
