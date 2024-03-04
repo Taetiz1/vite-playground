@@ -103,7 +103,7 @@ export const Character = ({socket}) => {
         }
     }, [onLoading])
   
-    scene.scale.set(0.5, 0.5, 0.5);
+    scene.scale.set(0.56, 0.56, 0.56);
   
     const currentAction = useRef("");
     const controlsRef = useRef()

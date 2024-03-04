@@ -58,7 +58,7 @@ function Configurator() {
                 : event.data.url;
               newAvatarUrl +=
                 (newAvatarUrl.includes("?") ? "&" : "?") +
-                "meshlod=1&quality=medium";
+                "meshlod=1&quality=high";
               setAvatarUrl(newAvatarUrl)
               setAvatarMode(false)
             }}

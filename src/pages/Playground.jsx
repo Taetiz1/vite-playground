@@ -68,9 +68,9 @@ const OtherPlayers = ({action, avatarUrl}) => {
 
   return (
     <group ref={cloneRef} >
-      {/* <Suspense> */}
-        <primitive object={clone} scale={[0.5, 0.5, 0.5]} rotation={[0, 9.4, 0]}/>
-      {/* </Suspense> */}
+      <Suspense>
+        <primitive object={clone} scale={[0.56, 0.56, 0.56]} rotation={[0, 9.4, 0]}/>
+      </Suspense>
     </group>
   )
 }
