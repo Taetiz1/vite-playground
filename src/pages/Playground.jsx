@@ -664,10 +664,10 @@ function Playground() {
                 enableDamping={true} 
                 enableZoom={true}
                 dampingFactor={0.1} /> */}
-                <Suspense> 
+                {currentRoom && <Suspense> 
                   <Ground key={currentRoom.id} currentRoom={currentRoom} setOnLoading={() => setOnLoading(true)} />
-                  {Object.keys(currentRoom).length > 0 && <Character socket={socketClient} />}
-                </Suspense>
+                  <Character socket={socketClient} />
+                </Suspense>}
               </Physics>
                 {Object.keys(clients)
                   .filter((clientKey) => clientKey !== socketClient.id)

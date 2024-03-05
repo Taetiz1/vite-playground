@@ -2,7 +2,7 @@ import React from "react";
 import { useProgress } from "@react-three/drei"
 import styles from './LoadingScene.module.css'
 
-const LoadingScene2 = ({onLoading, setOnLoading }) => {
+const LoadingScene2 = ({ onLoading, setOnLoading }) => {
     const { progress } = useProgress();
 
     return (
