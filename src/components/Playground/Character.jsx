@@ -224,7 +224,7 @@ export const Character = ({socket}) => {
         const rotArray = []
 
         body.translation().toArray(posArray)
-        posArray[1] -= 0.4
+        posArray[1] -= 0.5
         
         rotation.toArray(rotArray) 
 

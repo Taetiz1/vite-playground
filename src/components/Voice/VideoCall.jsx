@@ -45,6 +45,7 @@ const VideoCall = () => {
                     user.audioTrack.play();
                     if(Mute) {
                         user.audioTrack.setVolume(0)
+                        console.log("set Muted")
                     }
                 }
 
