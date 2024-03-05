@@ -1,13 +1,10 @@
 import { createClient, createMicrophoneAndCameraTracks } from "agora-rtc-react";
-
-const appId = process.env.AgoraAPPID 
-const token = null
     
 export const appConfig = {
     mode: "rtc",
     codec: "vp8",
-    appId: appId,
-    token: token
+    appId: process.env.AgoraAPPID,
+    token: null
 }
 
 export const useVideoClient = createClient(appConfig);
