@@ -20,7 +20,6 @@ const VideoCall = () => {
     
     const videoClient = useVideoClient();
     const { ready, tracks } = useVideoTracks();
-    console.log(appConfig.appId)
 
     useEffect(() => {
         let init = async (name) => {
