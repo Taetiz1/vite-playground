@@ -1,6 +1,6 @@
 import { createClient, createMicrophoneAndCameraTracks } from "agora-rtc-react";
 
-const appId = process.env.AgoraAPPID 
+const appId = "324c17f38cca462fa7916683da05fb3a"
 
 const token = null
     
