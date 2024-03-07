@@ -1,45 +1,16 @@
 import React from "react"
 import { Affix, Button, Group } from "@mantine/core"
 import { CameraModes, useCharacterCustomization } from "./CharacterCustomization";
-import { useVideoChat } from "../voiceContext";
 import { useSocketClient } from "../Login/SocketClient";
 
-const ConfiguratorInterface = ({ socket, onLoading, setOnLoading, setCustomMode, avatarMode, setAvatarMode }) => {
+const ConfiguratorInterface = ({ onLoading, setCustomMode, avatarMode, setAvatarMode, enterPlaygroud }) => {
 
     const { 
         isMode,
         SetIsMode,
         setCameraMode, 
     } = useCharacterCustomization();
-
-    const { 
-        username,
-        setconfigChar,
-        avatarUrl,
-        socketClient,
-    } = useSocketClient();
-
-    const {
-        setChannelName
-    } = useVideoChat();
-
-    function enterPlaygroud(roomID) {
-
-        if(avatarUrl){
-            const { id } = socket;
-            
-            setChannelName(roomID)
-            socketClient.emit('joinroom', {
-                id,
-                name: username,
-                avatarUrl: avatarUrl,
-                roomID: roomID,
-                atPos: 0,
-            })
-            setconfigChar(true)
-            setOnLoading()
-        } 
-    }
+    
 
     if(!avatarMode) {
         return (!onLoading && <>
@@ -76,7 +47,7 @@ const ConfiguratorInterface = ({ socket, onLoading, setOnLoading, setCustomMode,
                 <Group>
                     <Button 
                         onClick={() => {
-                            enterPlaygroud("1")
+                            enterPlaygroud("0")
                         }}
                     >
                         Go!

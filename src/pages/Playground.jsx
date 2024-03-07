@@ -2,7 +2,7 @@ import React , { useState, useEffect, useRef, useMemo, Suspense }from 'react'
 import { Canvas } from '@react-three/fiber'
 import { Ground } from '../components/Playground/Ground'
 import { Stats, Sky, useHelper, useGLTF, Html, OrbitControls } from '@react-three/drei'
-import { Character } from '../components/Playground/Character'
+import Character from '../components/Playground/Character'
 import { io } from 'socket.io-client'
 import { Text, useAnimations } from '@react-three/drei'
 import * as SkeletonUtils from 'three/examples/jsm/utils/SkeletonUtils'
@@ -235,6 +235,7 @@ function Playground() {
   const [messages, setMessages] = useState([]);
   const [showPicker, setShowPicker] = useState(false);
   const [showUserSuggestions, setShowUserSuggestions] = useState(false)
+  const [onRespawn, setOnRespawn] = useState(false) 
 
   const [isGetEmail, setIsGetEmail] = useState(false)
 
@@ -372,7 +373,7 @@ function Playground() {
     setShowUserSuggestions(false);
   };
   
-  if(logedIn && configChar){
+  if(logedIn && configChar && currentRoom){
       return (socketClient &&
           <div className={interfacestyles.container}>
     
@@ -561,14 +562,21 @@ function Playground() {
             </Affix>
     
             <Affix position={{top: 20, left: 20}} style={{zIndex: '2',}}>
-                <div className={interfacestyles.Exit_button_container}>
-                  <button onClick={() => {
-                    window.location.reload()
-                  }}>
-                    Exit
-                  </button>
-                </div>
+              <div className={interfacestyles.button_container}>
+                <button onClick={() => {
+                  window.location.reload()
+                }}>
+                  Exit
+                </button>
+
+                <button onClick={() => {
+                  setOnRespawn(true)
+                }}>
+                  Respawn
+                </button>
+              </div>
             </Affix>
+    
     
             {/* <Modal size="xl" opened={showQuestion} onClose={() => { setshowQuestion(false) }} title="Question" style={{zIndex: '2',}}>
               <div className={quizStyles.quizCard}>
@@ -666,7 +674,7 @@ function Playground() {
                 dampingFactor={0.1} /> */}
                 {currentRoom && <Suspense> 
                   <Ground key={currentRoom.id} currentRoom={currentRoom} setOnLoading={() => setOnLoading(true)} />
-                  <Character socket={socketClient} />
+                  <Character socket={socketClient} onRespawn={onRespawn} setOnRespawn={() => setOnRespawn(false)} />
                 </Suspense>}
               </Physics>
                 {Object.keys(clients)

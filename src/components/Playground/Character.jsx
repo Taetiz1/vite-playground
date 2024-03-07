@@ -42,10 +42,9 @@ const directionOffset = ({ forward, backward, left, right}) => {
     return directionOffset;
 }
 
-export const Character = ({socket}) => {
+const Character = ({ socket, onRespawn, setOnRespawn }) => {
     const { 
         avatarUrl,
-        socketClient,
         onLoading,
         setPosMinimap,
         currentRoom,
@@ -53,11 +52,13 @@ export const Character = ({socket}) => {
 
     const [oldPos, setOldPos] = useState([])
     const [oldRot, setOldRot] = useState([])
+    const [spawnPoint, setSpawnPoint] = useState()
 
     const { forward, backward, left, right, shift, } = useInput();
     const { scene } = useGLTF(avatarUrl);
     
     const modelRef = useRef();
+    const controlsRef = useRef();
 
     const { animations: walkAnimation } = useGLTF("/models/animations/M_Walk_001.glb")
     const { animations: idleAnimation } = useGLTF("/models/animations/M_Standing_Idle_001.glb")
@@ -80,19 +81,24 @@ export const Character = ({socket}) => {
     };
 
     useEffect(() => {
-        if(socketClient){
-            socketClient.on('respawn', (pos) => {
-                const body = bodyRef.current;
-                const movement = new Vector3;
+        if(onRespawn) {
+            const body = bodyRef.current;
+ 
+            body.setTranslation(spawnPoint, true)
 
-                movement.x =  pos[0]
-                movement.y =  pos[1]
-                movement.z =  pos[2]
-                
-                body.setTranslation(movement, true)
-            })
+            camera.position.x === body.translation().x;
+            camera.position.y === body.translation().y + 1;
+            camera.position.z === body.translation().z
+
+            cameraTarget.x = body.translation().x;
+            cameraTarget.y = body.translation().y + 0.6;
+            cameraTarget.z = body.translation().z;
+            if(controlsRef.current){ controlsRef.current.target = cameraTarget; }
+            
+            setOnRespawn()
         }
-    }, [socketClient])
+        
+    }, [onRespawn])
 
     useEffect(() => {
         if(onLoading){
@@ -106,7 +112,6 @@ export const Character = ({socket}) => {
     scene.scale.set(0.56, 0.56, 0.56);
   
     const currentAction = useRef("");
-    const controlsRef = useRef()
     const camera = useThree(state => state.camera);
     const gl = useThree(state => state.gl);
 
@@ -132,6 +137,7 @@ export const Character = ({socket}) => {
         movement.y =  currentRoom.spawnPos[1]
         movement.z =  currentRoom.spawnPos[2]    
         body.setTranslation(movement, true)
+        setSpawnPoint(movement)
 
         camera.position.x === body.translation().x;
         camera.position.y === body.translation().y + 1;
@@ -273,6 +279,8 @@ export const Character = ({socket}) => {
         </RigidBody>
     )
 }
+
+export default Character
 
 useGLTF.preload("/models/animations/M_Walk_001.glb");
 useGLTF.preload("/models/animations/M_Standing_Idle_001.glb");

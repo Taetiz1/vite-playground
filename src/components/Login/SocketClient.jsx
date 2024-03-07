@@ -13,6 +13,7 @@ export const SocketclientProvider = ({children}) => {
     const [errorEmail, setErrorEmail] = useState(false)
     const [adminLogedIn, setAdminLogedIn] = useState(false)
     const [avatarUrl, setAvatarUrl] = useState("https://models.readyplayer.me/655a5d4e9b792809cdac419d.glb")
+    const [startPoint, setStartPoint] = useState()
     const [currentRoom, setCurrentRoom] = useState()
     const [onLoading, setOnLoading] = useState(true);
     const [onConnectionFailed, setOnConnectionFailed] = useState(false)
@@ -24,6 +25,10 @@ export const SocketclientProvider = ({children}) => {
         if(socketClient) {
             socketClient.on('configSetting', (config) => {
                 setAvatarUrl(config)
+            })
+
+            socketClient.on('starting point', (spawn) => {
+                setStartPoint(spawn)
             })
 
             socketClient.on('currentRoom', (settings) => {
@@ -63,7 +68,8 @@ export const SocketclientProvider = ({children}) => {
                 connectServer,
                 setConnectServer,
                 onConnectionFailed,
-                setOnConnectionFailed
+                setOnConnectionFailed,
+                startPoint
             }}
         >
             {children}

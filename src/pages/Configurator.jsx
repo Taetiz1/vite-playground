@@ -10,18 +10,50 @@ import { useSocketClient } from "../components/Login/SocketClient";
 import { AvatarCreator } from "@readyplayerme/react-avatar-creator";
 import Loader from "../components/Configurator/Loader";
 import { useProgress } from "@react-three/drei"
+import { useVideoChat } from "../components/voiceContext";
+
 function Configurator() {
   const { 
     socketClient,
     username,
     setAvatarUrl,
     avatarUrl,
+    setconfigChar,
+    startPoint
   } = useSocketClient();
+
+  const {
+    setChannelName
+  } = useVideoChat();
 
   const { progress } = useProgress();
   const [onLoading, setOnLoading] = useState(true);
   const [onLoader, setOnLoader] = useState(false);
   const [avatarMode, setAvatarMode] = useState(false);
+
+  function enterPlaygroud() {
+
+    if(startPoint) {
+      const { id } = socketClient;
+      
+      setChannelName(startPoint.roomID)
+      socketClient.emit('joinroom', {
+        id,
+        name: username,
+        avatarUrl: avatarUrl,
+        roomID: startPoint.roomID,
+        atPos: startPoint.atPos,
+      })
+      setconfigChar(true)
+      setOnLoading()
+    } 
+  }
+
+  useEffect(() => {
+    if(socketClient) {
+
+    }
+  }, [socketClient])
 
   useEffect(() => {
     if(progress < 100) {
@@ -92,9 +124,8 @@ function Configurator() {
 
         <ConfiguratorInterface 
           onLoading={onLoading} 
-          setOnLoading={() => setOnLoading(true)} 
+          enterPlaygroud={enterPlaygroud}
           setCustomMode={() => setAvatarMode(true)} 
-          socket={socketClient}
           avatarMode={avatarMode}
           setAvatarMode={setAvatarMode}
         />

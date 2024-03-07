@@ -1,9 +1,14 @@
 import React from "react";
 import { useProgress } from "@react-three/drei"
+import { useSocketClient } from "../components/Login/SocketClient";
 import styles from './LoadingScene.module.css'
 
 const LoadingScene2 = ({ onLoading, setOnLoading }) => {
     const { progress } = useProgress();
+    const {
+        currentRoom
+    } = useSocketClient();
+    const {name} = currentRoom
 
     return (
         onLoading && (<div className={styles.loadingScene}>
@@ -18,7 +23,7 @@ const LoadingScene2 = ({ onLoading, setOnLoading }) => {
             
             <div className={styles.board}>
                 <div>
-                    <h1 className={styles.boardTitle}>Tutorial</h1>  
+                    <h1 className={styles.boardTitle}>{name}</h1>  
                 </div>
 
                 <button 
