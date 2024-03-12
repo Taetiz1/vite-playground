@@ -11,9 +11,7 @@ const Scene = ({settings}) => {
         <group position={settings.pos} rotation={settings.rot}>
             <RigidBody type="fixed">
                 <MeshCollider type="trimesh">
-                    <Suspense>
                         <primitive object={scene} />
-                    </Suspense>
                 </MeshCollider>
             </RigidBody>
         </group>

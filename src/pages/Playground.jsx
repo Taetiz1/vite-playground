@@ -649,54 +649,56 @@ function Playground() {
               </div>
             </Modal> */}
     
-            <Canvas 
-              shadows  
-              camera={{
-                fov: 70,
-              }}
-            >
-              
-              <Minimap />
-              {testing ? <Stats/> : null}
-              {testing ? <axesHelper args={[2]}/> : null}
-              {testing ? <gridHelper args={[10, 10]}/> : null}
-              <Lights x={40} y={25} z={20} />
-              <Lights x={-60} y={25} z={-10} />
-              
-              <ambientLight intensity={0.4} position={[0, 25, 0]} />
-              <Sky />
-              <Physics >
-                {/* <Debug />
-                <OrbitControls enableRotate={true} 
-                enablePan={true} 
-                enableDamping={true} 
-                enableZoom={true}
-                dampingFactor={0.1} /> */}
-                {currentRoom && <Suspense> 
-                  <Ground key={currentRoom.id} currentRoom={currentRoom} setOnLoading={() => setOnLoading(true)} />
-                  <Character socket={socketClient} onRespawn={onRespawn} setOnRespawn={() => setOnRespawn(false)} />
-                </Suspense>}
-              </Physics>
-                {Object.keys(clients)
-                  .filter((clientKey) => clientKey !== socketClient.id)
-                  .map((client) => {
-                    const { position, rotation, name, action, chathead, avatarUrl} = clients[client]
-                      return (
-                        <UserWrapper
-                          key={client}
-                          id={client}
-                          name={name}
-                          position={position}
-                          rotation={rotation}
-                          action={action}
-                          chathead={chathead}
-                          avatarUrl={avatarUrl}
-                        />
-                      )
-                  })
-                }
-                {/* <QuestionButton position={[4, 3, 4]} setshowQuestion={setshowQuestion} /> */}
-            </Canvas>
+            <Suspense> 
+              <Canvas 
+                shadows  
+                camera={{
+                  fov: 70,
+                }}
+              >
+                
+                <Minimap />
+                {testing ? <Stats/> : null}
+                {testing ? <axesHelper args={[2]}/> : null}
+                {testing ? <gridHelper args={[10, 10]}/> : null}
+                <Lights x={40} y={25} z={20} />
+                <Lights x={-60} y={25} z={-10} />
+                
+                <ambientLight intensity={0.4} position={[0, 25, 0]} />
+                <Sky />
+                <Physics >
+                  {/* <Debug />
+                  <OrbitControls enableRotate={true} 
+                  enablePan={true} 
+                  enableDamping={true} 
+                  enableZoom={true}
+                  dampingFactor={0.1} /> */}
+                  {currentRoom && <>
+                    <Ground key={currentRoom.id} currentRoom={currentRoom} setOnLoading={() => setOnLoading(true)} />
+                    <Character socket={socketClient} onRespawn={onRespawn} setOnRespawn={() => setOnRespawn(false)} />
+                  </>}
+                </Physics>
+                  {Object.keys(clients)
+                    .filter((clientKey) => clientKey !== socketClient.id)
+                    .map((client) => {
+                      const { position, rotation, name, action, chathead, avatarUrl} = clients[client]
+                        return (
+                          <UserWrapper
+                            key={client}
+                            id={client}
+                            name={name}
+                            position={position}
+                            rotation={rotation}
+                            action={action}
+                            chathead={chathead}
+                            avatarUrl={avatarUrl}
+                          />
+                        )
+                    })
+                  }
+                  {/* <QuestionButton position={[4, 3, 4]} setshowQuestion={setshowQuestion} /> */}
+              </Canvas>
+            </Suspense>
             
             <LoadingScene2 onLoading={onLoading} setOnLoading={() => setOnLoading(false)} />
             {onConnectionFailed && <ConnectionFailed />}
