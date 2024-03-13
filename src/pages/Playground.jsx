@@ -666,13 +666,15 @@ function Playground() {
                 
                 <ambientLight intensity={0.4} position={[0, 25, 0]} />
                 <Sky />
-                <Physics >
-                  {/* <Debug />
-                  <OrbitControls enableRotate={true} 
-                  enablePan={true} 
-                  enableDamping={true} 
-                  enableZoom={true}
-                  dampingFactor={0.1} /> */}
+                <Physics timeStep="vary">
+                  {/* <Debug /> */}
+                  {/* <OrbitControls 
+                    enableRotate={true} 
+                    enablePan={true} 
+                    enableDamping={true} 
+                    enableZoom={true}
+                    dampingFactor={0.1} 
+                  /> */}
                   {currentRoom && <>
                     <Ground key={currentRoom.id} currentRoom={currentRoom} setOnLoading={() => setOnLoading(true)} />
                     <Character socket={socketClient} onRespawn={onRespawn} setOnRespawn={() => setOnRespawn(false)} />

@@ -1,6 +1,6 @@
-import React, { Suspense } from "react";
+import React from "react";
 import { useGLTF } from '@react-three/drei';
-import { RigidBody, MeshCollider } from '@micmania1/react-three-rapier';
+import { RigidBody } from '@micmania1/react-three-rapier';
 
 const Scene = ({settings}) => {
     const { scene } = useGLTF(settings.url)
@@ -9,10 +9,8 @@ const Scene = ({settings}) => {
 
     return(
         <group position={settings.pos} rotation={settings.rot}>
-            <RigidBody type="fixed">
-                <MeshCollider type="trimesh">
-                        <primitive object={scene} />
-                </MeshCollider>
+            <RigidBody type="fixed" colliders="trimesh">
+                <primitive object={scene} />
             </RigidBody>
         </group>
     )

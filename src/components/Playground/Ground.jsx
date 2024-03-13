@@ -5,6 +5,8 @@ import EnterSceneBT from './EnterSceneBT';
 import { CuboidCollider } from '@micmania1/react-three-rapier';
 
 export const Ground = ({ currentRoom, setOnLoading}) => {
+  const colliders = currentRoom.colliders;
+  const enterBT = currentRoom.enterBT
 
     if(currentRoom.id === "0") {
       return (
@@ -18,7 +20,7 @@ export const Ground = ({ currentRoom, setOnLoading}) => {
               </group>
           </RigidBody>
 
-          {currentRoom.enterBT && currentRoom.enterBT.map((bt, index) => (
+          {enterBT && enterBT.map((bt, index) => (
             <EnterSceneBT 
               key={index} 
               position={bt.pos} 
@@ -44,7 +46,11 @@ export const Ground = ({ currentRoom, setOnLoading}) => {
               />
             ))}
 
-            {/* <CuboidCollider position={[5, 5, 8]} args={[55, 20, 45]} /> */}
+            {colliders && <>
+              {colliders.cuboid && colliders.cuboid.map((cube, index) => (
+                <CuboidCollider key={index} position={cube.pos} rotation={cube.rot} args={cube.args} />
+              ))}  
+            </>}
 
             <group position={[0, -4, 0]}> 
               <mesh rotation-x={Math.PI * -0.5}>

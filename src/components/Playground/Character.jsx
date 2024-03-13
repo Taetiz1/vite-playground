@@ -256,6 +256,11 @@ const Character = ({ socket, onRespawn, setOnRespawn }) => {
             type="dynamic"
             colliders={false}
             enabledRotations={[false, false, false]} 
+            linearDamping={0.5}
+            angularDamping={0.5}
+            restitution={0}
+            friction={0}
+            gravityScale={1}
         >
             <CapsuleCollider args={[0.3, 0.2]} />
               
