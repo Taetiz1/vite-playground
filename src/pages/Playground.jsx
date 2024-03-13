@@ -649,7 +649,7 @@ function Playground() {
               </div>
             </Modal> */}
     
-            <Suspense> 
+            <Suspense fallback={null}> 
               <Canvas 
                 shadows  
                 camera={{
@@ -701,7 +701,6 @@ function Playground() {
                   {/* <QuestionButton position={[4, 3, 4]} setshowQuestion={setshowQuestion} /> */}
               </Canvas>
             </Suspense>
-            
             <LoadingScene2 onLoading={onLoading} setOnLoading={() => setOnLoading(false)} />
             {onConnectionFailed && <ConnectionFailed />}
           </div>

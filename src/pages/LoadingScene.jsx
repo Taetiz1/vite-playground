@@ -14,7 +14,7 @@ const LoadingScene = ({username, onLoading, setOnLoading }) => {
                     <div
                         className={styles.progressValue}
                         style={{
-                            width: `${progress}%`,
+                            width: `${progress.toFixed(0)}%`,
                         }} 
                     />
                 </div>
@@ -46,7 +46,7 @@ const LoadingScene = ({username, onLoading, setOnLoading }) => {
                                 setOnLoading()
                             }}
                         >
-                            {progress < 100 ? 'Loading...' : 'OK'}
+                            {progress < 100 ? `${progress.toFixed(2)}%` : 'OK'}
                         </button>
 
                     </>}

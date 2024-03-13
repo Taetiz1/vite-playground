@@ -5,6 +5,7 @@ import styles from './LoadingScene.module.css'
 
 const LoadingScene2 = ({ onLoading, setOnLoading }) => {
     const { progress } = useProgress();
+
     const {
         currentRoom
     } = useSocketClient();
@@ -16,7 +17,7 @@ const LoadingScene2 = ({ onLoading, setOnLoading }) => {
                 <div
                     className={styles.progressValue}
                     style={{
-                        width: `${progress}%`,
+                        width: `${progress.toFixed(0)}%`,
                     }} 
                 />
             </div>
@@ -30,7 +31,7 @@ const LoadingScene2 = ({ onLoading, setOnLoading }) => {
                     disabled={progress < 100}
                     onClick={setOnLoading}
                 >
-                   {progress < 100 ? 'Loading...' : 'OK'}
+                   {progress < 100 ? `${progress.toFixed(2)}%` : 'OK'}
                 </button>
             </div>
 
