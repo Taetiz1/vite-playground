@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import { OrthographicCamera } from "@react-three/drei";
 import { useSocketClient } from "../Login/SocketClient";
-import * as THREE from "three"
+import mask from '/assets/mask.svg'
 
 const Minimap = (props) => {
 
@@ -13,7 +13,7 @@ const Minimap = (props) => {
     } = useSocketClient();
 
     const frustumSize = 1000;
-    const aspect = 16 / 9;
+    const aspect = window.innerWidth / window.innerHeight;
 
     const miniMapLocationLeftPixels = window.innerWidth - 8 - window.innerWidth * 0.2;
     const miniMapLocationBottomPixels = 600;
