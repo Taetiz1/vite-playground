@@ -203,7 +203,7 @@ const Character = ({ socket, onRespawn, setOnRespawn }) => {
                     angleYCameraDirection + newDirectionOffset
                 );
                 
-                scene.quaternion.rotateTowards(rotateQuarternion, 0.2)
+                scene.quaternion.rotateTowards(rotateQuarternion, 0.5)
 
                 camera.getWorldDirection(walkDirection);
                 walkDirection.normalize();
