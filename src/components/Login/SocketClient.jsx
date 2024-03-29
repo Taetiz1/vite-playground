@@ -17,7 +17,6 @@ export const SocketclientProvider = ({children}) => {
     const [currentRoom, setCurrentRoom] = useState()
     const [onLoading, setOnLoading] = useState(true);
     const [onConnectionFailed, setOnConnectionFailed] = useState(false)
-    const [posMinimap, setPosMinimap] = useState([0, 0, 0])
     
     const Web_URL = import.meta.env.VITE_SERVER_URL || "http://localhost:3000";
 
@@ -61,8 +60,6 @@ export const SocketclientProvider = ({children}) => {
                 currentRoom,
                 onLoading,
                 setOnLoading,
-                posMinimap,
-                setPosMinimap,
                 clients,
                 setClients,
                 connectServer,

@@ -46,7 +46,6 @@ const Character = ({ socket, onRespawn, setOnRespawn }) => {
     const { 
         avatarUrl,
         onLoading,
-        setPosMinimap,
         currentRoom,
     } = useSocketClient();
 
@@ -259,8 +258,6 @@ const Character = ({ socket, onRespawn, setOnRespawn }) => {
             position: posArray,
             action: currentAction.current
         })
-
-        setPosMinimap(posArray)
     })
   
     return (
@@ -303,3 +300,4 @@ export default Character
 useGLTF.preload("/models/animations/M_Walk_001.glb");
 useGLTF.preload("/models/animations/M_Standing_Idle_001.glb");
 useGLTF.preload("/models/animations/M_Dances_001.glb");
+useGLTF.preload("/models/animations/F_Jog_001.glb");

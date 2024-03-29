@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import { useFrame, useLoader } from "@react-three/fiber";
 import { OrthographicCamera } from "@react-three/drei";
 import { useSocketClient } from "../Login/SocketClient";
@@ -19,7 +19,6 @@ const Minimap = () => {
         clients,
     } = useSocketClient();
 
-    const enterBT = currentRoom.enterBT
     const { id } = socketClient;
 
     const frustumSize = 1000;
@@ -31,6 +30,9 @@ const Minimap = () => {
     useFrame(({ gl, scene, camera }) => {
         const miniMap = miniMapCameraRef.current
         const miniMapSymbol = miniMapSymbolCameraRef.current
+
+        if (!miniMap || !id || !clients[id]) return;
+
         const posMinimap = clients[id].position
 
         gl.setViewport(0, 0, window.innerWidth, window.innerHeight);
@@ -90,7 +92,7 @@ const Minimap = () => {
             playerRef.current.position.set(posMinimap[0], 26, posMinimap[2])
         }
 
-    }, 1);
+    });
 
     return (
         <group>
@@ -131,7 +133,7 @@ const Minimap = () => {
                     depthWrite={false} 
                 />
             </sprite>
-            {enterBT && enterBT.map((bt, index) => (
+            {currentRoom && currentRoom.enterBT.map((bt, index) => (
                 <sprite 
                     key={index} 
                     position={[bt.pos[0], 25.9, bt.pos[2]]} 

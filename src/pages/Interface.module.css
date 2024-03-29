@@ -400,27 +400,3 @@
     top: 5px;
     right: 5px;
 }
-
-.ChatBubble {
-    width: 60vw;
-    max-width: 100%;
-}
-
-.chatBubbleText {
-    position: absolute;
-    max-width: 100%;
-    text-align: center;
-    word-break: break-word;
-    transform: translateY(-100%);
-    padding: 0.25rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    transform: translateX(-50%);
-    border-radius: 0.25rem;
-    background-color: rgb(255, 255, 255, 0.4);
-    backdrop-filter: blur(4px);
-    color: #000;
-    font-family: 'kanit', sans-serif;
-    font-size: 1.25rem;
-    user-select: none;
-}

@@ -1,13 +1,10 @@
-import React , { useState, useEffect, useRef, useMemo, Suspense }from 'react'
+import React , { useState, useEffect, useRef, Suspense }from 'react'
 import { Canvas } from '@react-three/fiber'
 import { Ground } from '../components/Playground/Ground'
-import { Stats, Sky, useHelper, useGLTF, Html, OrbitControls } from '@react-three/drei'
+import { Stats, Sky, useHelper } from '@react-three/drei'
 import Character from '../components/Playground/Character'
 import { io } from 'socket.io-client'
-import { Text, useAnimations } from '@react-three/drei'
-import * as SkeletonUtils from 'three/examples/jsm/utils/SkeletonUtils'
-import { Physics, Debug } from '@micmania1/react-three-rapier'
-import { useFrame } from '@react-three/fiber'
+import { Physics } from '@micmania1/react-three-rapier'
 import { Affix } from '@mantine/core'
 import { containsTHBadWords, filterTHBadWords } from '../components/handleTHBadwords'
 import badWords from 'bad-words';
@@ -20,6 +17,7 @@ import ConnectionFailed from './ConnectionFailed'
 import MessagesBox from '../components/Playground/MessagesBox'
 import VideoCall from '../components/Voice/VideoCall'
 import Minimap from '../components/Playground/miniMap'
+import UserWrapper from '../components/Playground/UserWrapper'
 
 import { IconHeadset } from '@tabler/icons-react'
 import { IconMicrophoneOff } from '@tabler/icons-react'
@@ -34,64 +32,6 @@ import { useVideoChat } from '../components/voiceContext'
 import Login from './Login'
 import Configurator from './Configurator'
 import { pushNotification } from '../components/Playground/Notification'
-
-const OtherPlayers = ({action, avatarUrl, position, rotation}) => {
-  const cloneRef = useRef()
-
-  const { scene } = useGLTF(avatarUrl)
-  const clone = useMemo(() => SkeletonUtils.clone(scene), [scene])
-
-  const { animations: walkAnimation} = useGLTF("/models/animations/M_Walk_001.glb")
-  const { animations: idleAnimation} = useGLTF("/models/animations/M_Standing_Idle_001.glb")
-  const { animations: runAnimation } = useGLTF("/models/animations/F_Jog_001.glb")
-
-  const { actions } = useAnimations([walkAnimation[0], idleAnimation[0], runAnimation[0]], cloneRef)
-  
-  const currentAction = useRef("");
-  
-  useEffect(() => {
-    
-    if(currentAction.current != action) {
-      const nextActionToplay = actions[action];
-      const current = actions[currentAction.current];
-      current?.fadeOut(0.32);
-      nextActionToplay?.reset().fadeIn(0.32).play();
-      currentAction.current = action;
-    }
-    
-  }, [action])
-
-  useFrame((state, delta) => {
-    if(cloneRef.current) {
-      const hips = cloneRef.current.getObjectByName("Hips");
-      hips.position.set(0, hips.position.y, 0);
-    }
-  })
-
-  return (
-    <group ref={cloneRef} >
-      <Suspense>
-        <primitive object={clone} scale={[0.56, 0.56, 0.56]} rotation={[0, 9.4, 0]}/>
-      </Suspense>
-    </group>
-  )
-}
-
-function RotatingText(props) {
-  const textRef = useRef()
-  useFrame(({ camera }) => {
-    if (textRef.current) {
-      textRef.current.lookAt(camera.position);
-    }
-  })
-
-  return (
-      <Text 
-        ref={textRef} 
-        {...props} 
-      />
-  )
-}
 
 // function QuestionButton({position, setshowQuestion}) {
 //   const buttonRef = useRef()
@@ -130,64 +70,6 @@ function RotatingText(props) {
     
 //   );
 // }
-
-const UserWrapper = ({ id, position, rotation, name, action, chathead, avatarUrl}) => {
-  
-  const [showChatBubble, setShowChatBubble] = useState(false);
-
-  useEffect(() => {
-    if(chathead != ''){
-      setShowChatBubble(true)
-      
-    } else {
-      setShowChatBubble(false) 
-    }
-
-  }, [chathead])
-
-  return (
-    <group
-      position={position}
-      rotation={rotation} 
-    >
-        
-      <OtherPlayers action={action} avatarUrl={avatarUrl} />
-        <Html 
-          occlude 
-          position-y={1.6} 
-          zIndexRange={[1, 0]} 
-          distanceFactor={5} 
-          style={{
-            transition: 'all 0.5s',
-            opacity: showChatBubble ? 1 : 0,
-            transform: `scale(${showChatBubble ?  1 : 0.5})`,
-          }}
-        >
-            <div className={interfacestyles.ChatBubble}>
-                
-              <p className={interfacestyles.chatBubbleText}>
-                {chathead}
-              </p>
-
-            </div>
-        </Html>
-
-        <RotatingText 
-          position={[0, 1.1, 0]}
-          color="black"
-          anchorX="center"
-          anchorY="middle"
-          fontSize={0.2}
-          font="/fonts/kanit/kanit-light.otf"
-          outlineWidth={0.025}
-          outlineColor="white"
-        > 
-          {name} 
-        </RotatingText>
-            
-    </group>
-  )
-}
 
 const Lights = ({x, y, z}) => {
   
@@ -669,14 +551,6 @@ function Playground() {
                 <ambientLight intensity={0.4} position={[0, 25, 0]} />
                 <Sky />
                 <Physics timeStep="vary">
-                  {/* <Debug /> */}
-                  {/* <OrbitControls 
-                    enableRotate={true} 
-                    enablePan={true} 
-                    enableDamping={true} 
-                    enableZoom={true}
-                    dampingFactor={0.1} 
-                  /> */}
                   {currentRoom && <>
                     <Ground key={currentRoom.id} currentRoom={currentRoom} setOnLoading={() => setOnLoading(true)} />
                     <Character socket={socketClient} onRespawn={onRespawn} setOnRespawn={() => setOnRespawn(false)} />
