@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, memo } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Text, Html } from '@react-three/drei'
 import OtherPlayers from "./OtherPlayers";
@@ -20,7 +20,7 @@ function RotatingText(props) {
   )
 }
 
-const UserWrapper = ({ id, position, rotation, name, action, chathead, avatarUrl}) => {
+const UserWrapper = memo(({ id, position, rotation, name, action, chathead, avatarUrl}) => {
   
   const [showChatBubble, setShowChatBubble] = useState(false);
 
@@ -77,6 +77,6 @@ const UserWrapper = ({ id, position, rotation, name, action, chathead, avatarUrl
             
     </group>
   )
-}
+})
 
 export default UserWrapper
