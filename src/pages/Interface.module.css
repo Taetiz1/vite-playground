@@ -1,0 +1,426 @@
+.container {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+}
+
+.container canvas {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    cursor: -webkit-grab; 
+    cursor: grab;
+    position: relative;
+}
+
+.container canvas:active {
+    cursor: grabbing;
+}
+
+.InteractiveContainerWrap {
+    display: flex;
+    gap: 6px;
+    align-items: end;
+    justify-content: end;
+}
+
+.InteractiveContainer {
+    display: grid;
+    grid-auto-flow: column;
+    grid-column-gap: 8px;
+    column-gap: 8px;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, .25);
+    border-radius: 28px;
+    padding: 4px;
+    padding-right: 12px; 
+    user-select: none;
+}
+
+.miniMapWrap {
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, .25);
+    border-radius: 28px;
+    padding: 6px;
+    user-select: none;
+}
+
+.SendMsgbuttonContainer button{
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+    outline: none;
+    border: none;
+    border-radius: 24px;
+    background-color: rgba(0, 0, 0, .25);
+    color: #fff;
+    cursor: pointer;
+}
+
+/* .MicbuttonContainerWrap {
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, .25);
+    border-radius: 18px;
+    padding: 5px;
+    user-select: none;
+} */
+
+.otherVideoContainer {
+    display: grid;    
+    grid-template-columns: auto auto;
+    grid-template-rows: auto;
+    grid-gap: 0px;
+}
+
+.otherVideoWrap {
+    position: relative;
+    padding: 0px;
+    margin: 0px;
+    background-color: rgba(0, 0, 0, .25);
+    width: 135px;
+    height: 101.65px;
+    display: grid;
+}
+
+.micOffAlert {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    background-color: #fff;
+    border-radius: 4px;
+    width: 23px;
+    height: 23px;
+    z-index: 9999999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* .muteAlert {
+    position: absolute;
+    top: 2px;
+    left: 28px;
+    background-color: #fff;
+    border-radius: 4px;
+    width: 23px;
+    height: 23px;
+    z-index: 9999999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+} */
+
+.otherVideoWrap a {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    font-family: 'kanit', sans-serif;
+    font-size: 12px;
+    color: #fff;
+    background-color: rgba(0, 0, 0, .5);
+    border-radius: 4px;
+    padding: 2px 6px;
+    z-index: 9999999;
+    text-align: center;
+}
+
+.Micbutton {
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+    outline: none;
+    border: none;
+    border-radius: 24px;
+    color: #fff;
+    cursor: pointer;
+}
+
+.chatInputContainer {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    align-self: flex-end;
+    background-color: rgba(0,0,0,.25);
+    border-radius: 32px;
+    border-color: #eee;
+    padding: 0 16px;
+    height: 48px;
+    width: 100%;
+}
+
+.chatInputContainer .textareaContainer {
+    display: flex;
+}
+
+.chatInputContainer .textareaContainer textarea {
+    background-color: inherit;
+    border: none;
+    color: #fff;
+    font-size: .875rem;
+    flex: 1 1;
+    resize: none;
+    outline: none;
+    overflow: hidden;
+    font-family: 'kanit', sans-serif;
+}
+
+.chatInputContainer button {
+    background: transparent;
+    border: none;
+    transform: scale(1.5);
+    cursor: pointer;
+}
+
+::placeholder {
+    color: white;
+}
+
+.ul_chatBox {
+    display: grid;
+    grid-auto-flow: row;
+    justify-items: flex-end;
+    grid-row-gap: 8px;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 40px;
+    overflow-y: auto;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+    max-height: 600px;
+}
+
+.ul_chatBox::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, and Opera */
+}
+
+.ul_chatBox .li_chatBox {
+    display: list-item;
+    cursor: pointer;
+}
+
+.chatBox {
+    color: #fff;
+    background-color:  rgba(0, 0, 0, .4);
+    position: relative;
+    padding: 8px 16px 8px 16px;
+    border-radius: 35px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    max-width: 300px;
+    min-width: 90px;
+    user-select: none;
+}
+
+.chatBox .message {
+    word-break: break-all;
+    font-size: 14px;
+    line-height: 1.2;
+    font-weight: 300;
+    font-family: 'kanit', sans-serif;
+    margin-top: 5px;
+}
+
+.usersList {
+    position: absolute;
+    bottom: 0;
+    right: 30%;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 180px;
+    border-radius: 5px;
+}
+
+.usersList p{
+    color: black;
+    padding: 12px;
+    text-decoration: none;
+    display: block;
+    max-height: 40px;
+    font-size: 16px;
+}
+
+.usersList p:hover {
+    background-color: #ccc;
+    border-radius: 5px;
+}
+
+.button_container {
+    display: grid;
+    grid-auto-flow: column;
+    grid-column-gap: 16px;
+    column-gap: 16px;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+} 
+
+.button_container button {
+    min-width: 80px;
+    height: 48px;
+    padding: 0px 10px;
+    display: inline-block;
+    outline: none;
+    border: none;
+    border-radius: 24px;
+    background-color: rgba(0, 0, 0, .25);
+    color: #fff;
+    font-family: 'kanit', sans-serif;
+    font-size: large;
+    cursor: pointer;
+}
+
+.button_container button:hover {
+    border-color: transparent;
+    background-color: rgba(0, 0, 0, .5);
+}
+
+.Inventory_button_container button:hover {
+    border-color: transparent;
+    background-color: rgba(0, 0, 0, .5);
+}
+
+.Item_container {
+    border: none;
+    user-select: none;
+    position: relative;
+    cursor: pointer;   
+}
+
+.Item_container:hover {
+    border-color: #ccc;
+}
+
+.itemCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'kanit', sans-serif;
+    height: 100px;
+    background-color: #fff;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 5px;
+    border-radius: 10px;
+    border: 2px solid #eee;
+    user-select: none;
+    position: relative;
+}
+
+.newItemCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'kanit', sans-serif;
+    height: 100px;
+    background-color: #fff;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 5px;
+    border-radius: 10px;
+    border: 3px solid rgb(220, 20, 60, .9);
+    user-select: none;
+    position: relative;   
+}
+
+.Item_equipped {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'kanit', sans-serif;
+    height: 100px;
+    background-color: #fff;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    border-radius: 10px;
+    border: 3px solid #2AAA8A;
+    user-select: none;
+    position: relative;   
+}
+
+.newBadge {
+    width: 20px;
+    height: 20px;
+    background-color: rgb(220, 20, 60);
+    border: 2px solid rgb(220, 20, 60);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 10px;
+    color: white;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+.equipBadge {
+    width: 20px;
+    height: 20px;
+    background-color: rgb(42, 170, 138);
+    border: 2px solid rgb(42, 170, 138);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    color: white;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+.emptyBadge {
+    width: 20px;
+    height: 20px;
+    background-color: transparent;
+    border: 2px solid #eee;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    color: white;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+.ChatBubble {
+    width: 60vw;
+    max-width: 100%;
+}
+
+.chatBubbleText {
+    position: absolute;
+    max-width: 100%;
+    text-align: center;
+    word-break: break-word;
+    transform: translateY(-100%);
+    padding: 0.25rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    transform: translateX(-50%);
+    border-radius: 0.25rem;
+    background-color: rgb(255, 255, 255, 0.4);
+    backdrop-filter: blur(4px);
+    color: #000;
+    font-family: 'kanit', sans-serif;
+    font-size: 1.25rem;
+    user-select: none;
+}
