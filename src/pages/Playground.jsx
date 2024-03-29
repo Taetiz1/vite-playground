@@ -35,7 +35,7 @@ import Login from './Login'
 import Configurator from './Configurator'
 import { pushNotification } from '../components/Playground/Notification'
 
-const OtherPlayers = ({action, avatarUrl}) => {
+const OtherPlayers = ({action, avatarUrl, position, rotation}) => {
   const cloneRef = useRef()
 
   const { scene } = useGLTF(avatarUrl)
@@ -62,8 +62,10 @@ const OtherPlayers = ({action, avatarUrl}) => {
   }, [action])
 
   useFrame((state, delta) => {
-    const hips = cloneRef.current.getObjectByName("Hips");
-    hips.position.set(0, hips.position.y, 0);
+    if(cloneRef.current) {
+      const hips = cloneRef.current.getObjectByName("Hips");
+      hips.position.set(0, hips.position.y, 0);
+    }
   })
 
   return (
@@ -146,7 +148,7 @@ const UserWrapper = ({ id, position, rotation, name, action, chathead, avatarUrl
   return (
     <group
       position={position}
-      rotation={rotation}
+      rotation={rotation} 
     >
         
       <OtherPlayers action={action} avatarUrl={avatarUrl} />
@@ -657,7 +659,7 @@ function Playground() {
                 }}
               >
                 
-                <Minimap key={currentRoom.id} />
+                <Minimap />
                 {testing ? <Stats/> : null}
                 {testing ? <axesHelper args={[2]}/> : null}
                 {testing ? <gridHelper args={[10, 10]}/> : null}

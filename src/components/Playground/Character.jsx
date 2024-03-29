@@ -50,8 +50,8 @@ const Character = ({ socket, onRespawn, setOnRespawn }) => {
         currentRoom,
     } = useSocketClient();
 
-    const [oldPos, setOldPos] = useState([])
-    const [oldRot, setOldRot] = useState([])
+    // const [oldPos, setOldPos] = useState([])
+    // const [oldRot, setOldRot] = useState([])
     const [spawnPoint, setSpawnPoint] = useState()
 
     const { forward, backward, left, right, shift, } = useInput();
@@ -69,16 +69,16 @@ const Character = ({ socket, onRespawn, setOnRespawn }) => {
     const bodyRef = useRef(null);
     const { id } = socket
 
-    const arraysEqual = (array1, array2) => {
+    // const arraysEqual = (array1, array2) => {
 
-        if(array1.length !== array2.length) return false;
+    //     if(array1.length !== array2.length) return false;
         
-        for(let i = 0; i < array1.length; i++) {
-          if(array1[i] !== array2[i]) return false;
-        }
+    //     for(let i = 0; i < array1.length; i++) {
+    //       if(array1[i] !== array2[i]) return false;
+    //     }
         
-        return true;
-    };
+    //     return true;
+    // };
 
     useEffect(() => {
         if(onRespawn) {
@@ -241,18 +241,24 @@ const Character = ({ socket, onRespawn, setOnRespawn }) => {
         
         rotation.toArray(rotArray) 
 
-        if(!arraysEqual(oldPos, posArray) || !arraysEqual(oldRot, rotArray)) {
+        // if(!arraysEqual(oldPos, posArray) || !arraysEqual(oldRot, rotArray)) {
 
-            socket.emit('move', {
-                id,
-                rotation: rotArray,
-                position: posArray,
-                action: currentAction.current
-            })
+        //     socket.emit('move', {
+        //         id,
+        //         rotation: rotArray,
+        //         position: posArray,
+        //         action: currentAction.current
+        //     })
 
-            setOldPos(posArray)
-            setOldRot(rotArray)
-        }
+        //     setOldPos(posArray)
+        //     setOldRot(rotArray)
+        // }
+        socket.emit('move', {
+            id,
+            rotation: rotArray,
+            position: posArray,
+            action: currentAction.current
+        })
 
         setPosMinimap(posArray)
     })

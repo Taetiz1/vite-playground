@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useFrame, useLoader } from "@react-three/fiber";
 import { OrthographicCamera } from "@react-three/drei";
 import { useSocketClient } from "../Login/SocketClient";
@@ -6,19 +6,21 @@ import { TextureLoader } from "three";
 import player from '/assets/mask.svg'
 import gate from '/assets/enter.png'
 
-const Minimap = (props) => {
-
+const Minimap = () => {
     const miniMapCameraRef = useRef();
     const miniMapSymbolCameraRef = useRef();
+    const playerRef = useRef()
     const texturePlayer = useLoader(TextureLoader, player)
     const textureGate = useLoader(TextureLoader, gate)
 
     const { 
-        posMinimap,
-        currentRoom
+        currentRoom,
+        socketClient,
+        clients,
     } = useSocketClient();
 
     const enterBT = currentRoom.enterBT
+    const { id } = socketClient;
 
     const frustumSize = 1000;
     const aspect = window.innerWidth / window.innerHeight;
@@ -29,6 +31,7 @@ const Minimap = (props) => {
     useFrame(({ gl, scene, camera }) => {
         const miniMap = miniMapCameraRef.current
         const miniMapSymbol = miniMapSymbolCameraRef.current
+        const posMinimap = clients[id].position
 
         gl.setViewport(0, 0, window.innerWidth, window.innerHeight);
         gl.setScissor(0, 0, window.innerWidth, window.innerHeight);
@@ -83,6 +86,10 @@ const Minimap = (props) => {
         miniMapSymbol.updateProjectionMatrix();
         gl.render(scene, miniMapSymbol);
 
+        if(playerRef.current) {
+            playerRef.current.position.set(posMinimap[0], 26, posMinimap[2])
+        }
+
     }, 1);
 
     return (
@@ -113,7 +120,7 @@ const Minimap = (props) => {
                 layers={[1]}
             /> 
              <sprite 
-                position={[posMinimap[0], 26, posMinimap[2]]} 
+                ref={playerRef}
                 scale={[2, 2]}
                 layers={[1]}
             >
