@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, memo } from "react";
 import { useFrame, useLoader } from "@react-three/fiber";
 import { OrthographicCamera } from "@react-three/drei";
 import { useSocketClient } from "../Login/SocketClient";
@@ -6,7 +6,7 @@ import { TextureLoader } from "three";
 import player from '/assets/mask.svg'
 import gate from '/assets/enter.png'
 
-const Minimap = () => {
+const Minimap = memo(() => {
     const miniMapCameraRef = useRef();
     const miniMapSymbolCameraRef = useRef();
     const playerRef = useRef()
@@ -152,6 +152,6 @@ const Minimap = () => {
             ))}
         </group>
     )
-}
+})
 
 export default Minimap

@@ -20,7 +20,7 @@ const OtherPlayers = ({action, avatarUrl}) => {
     
     useEffect(() => {
       
-      if(currentAction.current != action) {
+      if(currentAction.current !== action) {
         const nextActionToplay = actions[action];
         const current = actions[currentAction.current];
         current?.fadeOut(0.32);

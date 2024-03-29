@@ -217,9 +217,9 @@ const Character = ({ socket, onRespawn, setOnRespawn }) => {
 
                 const velocity = currentAction.current == "F_Jog_001" ? 3 : 2;
 
-                const moveX = walkDirection.x * velocity * delta;
-                const moveY = walkDirection.y * velocity * delta;
-                const moveZ = walkDirection.z * velocity * delta;
+                const moveX = walkDirection.x * velocity * (delta * 0.75);
+                const moveY = walkDirection.y * velocity * (delta * 0.75);
+                const moveZ = walkDirection.z * velocity * (delta * 0.75);
 
                 movement.x =  moveX
                 movement.y =  moveY
