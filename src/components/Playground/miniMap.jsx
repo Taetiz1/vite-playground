@@ -38,16 +38,16 @@ const Minimap = (props) => {
 
         // render minicamera
         gl.setViewport(
-        miniMapLocationLeftPixels,
-        miniMapLocationBottomPixels,
-        window.innerWidth * 0.2,
-        window.innerHeight * 0.25
+            miniMapLocationLeftPixels,
+            miniMapLocationBottomPixels,
+            window.innerWidth * 0.2,
+            window.innerHeight * 0.25
         );
         gl.setScissor(
-        miniMapLocationLeftPixels,
-        miniMapLocationBottomPixels,
-        window.innerWidth * 0.2,
-        window.innerHeight * 0.25
+            miniMapLocationLeftPixels,
+            miniMapLocationBottomPixels,
+            window.innerWidth * 0.2,
+            window.innerHeight * 0.25
         );
 
         miniMap.position.x = posMinimap[0];
@@ -59,6 +59,19 @@ const Minimap = (props) => {
         miniMap.updateMatrixWorld();
         miniMap.updateProjectionMatrix();
         gl.render(scene, miniMap);
+
+        // gl.setViewport(
+        //     miniMapLocationLeftPixels - 15,
+        //     miniMapLocationBottomPixels - 20,
+        //     (window.innerWidth * 0.2) + 30,
+        //     (window.innerHeight * 0.25) + 30
+        // );
+        // gl.setScissor(
+        //     miniMapLocationLeftPixels - 15,
+        //     miniMapLocationBottomPixels - 20 ,
+        //     window.innerWidth * 0.2 + 30,
+        //     window.innerHeight * 0.25 + 30
+        // );
 
         miniMapSymbol.position.x = posMinimap[0];
         miniMapSymbol.position.z = posMinimap[2];
@@ -84,7 +97,7 @@ const Minimap = (props) => {
                 bottom={frustumSize / -2}
                 far={500}
                 near={0.1}
-                position={[0, 10, 0]}
+                position={[0, 30, 0]}
             /> 
             <OrthographicCamera
                 ref={miniMapSymbolCameraRef}
@@ -96,12 +109,12 @@ const Minimap = (props) => {
                 bottom={frustumSize / -2}
                 far={500}
                 near={0.1}
-                position={[0, 10, 0]}
+                position={[0, 30, 0]}
                 layers={[1]}
             /> 
              <sprite 
-                position={[posMinimap[0], 9.9, posMinimap[2]]} 
-                scale={[3, 3]}
+                position={[posMinimap[0], 26, posMinimap[2]]} 
+                scale={[2, 2]}
                 layers={[1]}
             >
                 <spriteMaterial 
@@ -114,7 +127,7 @@ const Minimap = (props) => {
             {enterBT && enterBT.map((bt, index) => (
                 <sprite 
                     key={index} 
-                    position={[bt.pos[0], 9.9, bt.pos[2]]} 
+                    position={[bt.pos[0], 25.9, bt.pos[2]]} 
                     scale={[5, 5]} 
                     transparent 
                     alphaTest={0.5}

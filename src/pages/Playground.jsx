@@ -657,7 +657,7 @@ function Playground() {
                 }}
               >
                 
-                <Minimap />
+                <Minimap key={currentRoom.id} />
                 {testing ? <Stats/> : null}
                 {testing ? <axesHelper args={[2]}/> : null}
                 {testing ? <gridHelper args={[10, 10]}/> : null}
