@@ -202,12 +202,13 @@ const Character = ({ socket, onRespawn, setOnRespawn, }) => {
 
                 if(shift) {
                     action = "F_Jog_001"
-                    if(space) {
-                        console.log('space')
-                    }
-                } else if(space) {
-                    console.log('space')
-                }
+                    // if(space) {
+                    //     console.log('space')
+                    // }
+                } 
+                // else if(space) {
+                //     console.log('space')
+                // }
                 if(doEmote) {
                     setDoEmote(false)
                     setEmote('')
@@ -216,9 +217,11 @@ const Character = ({ socket, onRespawn, setOnRespawn, }) => {
                     }
                 }
 
-            } else if(space) {
-                action = 'Sitting'
-            } else if(doEmote) {
+            } 
+            // else if(space) {
+            //     action = 'Sitting'
+            // } 
+            else if(doEmote) {
                 action = emote
             }
         }
