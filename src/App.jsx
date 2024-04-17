@@ -11,8 +11,8 @@ function App() {
 
   window.addEventListener( "pageshow", function ( event ) {
     var historyTraversal = event.persisted || 
-                           ( typeof window.performance != "undefined" && window.performance.navigation.type === 2 );
-    if ( historyTraversal ) {
+      ( typeof window.performance !== "undefined" && window.performance.navigation.type === 2 );
+    if(historyTraversal) {
       window.location.reload();
     }
   });
@@ -20,7 +20,7 @@ function App() {
   const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
   useEffect(() => {
-    if(isMobileDevice){
+    if(isMobileDevice) {
       setIsmobile(isMobileDevice)
     }
 

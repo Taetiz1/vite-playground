@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useState } from 'react'
 import { Vector3, TextureLoader }from 'three'
 import { useSocketClient } from '../Login/SocketClient';
 import { useVideoChat } from '../voiceContext';

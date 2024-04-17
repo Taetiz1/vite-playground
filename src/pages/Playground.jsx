@@ -19,7 +19,7 @@ import VideoCall from '../components/Voice/VideoCall'
 import Minimap from '../components/Playground/miniMap'
 import UserWrapper from '../components/Playground/UserWrapper'
 
-import { IconHeadset } from '@tabler/icons-react'
+import { IconHeadset, IconUser } from '@tabler/icons-react'
 import { IconMicrophoneOff } from '@tabler/icons-react'
 import micMute from '/assets/micMute.png'
 import mute from '/assets/mute.png'
@@ -106,7 +106,9 @@ function Playground() {
     setOnConnectionFailed,
     clients,
     setClients,
-    connectServer
+    connectServer,
+    setDoEmote,
+    setEmote
   } = useSocketClient();
 
   const {
@@ -120,7 +122,6 @@ function Playground() {
   const [showPicker, setShowPicker] = useState(false);
   const [showUserSuggestions, setShowUserSuggestions] = useState(false)
   const [onRespawn, setOnRespawn] = useState(false) 
-
   const [isGetEmail, setIsGetEmail] = useState(false)
 
   const testing = false
@@ -265,6 +266,69 @@ function Playground() {
               
               <div className={interfacestyles.InteractiveContainerWrap}>
 
+              <div 
+                style={{
+                  display: 'flex',
+                  padding: "4px",
+                  margin: '4px',
+                  marginRight: '0px',
+                  backgroundColor: "rgba(0, 0, 0, .25)",
+                  borderRadius: "28px",
+                  height: "48px",
+                  gap: "6px"
+                }}
+              > 
+                <button 
+                  className={interfacestyles.Emotebutton}
+                  onClick={() => {
+                    setDoEmote(true)
+                    setEmote('M_Standing_Expressions_013')
+                  }}
+                >
+                  Hello
+                </button>
+
+                <button 
+                  className={interfacestyles.Emotebutton}
+                  onClick={() => {
+                    setDoEmote(true)
+                    setEmote('M_Dances_009')
+                  }}
+                >
+                  Dance
+                </button>
+
+                <button 
+                  className={interfacestyles.Emotebutton}
+                  onClick={() => {
+                    setDoEmote(true)
+                    setEmote('M_Standing_Expressions_015')
+                  }}
+                >
+                  Save
+                </button>
+
+                <button 
+                  className={interfacestyles.Emotebutton}
+                  onClick={() => {
+                    setDoEmote(true)
+                    setEmote('M_Standing_Expressions_016')
+                  }}
+                >
+                  Not Good
+                </button>
+
+                <button 
+                  className={interfacestyles.Emotebutton}
+                  onClick={() => {
+                    setDoEmote(true)
+                    setEmote('Sitting Ground')
+                  }}
+                >
+                  Sit
+                </button>
+
+              </div>
                 <div style={{
                   display: 'flex',
                   padding: connectPeer ? "0px" : "4px",
@@ -311,6 +375,8 @@ function Playground() {
                     <VideoCall />  
                   </div>}
                 </div>
+                
+
 
                 <div className={interfacestyles.InteractiveContainer}>
                   

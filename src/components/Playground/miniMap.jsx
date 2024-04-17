@@ -121,7 +121,7 @@ const Minimap = memo(() => {
                 position={[0, 30, 0]}
                 layers={[1]}
             /> 
-             <sprite 
+            <sprite 
                 ref={playerRef}
                 scale={[2, 2]}
                 layers={[1]}

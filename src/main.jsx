@@ -18,7 +18,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <SocketclientProvider>
           <VideoChatProvider>
             <CharacterCustomizationProvider>
-                <App />
+              <App />
             </CharacterCustomizationProvider>
           </VideoChatProvider>
         </SocketclientProvider>

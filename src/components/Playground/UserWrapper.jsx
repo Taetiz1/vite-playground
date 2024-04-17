@@ -1,24 +1,8 @@
-import React, { useState, useEffect, useRef, memo } from "react";
-import { useFrame } from "@react-three/fiber";
-import { Text, Html } from '@react-three/drei'
+import React, { useState, useEffect, memo } from "react";
+import { Html } from '@react-three/drei';
 import OtherPlayers from "./OtherPlayers";
-import styles from './UserWrapper.module.css'
-
-function RotatingText(props) {
-  const textRef = useRef()
-  useFrame(({ camera }) => {
-    if (textRef.current) {
-      textRef.current.lookAt(camera.position);
-    }
-  })
-
-  return (
-      <Text 
-        ref={textRef} 
-        {...props} 
-      />
-  )
-}
+import styles from './UserWrapper.module.css';
+import RotatingText from "./RotatingText";
 
 const UserWrapper = memo(({ id, position, rotation, name, action, chathead, avatarUrl}) => {
   

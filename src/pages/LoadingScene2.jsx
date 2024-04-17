@@ -31,7 +31,7 @@ const LoadingScene2 = ({ onLoading, setOnLoading }) => {
                     disabled={progress < 100}
                     onClick={setOnLoading}
                 >
-                   {progress < 100 ? `${progress.toFixed(0)}%` : 'OK'}
+                   {progress < 100 ? `Loading...${progress.toFixed(0)}%` : 'OK'}
                 </button>
             </div>
 

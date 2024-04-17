@@ -17,13 +17,22 @@ export const SocketclientProvider = ({children}) => {
     const [currentRoom, setCurrentRoom] = useState()
     const [onLoading, setOnLoading] = useState(true);
     const [onConnectionFailed, setOnConnectionFailed] = useState(false)
+    const [doEmote, setDoEmote] = useState(false)
+    const [emote, setEmote] = useState('')
+    const [onInteractive, setOnInteractive] = useState(false)
+    const [interractivePosition, setInterractivePosition] = useState({
+        pos: [0, 0, 0],
+        rot: [0, 0, 0]
+    })
+    const [avatarAnimation, setAvatarAnimation] = useState([])
     
     const Web_URL = import.meta.env.VITE_SERVER_URL || "http://localhost:3000";
 
     useEffect(() => {
         if(socketClient) {
-            socketClient.on('configSetting', (config) => {
-                setAvatarUrl(config)
+            socketClient.on('configSetting', ({avatarUrl, animations}) => {
+                setAvatarUrl(avatarUrl)
+                setAvatarAnimation(animations)
             })
 
             socketClient.on('starting point', (spawn) => {
@@ -66,7 +75,16 @@ export const SocketclientProvider = ({children}) => {
                 setConnectServer,
                 onConnectionFailed,
                 setOnConnectionFailed,
-                startPoint
+                startPoint,
+                doEmote, 
+                setDoEmote,
+                emote,
+                setEmote,
+                onInteractive, 
+                setOnInteractive,
+                interractivePosition, 
+                setInterractivePosition,
+                avatarAnimation
             }}
         >
             {children}

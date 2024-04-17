@@ -3,10 +3,12 @@ import { RigidBody } from '@micmania1/react-three-rapier'
 import Scene from './Scene';
 import EnterSceneBT from './EnterSceneBT';
 import { CuboidCollider } from '@micmania1/react-three-rapier';
+import InteractiveButton from './InteractiveButton';
 
 export const Ground = ({ currentRoom, setOnLoading}) => {
   const colliders = currentRoom.colliders;
   const enterBT = currentRoom.enterBT
+  const InteractiveBT = currentRoom.interactive
 
     if(currentRoom.id === "0") {
       return (
@@ -29,6 +31,15 @@ export const Ground = ({ currentRoom, setOnLoading}) => {
               atPos={bt.atPos} 
             />
           ))}
+
+          {InteractiveBT && InteractiveBT.map((bt, index) => (
+            <InteractiveButton 
+              key={index}
+              emote={bt.emote} 
+              pos={bt.pos} 
+              rot={bt.rot} 
+            />
+          ))}
         </>
       )
     } else { 
@@ -46,11 +57,22 @@ export const Ground = ({ currentRoom, setOnLoading}) => {
               />
             ))}
 
-            {colliders && <>
-              {colliders.cuboid && colliders.cuboid.map((cube, index) => (
-                <CuboidCollider key={index} position={cube.pos} rotation={cube.rot} args={cube.args} />
-              ))}  
-            </>}
+            {colliders && 
+              <>
+                {colliders.cuboid && colliders.cuboid.map((cube, index) => (
+                  <CuboidCollider key={index} position={cube.pos} rotation={cube.rot} args={cube.args} />
+                ))}  
+              </>
+            }
+            
+            {InteractiveBT && InteractiveBT.map((bt, index) => (
+              <InteractiveButton 
+                key={index}
+                emote={bt.emote} 
+                pos={bt.pos} 
+                rot={bt.rot} 
+              />
+            ))}
 
             <group position={[0, -4, 0]}> 
               <mesh rotation-x={Math.PI * -0.5}>

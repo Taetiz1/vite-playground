@@ -46,7 +46,7 @@ const LoadingScene = ({username, onLoading, setOnLoading }) => {
                                 setOnLoading()
                             }}
                         >
-                            {progress < 100 ? `${progress.toFixed(0)}%` : 'OK'}
+                            {progress < 100 ? `Loading...${progress.toFixed(0)}%` : 'OK'}
                         </button>
 
                     </>}
