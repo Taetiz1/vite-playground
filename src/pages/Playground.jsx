@@ -560,10 +560,10 @@ function Playground() {
                 </div>
                 
               </Container> 
-              <Button variant="light" radius="md" uppercase onClick={() => {if(Index > 0 && Index <= 2) setIndex(Index-1)}}>
+              <Button variant="light" radius="md" uppercase onClick={() => {if(Index > 0) {setIndex(Index-1)} else {setIndex(2)}}}>
                 Back
               </Button>
-              <Button variant="light" radius="md" uppercase onClick={() => {if(Index >= 0 && Index < 2) setIndex(Index+1)}}>
+              <Button variant="light" radius="md" uppercase onClick={() => {if(Index < 2) {setIndex(Index+1)} else {setIndex(0)}}}>
                 Next
               </Button>
             </Modal>
@@ -649,7 +649,7 @@ function Playground() {
               >
                 
                 <Minimap />
-                <Stats/>
+                {/* <Stats/> */}
                 <Lights x={40} y={25} z={20} />
                 <Lights x={-60} y={25} z={-10} />
                 
