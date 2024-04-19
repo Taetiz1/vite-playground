@@ -5,7 +5,7 @@ import { Stats, Sky, useHelper } from '@react-three/drei'
 import Character from '../components/Playground/Character'
 import { io } from 'socket.io-client'
 import { Physics } from '@micmania1/react-three-rapier'
-import { Affix } from '@mantine/core'
+import { Affix, Modal, Container, useMantineTheme, ScrollArea, Image, Button, Text } from '@mantine/core'
 import { containsTHBadWords, filterTHBadWords } from '../components/handleTHBadwords'
 import badWords from 'bad-words';
 import TextareaAutosize  from 'react-textarea-autosize'
@@ -19,8 +19,7 @@ import VideoCall from '../components/Voice/VideoCall'
 import Minimap from '../components/Playground/miniMap'
 import UserWrapper from '../components/Playground/UserWrapper'
 
-import { IconHeadset, IconUser } from '@tabler/icons-react'
-import { IconMicrophoneOff } from '@tabler/icons-react'
+import { IconHeadset } from '@tabler/icons-react'
 import micMute from '/assets/micMute.png'
 import mute from '/assets/mute.png'
 import { AgoraVideoPlayer } from 'agora-rtc-react'
@@ -71,18 +70,25 @@ import { pushNotification } from '../components/Playground/Notification'
 //   );
 // }
 
-const Lights = ({x, y, z}) => {
-  
-  const light = useRef()
-  // useHelper(light, THREE.DirectionalLightHelper, 'cyan')
+const slideImages = [
+  {
+    url: 'https://images.unsplash.com/photo-1509721434272-b79147e0e708?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80',
+    caption: 'Slide 1'
+  },
+  {
+    url: 'https://images.unsplash.com/photo-1506710507565-203b9f24669b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1536&q=80',
+    caption: 'Slide 2'
+  },
+  {
+    url: 'https://images.unsplash.com/photo-1536987333706-fc9adfb10d91?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80',
+    caption: 'Slide 3'
+  },
+];
 
+const Lights = ({x, y, z}) => {
   return (
     <group position={[x, y, z]}>
-        <pointLight  color="#bdefff" intensity={0.3}  />
-        {/* <mesh>
-          <boxBufferGeometry />
-          <meshStandardMaterial wireframe/>
-        </mesh> */}
+      <pointLight  color="#bdefff" intensity={0.3}  />
     </group>
   )
 }
@@ -108,7 +114,11 @@ function Playground() {
     setClients,
     connectServer,
     setDoEmote,
-    setEmote
+    emote,
+    setEmote,
+    showInformation,
+    setShowInformation,
+    avatarUrl
   } = useSocketClient();
 
   const {
@@ -123,12 +133,12 @@ function Playground() {
   const [showUserSuggestions, setShowUserSuggestions] = useState(false)
   const [onRespawn, setOnRespawn] = useState(false) 
   const [isGetEmail, setIsGetEmail] = useState(false)
-
-  const testing = false
+  const theme = useMantineTheme();
 
   const messageListRef = useRef();
 
   // const [questions, setQuestions] = useState([{}])
+  const [Index, setIndex] = useState(0)
 
   useEffect(() => {
     if(connectServer) { 
@@ -211,7 +221,8 @@ function Playground() {
       }
       
       const msg = {
-        id, 
+        id,
+        image: avatarUrl.split("?")[0].replace('.glb', '.png'), 
         username: username, 
         message: cleanMsg,
         time: Date.now()
@@ -321,6 +332,7 @@ function Playground() {
                 <button 
                   className={interfacestyles.Emotebutton}
                   onClick={() => {
+                    if(emote === '')
                     setDoEmote(true)
                     setEmote('Sitting Ground')
                   }}
@@ -437,7 +449,6 @@ function Playground() {
     
                 {showUserSuggestions && (
                   <div className={interfacestyles.usersList}>
-    
                     {Object.keys(clients)
                       .filter((clientKey) => clientKey !== socketClient.id)
                       .map((client) => {
@@ -526,9 +537,39 @@ function Playground() {
                 </button>
               </div>
             </Affix>
+
+            <Modal 
+              size="100%" 
+              opened={showInformation} 
+              onClose={() => {setShowInformation(false)}} 
+              style={{
+                zIndex: '2'
+              }} 
+              overlayProps={{
+                color: theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[2],
+                opacity: 0.55,
+                blur: 3,
+              }}
+              scrollAreaComponent={ScrollArea.Autosize}
+            >
+              <Container>
+                <div style={{ position: "relative", width: "1000px", height: "500px" }}>
+                  <Image key={0} width={1000} height={500}  src={slideImages[0].url} alt="Random image" style={{position: "absolute", top: 0, left: 0, zIndex: Index === 0 ? 1 : 0 }} />
+                  <Image key={1} width={1000} height={500}  src={slideImages[1].url} alt="Random image" style={{position: "absolute", top: 0, left: 0, zIndex: Index === 1 ? 1 : 0 }} />
+                  <Image key={2} width={1000} height={500}  src={slideImages[2].url} alt="Random image" style={{position: "absolute", top: 0, left: 0, zIndex: Index === 2 ? 1 : 0 }} />
+                </div>
+                
+              </Container> 
+              <Button variant="light" radius="md" uppercase onClick={() => {if(Index > 0 && Index <= 2) setIndex(Index-1)}}>
+                Back
+              </Button>
+              <Button variant="light" radius="md" uppercase onClick={() => {if(Index >= 0 && Index < 2) setIndex(Index+1)}}>
+                Next
+              </Button>
+            </Modal>
     
     
-            {/* <Modal size="xl" opened={showQuestion} onClose={() => { setshowQuestion(false) }} title="Question" style={{zIndex: '2',}}>
+            {/* <Modal size="xl" opened={showQuestion} onClose={() => { setshowQuestion(false) }} title="Question" style={{zIndex: '2'}}>
               <div className={quizStyles.quizCard}>
                 {showScore ? (
                   <div className={quizStyles.result}>
@@ -608,9 +649,7 @@ function Playground() {
               >
                 
                 <Minimap />
-                {testing ? <Stats/> : null}
-                {testing ? <axesHelper args={[2]}/> : null}
-                {testing ? <gridHelper args={[10, 10]}/> : null}
+                <Stats/>
                 <Lights x={40} y={25} z={20} />
                 <Lights x={-60} y={25} z={-10} />
                 

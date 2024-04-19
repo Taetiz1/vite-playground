@@ -7,11 +7,6 @@ import { RigidBody, CapsuleCollider } from "@micmania1/react-three-rapier";
 import { useSocketClient } from "../Login/SocketClient";
 import GetAvatarAnimation from "./GetAvatarAnimation";
 
-let walkDirection = new Vector3();
-let rotateAngle = new Vector3(0, 1, 0);
-let rotateQuarternion = new Quaternion();
-let cameraTarget = new Vector3()
-
 const directionOffset = ({ forward, backward, left, right }) => {
     var directionOffset = 0;
 
@@ -43,7 +38,13 @@ const directionOffset = ({ forward, backward, left, right }) => {
     return directionOffset;
 }
 
-const Character = ({ socket, onRespawn, setOnRespawn, }) => {
+const Character = ({ socket, onRespawn, setOnRespawn }) => {
+   
+    let walkDirection = new Vector3();
+    let rotateAngle = new Vector3(0, 1, 0);
+    let rotateQuarternion = new Quaternion();
+    let cameraTarget = new Vector3()
+
     const { 
         avatarUrl,
         onLoading,
@@ -61,19 +62,18 @@ const Character = ({ socket, onRespawn, setOnRespawn, }) => {
     // const [oldPos, setOldPos] = useState([])
     // const [oldRot, setOldRot] = useState([])
     const [spawnPoint, setSpawnPoint] = useState()
-   
 
     const { forward, backward, left, right, shift, space } = useInput();
     const { scene } = useGLTF(avatarUrl);
     
     const modelRef = useRef();
     const controlsRef = useRef();
+    const bodyRef = useRef(null);
 
     const animations = useMemo(() => GetAvatarAnimation(avatarAnimation), []);
 
     const { actions } = useAnimations(animations, scene)
 
-    const bodyRef = useRef(null);
     const { id } = socket
 
     // const arraysEqual = (array1, array2) => {
@@ -149,7 +149,7 @@ const Character = ({ socket, onRespawn, setOnRespawn, }) => {
     }, [onLoading, onInteractive])
   
     scene.scale.set(0.56, 0.56, 0.56);
-  
+
     const currentAction = useRef("");
     const camera = useThree(state => state.camera);
     const gl = useThree(state => state.gl);
@@ -239,7 +239,6 @@ const Character = ({ socket, onRespawn, setOnRespawn, }) => {
     useFrame((state, delta) => {
         const body = bodyRef.current;
         const movement = new Vector3;
-        const translation = body.translation();
         
         const hips = modelRef.current.getObjectByName("Hips");
         hips.position.set(0, hips.position.y, 0);
@@ -287,7 +286,7 @@ const Character = ({ socket, onRespawn, setOnRespawn, }) => {
                 movement.y =  moveY
                 movement.z =  moveZ
                 
-                body.setTranslation(translation.add(movement), true)
+                body.setTranslation(body.translation().add(movement), true)
                 
                 updateCameraTarget(moveX, moveY, moveZ);
             } 

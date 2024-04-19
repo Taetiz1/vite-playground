@@ -1,11 +1,14 @@
 import React from "react";
 import interfacestyles from '../../pages/Interface.module.css'
 import { useSocketClient } from "../Login/SocketClient";
+import { Avatar, Flex, Text, HoverCard } from "@mantine/core";
+import { IconInfoCircle } from "@tabler/icons-react";
 
 const MessagesBox = ({message, msgIndex}) => {
     const { username } = useSocketClient();
     const suggestion = `@${username} `
     let onSuggestion;
+    const date = new Date(message.time);
 
     const highlightText = (text) => {
         
@@ -24,22 +27,54 @@ const MessagesBox = ({message, msgIndex}) => {
         onSuggestion = false
     }
     
-    
     return(
         <li key={msgIndex} className={interfacestyles.li_chatBox}>
             <div className={interfacestyles.chatBox} >
-                <span style={{
-                    backgroundColor: `#a648e5`,
-                    color: '#eee',
-                    fontWeight: '500',
-                    fontSize: '16px',
-                    fontFamily: `'kanit', sans-serif`,
-                    borderRadius: `8px`,
-                    padding: '2px 4px 2px 4px',
-                }}>
-                    {message.username} 
-                </span>
-                <p className={interfacestyles.message}>{highlightText(message.message)}</p>
+                <Flex
+                    mih={50}
+                    gap="xs"
+                    justify="flex-start"
+                    align="center"
+                    direction="row"
+                    wrap="wrap"
+                >
+                    <span 
+                        style={{
+                            backgroundColor: `#a648e5`,
+                            color: '#eee',
+                            fontWeight: '500',
+                            fontSize: '16px',
+                            fontFamily: `'kanit', sans-serif`,
+                            borderRadius: `28px`,
+                        }}
+                    >
+                        <Avatar radius="xl" src={message.image} alt="avatar" />
+                    </span>
+                    <Text
+                        sx={{ fontFamily: 'Greycliff CF, sans-serif' }}
+                        ta="center"
+                        fz="md"
+                        fw={700}
+                        color="wheat"
+                    >
+                        {message.username}
+                    </Text>
+                    <HoverCard>
+                        <HoverCard.Target>
+                            <IconInfoCircle
+                                size={20}
+                                strokeWidth={2}
+                                color="white"
+                            />
+                        </HoverCard.Target>
+                        <HoverCard.Dropdown>
+                            <Text size="sm" color="black">
+                                {date.toLocaleString()}
+                            </Text>
+                        </HoverCard.Dropdown>
+                    </HoverCard>
+                </Flex>
+                <div className={interfacestyles.message}><p>{highlightText(message.message)}</p></div>
             </div>
         </li> 
     )

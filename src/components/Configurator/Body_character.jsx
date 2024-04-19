@@ -7,7 +7,7 @@ const Body_character = ({
 }) => {
 
   const { 
-    avatarUrl,
+    avatarUrl
   } = useSocketClient();
 
   const cloneRef = useRef()
@@ -47,7 +47,7 @@ const Body_character = ({
   };
 
   useEffect(() => {
-    delayWave(12);
+    delayWave(0);
   }, []);
 
   clone.traverse((object) => {

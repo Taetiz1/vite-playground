@@ -5,7 +5,7 @@ import { useFrame } from "@react-three/fiber";
 import * as THREE from "three"
 
 const cameraPositions = {
-    [CameraModes.Free]: {
+    "Free": {
         minDistance: 2,
         maxDistance: 3,
     },
@@ -34,8 +34,7 @@ export const CameraControls = () => {
     const OrbitControlsRef = useRef();
 
     useFrame((state, delta) => {
-        if( cameraMode === CameraModes.Free ) {
-                
+        if(cameraMode === "Free") {
             OrbitControlsRef.current.minDistance = cameraPositions[cameraMode].minDistance;
             OrbitControlsRef.current.maxDistance = cameraPositions[cameraMode].maxDistance;
             return; 
@@ -44,8 +43,8 @@ export const CameraControls = () => {
         OrbitControlsRef.current.target.lerp(cameraPositions[cameraMode].target, 3*delta);
         OrbitControlsRef.current.minDistance = cameraPositions[cameraMode].minDistance;
         OrbitControlsRef.current.maxDistance = cameraPositions[cameraMode].maxDistance;
-        cameraPositions[CameraModes.Free].minDistance = OrbitControlsRef.current.minDistance
-        cameraPositions[CameraModes.Free].maxDistance = OrbitControlsRef.current.maxDistance
+        cameraPositions["Free"].minDistance = OrbitControlsRef.current.minDistance
+        cameraPositions["Free"].maxDistance = OrbitControlsRef.current.maxDistance
     })
 
     return ( 
@@ -54,7 +53,7 @@ export const CameraControls = () => {
                 ref={OrbitControlsRef}
                 enablePan={false} 
                 onStart={() => {
-                    setCameraMode(CameraModes.Free)
+                    setCameraMode('Free')
                 }} 
             />
         </>

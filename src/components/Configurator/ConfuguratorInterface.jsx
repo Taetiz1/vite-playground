@@ -1,7 +1,6 @@
 import React from "react"
 import { Affix, Button, Group } from "@mantine/core"
 import { CameraModes, useCharacterCustomization } from "./CharacterCustomization";
-import { useSocketClient } from "../Login/SocketClient";
 
 const ConfiguratorInterface = ({ onLoading, setCustomMode, avatarMode, setAvatarMode, enterPlaygroud }) => {
 
@@ -10,7 +9,6 @@ const ConfiguratorInterface = ({ onLoading, setCustomMode, avatarMode, setAvatar
         SetIsMode,
         setCameraMode, 
     } = useCharacterCustomization();
-    
 
     if(!avatarMode) {
         return (!onLoading && <>

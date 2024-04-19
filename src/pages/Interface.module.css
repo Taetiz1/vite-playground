@@ -213,7 +213,7 @@
     overflow-y: auto;
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* IE and Edge */
-    max-height: 600px;
+    max-height: 650px;
 }
 
 .ul_chatBox::-webkit-scrollbar {
@@ -229,23 +229,25 @@
     color: #fff;
     background-color:  rgba(0, 0, 0, .4);
     position: relative;
-    padding: 8px 16px 8px 16px;
-    border-radius: 35px;
+    padding: 8px 16px;
+    border-radius: 30px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     max-width: 300px;
-    min-width: 90px;
+    min-width: 130px;
     user-select: none;
 }
 
-.chatBox .message {
+.message {
     word-break: break-all;
-    font-size: 14px;
+    font-size: 18px;
     line-height: 1.2;
     font-weight: 300;
     font-family: 'kanit', sans-serif;
-    margin-top: 5px;
+    text-align: right;
+    width: 100%;
+    padding: 4px;
 }
 
 .usersList {

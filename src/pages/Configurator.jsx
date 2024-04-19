@@ -45,15 +45,9 @@ function Configurator() {
         atPos: startPoint.atPos,
       })
       setconfigChar(true)
-      setOnLoading()
+      setOnLoading(false)
     } 
   }
-
-  useEffect(() => {
-    if(socketClient) {
-
-    }
-  }, [socketClient])
 
   useEffect(() => {
     if(progress < 100) {

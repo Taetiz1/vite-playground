@@ -24,7 +24,7 @@ const LoadingScene2 = ({ onLoading, setOnLoading }) => {
             
             <div className={styles.board}>
                 <div>
-                    <h1 className={styles.boardTitle}>{name}</h1>  
+                    <h1 className={styles.boardTitle}><p><span style={{fontWeight: "200"}}>เรากำลังจะพาท่านไปสู่</span> "{name}"</p></h1>  
                 </div>
 
                 <button 

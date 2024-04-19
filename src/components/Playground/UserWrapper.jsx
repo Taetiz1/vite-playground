@@ -4,12 +4,12 @@ import OtherPlayers from "./OtherPlayers";
 import styles from './UserWrapper.module.css';
 import RotatingText from "./RotatingText";
 
-const UserWrapper = memo(({ id, position, rotation, name, action, chathead, avatarUrl}) => {
+const UserWrapper = ({ id, position, rotation, name, action, chathead, avatarUrl}) => {
   
   const [showChatBubble, setShowChatBubble] = useState(false);
 
   useEffect(() => {
-    if(chathead != ''){
+    if(chathead !== ''){
       setShowChatBubble(true)
       
     } else {
@@ -61,6 +61,6 @@ const UserWrapper = memo(({ id, position, rotation, name, action, chathead, avat
             
     </group>
   )
-})
+}
 
-export default UserWrapper
+export default memo(UserWrapper)

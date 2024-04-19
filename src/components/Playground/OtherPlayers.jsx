@@ -37,7 +37,7 @@ const OtherPlayers = ({action, avatarUrl}) => {
   
     return (
         <group ref={cloneRef} >
-            <primitive object={clone} scale={[0.56, 0.56, 0.56]} rotation={[0, 9.4, 0]}/>
+          <primitive object={clone} scale={[0.56, 0.56, 0.56]} rotation={[0, 9.4, 0]}/>
         </group>
     )
 }
