@@ -4,6 +4,7 @@ import { useSocketClient } from '../Login/SocketClient';
 import { useVideoChat } from '../voiceContext';
 import { useFrame, useLoader } from '@react-three/fiber';
 import EnterIcon from '/assets/enter.png'
+import { Text, Html } from '@react-three/drei';
 
 const EnterSceneBT = ({position, setOnLoading, roomID, atPos}) => {
     const {
@@ -11,7 +12,6 @@ const EnterSceneBT = ({position, setOnLoading, roomID, atPos}) => {
       username,
       avatarUrl,
       email
-  
     } = useSocketClient();
   
     const {

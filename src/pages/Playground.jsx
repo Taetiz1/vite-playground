@@ -5,7 +5,7 @@ import { Stats, Sky, useHelper } from '@react-three/drei'
 import Character from '../components/Playground/Character'
 import { io } from 'socket.io-client'
 import { Physics } from '@micmania1/react-three-rapier'
-import { Affix, Modal, Container, useMantineTheme, ScrollArea, Image, Button, Text } from '@mantine/core'
+import { Affix, Modal, useMantineTheme, ScrollArea } from '@mantine/core'
 import { containsTHBadWords, filterTHBadWords } from '../components/handleTHBadwords'
 import badWords from 'bad-words';
 import TextareaAutosize  from 'react-textarea-autosize'
@@ -18,72 +18,20 @@ import MessagesBox from '../components/Playground/MessagesBox'
 import VideoCall from '../components/Voice/VideoCall'
 import Minimap from '../components/Playground/miniMap'
 import UserWrapper from '../components/Playground/UserWrapper'
+import InformationPage from '../components/Information/InformationPage'
+import QuestionPage from '../components/Question/QuestionPage'
 
-import { IconHeadset } from '@tabler/icons-react'
+import { IconHeadset, IconDeviceGamepad } from '@tabler/icons-react'
 import micMute from '/assets/micMute.png'
 import mute from '/assets/mute.png'
 import { AgoraVideoPlayer } from 'agora-rtc-react'
 
 import interfacestyles from './Interface.module.css'
-import quizStyles from './QuizGane.module.css'
 import { useSocketClient } from '../components/Login/SocketClient'
 import { useVideoChat } from '../components/voiceContext'
 import Login from './Login'
 import Configurator from './Configurator'
 import { pushNotification } from '../components/Playground/Notification'
-
-// function QuestionButton({position, setshowQuestion}) {
-//   const buttonRef = useRef()
-//   useFrame(({ camera }) => {
-//     if (buttonRef.current) {
-//       buttonRef.current.lookAt(camera.position);
-//     }
-//   })
-
-//   const openQ = () => {
-//     const result = window.confirm('ต้องการดำเนินการหรือไม่?');
-
-//     if (result) {
-//       setshowQuestion(true)
-//     } else {
-//       return;
-//     }
-//   };
-
-//   return (
-//     <mesh ref={buttonRef} position={position} >
-//       <sphereGeometry args={[0.8, 15, 15]} />
-//       <meshPhysicalMaterial color="black" transparent opacity={0.2} />
-//       <Text 
-//         onClick={openQ}
-//         position={[0, 0, 1]} 
-//         fontSize={0.3} 
-//         color="white"  
-//         anchorX="center" 
-//         anchorY="middle"
-//         // onClick={() => {}}
-//       >
-//         Question!
-//       </Text>
-//     </mesh>
-    
-//   );
-// }
-
-const slideImages = [
-  {
-    url: 'https://images.unsplash.com/photo-1509721434272-b79147e0e708?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80',
-    caption: 'Slide 1'
-  },
-  {
-    url: 'https://images.unsplash.com/photo-1506710507565-203b9f24669b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1536&q=80',
-    caption: 'Slide 2'
-  },
-  {
-    url: 'https://images.unsplash.com/photo-1536987333706-fc9adfb10d91?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80',
-    caption: 'Slide 3'
-  },
-];
 
 const Lights = ({x, y, z}) => {
   return (
@@ -118,7 +66,11 @@ function Playground() {
     setEmote,
     showInformation,
     setShowInformation,
-    avatarUrl
+    avatarUrl,
+    setQuestions,
+    showQuestion, 
+    setshowQuestion,
+    setLeaderBoard
   } = useSocketClient();
 
   const {
@@ -136,9 +88,6 @@ function Playground() {
   const theme = useMantineTheme();
 
   const messageListRef = useRef();
-
-  // const [questions, setQuestions] = useState([{}])
-  const [Index, setIndex] = useState(0)
 
   useEffect(() => {
     if(connectServer) { 
@@ -164,9 +113,13 @@ function Playground() {
         setMessages(message);
       })
   
-      // socketClient.on("selectedQuestions", (selectedQuestions) => {
-      //   setQuestions(selectedQuestions);
-      // });
+      socketClient.on("selectedQuestions", (selectedQuestions) => {
+        setQuestions(selectedQuestions);
+      });
+
+      socketClient.on("leaderBoard", (leaderBoard) => {
+        setLeaderBoard(leaderBoard.sort((a, b) => b.score - a.score));
+      });
 
       socketClient.on("alreadyLogin", (check) => {
         if(check) {
@@ -230,9 +183,7 @@ function Playground() {
       socketClient.emit("message", msg);
       setMessage("");
     }
-  };
-
-  // const [showQuestion, setshowQuestion] = useState(false);
+  }
   
   function scrollToBottom() {
     if(messageListRef.current) {
@@ -242,27 +193,6 @@ function Playground() {
   useEffect(() => {
     scrollToBottom();
   }, [messages, messageListRef.current]);
-
-  // const [currentQuestion, setCurrentQuestion] = useState(0);
-  // const [showScore, setShowScore] = useState(false);
-  // const [score, setScore] = useState(0);
-  // const [answered, setAnswered] = useState(null);
-  // const [correctAnswer, setCorrectAnswer] = useState(null)
-  // const [nextQuestionBT, setNextQuestionBT] = useState(false)
-
-  // const handleAnswerClick = (isCorrect, index) => { 
-  //   if(answered === null){
-  //     setAnswered(index)
-  //     setNextQuestionBT(true)
-  //     if(isCorrect) {
-  //       setScore(score + 1);
-  //       setCorrectAnswer(true)
-  //     } else {
-  //       setCorrectAnswer(false)
-  //     }
-  //   }
-  //   return ;
-  // };
 
   const handleUserSelect = (username) => {
     setMessage((prevValue) => prevValue.replace(/@\S*$/, `@${username} `)); // Replace the last word after "@"
@@ -277,82 +207,115 @@ function Playground() {
               
               <div className={interfacestyles.InteractiveContainerWrap}>
 
-              <div 
-                style={{
-                  display: 'flex',
-                  padding: "4px",
-                  margin: '4px',
-                  marginRight: '0px',
-                  backgroundColor: "rgba(0, 0, 0, .25)",
-                  borderRadius: "28px",
-                  height: "48px",
-                  gap: "6px"
-                }}
-              > 
-                <button 
-                  className={interfacestyles.Emotebutton}
-                  onClick={() => {
-                    setDoEmote(true)
-                    setEmote('M_Standing_Expressions_013')
+                <div 
+                  style={{
+                    display: 'flex',
+                    padding: "4px",
+                    margin: '4px',
+                    marginRight: '0px',
+                    backgroundColor: "rgba(0, 0, 0, .25)",
+                    borderRadius: "28px",
+                    height: "48px",
+                    gap: "6px"
+                  }}
+                > 
+                  <button 
+                    className={interfacestyles.Emotebutton}
+                    onClick={() => {
+                      setDoEmote(true)
+                      setEmote('M_Standing_Expressions_013')
+                    }}
+                  >
+                    Hello
+                  </button>
+
+                  <button 
+                    className={interfacestyles.Emotebutton}
+                    onClick={() => {
+                      setDoEmote(true)
+                      setEmote('M_Dances_009')
+                    }}
+                  >
+                    Dance
+                  </button>
+
+                  <button 
+                    className={interfacestyles.Emotebutton}
+                    onClick={() => {
+                      setDoEmote(true)
+                      setEmote('M_Standing_Expressions_015')
+                    }}
+                  >
+                    Save
+                  </button>
+
+                  <button 
+                    className={interfacestyles.Emotebutton}
+                    onClick={() => {
+                      setDoEmote(true)
+                      setEmote('M_Standing_Expressions_016')
+                    }}
+                  >
+                    Not Good
+                  </button>
+
+                  <button 
+                    className={interfacestyles.Emotebutton}
+                    onClick={() => {
+                      if(emote === '')
+                      setDoEmote(true)
+                      setEmote('Sitting Ground')
+                    }}
+                  >
+                    Sit
+                  </button>
+                </div>
+
+                <div 
+                  style={{
+                    display: 'flex',
+                    padding: "4px",
+                    margin: '4px',
+                    marginRight: '0px',
+                    backgroundColor: "rgba(0, 0, 0, .25)",
+                    borderRadius: "28px",
+                    height: "48px",
+                    gap: "6px"
+                  }}
+                > 
+                  <div>
+                    <button 
+                      className={interfacestyles.Micbutton}
+                      onClick={() => {
+                        setshowQuestion(true)
+                      }}
+                      style={{
+                        backgroundColor: 'rgba(0, 0, 0, .25)',
+                        alignItems: 'center',
+                        justifyItems: 'center'
+                      }}
+                    >
+                      <IconDeviceGamepad 
+                        strokeWidth={1.5} 
+                      />
+                    </button>
+                  </div>
+                  
+                </div>
+
+                <div 
+                  style={{
+                    display: 'flex',
+                    padding: connectPeer ? "0px" : "4px",
+                    margin: '4px',
+                    marginRight: '0px',
+                    backgroundColor: "rgba(0, 0, 0, .25)",
+                    borderRadius: connectPeer ? "20px" : "28px",
+                    alignContent: 'center',
+                    alignItems: 'end',
+                    height: connectPeer ? "228.2px" : "48px",
                   }}
                 >
-                  Hello
-                </button>
-
-                <button 
-                  className={interfacestyles.Emotebutton}
-                  onClick={() => {
-                    setDoEmote(true)
-                    setEmote('M_Dances_009')
-                  }}
-                >
-                  Dance
-                </button>
-
-                <button 
-                  className={interfacestyles.Emotebutton}
-                  onClick={() => {
-                    setDoEmote(true)
-                    setEmote('M_Standing_Expressions_015')
-                  }}
-                >
-                  Save
-                </button>
-
-                <button 
-                  className={interfacestyles.Emotebutton}
-                  onClick={() => {
-                    setDoEmote(true)
-                    setEmote('M_Standing_Expressions_016')
-                  }}
-                >
-                  Not Good
-                </button>
-
-                <button 
-                  className={interfacestyles.Emotebutton}
-                  onClick={() => {
-                    if(emote === '')
-                    setDoEmote(true)
-                    setEmote('Sitting Ground')
-                  }}
-                >
-                  Sit
-                </button>
-
-              </div>
-                <div style={{
-                  display: 'flex',
-                  padding: connectPeer ? "0px" : "4px",
-                  margin: '4px',
-                  marginRight: '0px',
-                  backgroundColor: "rgba(0, 0, 0, .25)",
-                  borderRadius: connectPeer ? "20px" : "28px",
-                  alignContent: 'center',
-                  alignItems: 'end',
-                  height: connectPeer ? "228.2px" : "48px",
-                }}>
-
                   {!connectPeer && <div>
                     <button 
                       className={interfacestyles.Micbutton}
@@ -388,8 +351,6 @@ function Playground() {
                   </div>}
                 </div>
                 
-
-
                 <div className={interfacestyles.InteractiveContainer}>
                   
                   <div className={interfacestyles.chatInputContainer} >
@@ -519,7 +480,6 @@ function Playground() {
                   })
                 }
               </div>
-
             </Affix>
     
             <Affix position={{top: 20, left: 20}} style={{zIndex: '2',}}>
@@ -552,93 +512,17 @@ function Playground() {
               }}
               scrollAreaComponent={ScrollArea.Autosize}
             >
-              <Container>
-                <div style={{ position: "relative", width: "1000px", height: "500px" }}>
-                  <Image key={0} width={1000} height={500}  src={slideImages[0].url} alt="Random image" style={{position: "absolute", top: 0, left: 0, zIndex: Index === 0 ? 1 : 0 }} />
-                  <Image key={1} width={1000} height={500}  src={slideImages[1].url} alt="Random image" style={{position: "absolute", top: 0, left: 0, zIndex: Index === 1 ? 1 : 0 }} />
-                  <Image key={2} width={1000} height={500}  src={slideImages[2].url} alt="Random image" style={{position: "absolute", top: 0, left: 0, zIndex: Index === 2 ? 1 : 0 }} />
-                </div>
-                
-              </Container> 
-              <Button variant="light" radius="md" uppercase onClick={() => {if(Index > 0) {setIndex(Index-1)} else {setIndex(2)}}}>
-                Back
-              </Button>
-              <Button variant="light" radius="md" uppercase onClick={() => {if(Index < 2) {setIndex(Index+1)} else {setIndex(0)}}}>
-                Next
-              </Button>
+              <InformationPage />
             </Modal>
     
-    
-            {/* <Modal size="xl" opened={showQuestion} onClose={() => { setshowQuestion(false) }} title="Question" style={{zIndex: '2'}}>
-              <div className={quizStyles.quizCard}>
-                {showScore ? (
-                  <div className={quizStyles.result}>
-                    You scored {score} out of {questions.length}
-                    <button 
-                      onClick={() => {
-                        
-                        setScore(0)
-                        setShowScore(false)
-                        setCurrentQuestion(0)
-                        setAnswered(null)
-                        setNextQuestionBT(false)
-                        setAnswered(null)
-                        socketClient.emit('getRandomQuestions')
-                      }}
-                    >
-                      play again
-                    </button>
-                  </div>
-                ) : 
-                (
-                  <div className={quizStyles.quizCard}>
-                    <div className={quizStyles.questionSection}>
-                      <div className={quizStyles.questionText}>
-                          {questions[currentQuestion].question}
-                      </div>
-                      <div className={quizStyles.questionCount}>
-                        <span> {currentQuestion + 1} </span>
-                        / {questions.length}
-                      </div>
-                    </div>
-                    <div className={quizStyles.AnswerSection}>
-                      {questions[currentQuestion].answerOptions.map((answer, index) => (
-                        <button 
-                          key={index}
-                          className={quizStyles.answerBT} 
-                          onClick={() => handleAnswerClick(answer.isCorrect, index)}
-                          style={{
-                            color: index === answered ? (correctAnswer ? '#2AAA8A' : '#ff3300') : "#000" && 
-                            answered ? (answer.isCorrect ? '#2AAA8A' : '#000') : "#000"
-                          }}
-                        >
-                          {answer.answerText} 
-                        </button>
-                      ))}
-                      { nextQuestionBT && (
-                      <button 
-                        onClick={() => {
-                          
-                          const nextQuestion = currentQuestion + 1;
-    
-                          if(nextQuestion < questions.length) {
-                            setCurrentQuestion(nextQuestion);
-                            setAnswered(null)
-                            setNextQuestionBT(false)
-                            setAnswered(null)
-                          } else {
-                            setShowScore(true)
-                          }
-                        }}
-                        className={quizStyles.nextQuestionBT}
-                      >
-                        nextQuestion
-                      </button>)}
-                    </div>
-                  </div>
-                )}
-              </div>
-            </Modal> */}
+            <Modal 
+              size="100%" 
+              opened={showQuestion} 
+              onClose={() => {setshowQuestion(false)}} 
+              style={{zIndex: '2'}}
+            >
+              <QuestionPage />
+            </Modal>
     
             <Suspense fallback={null}> 
               <Canvas 
@@ -679,14 +563,12 @@ function Playground() {
                         )
                     })
                   }
-                  {/* <QuestionButton position={[4, 3, 4]} setshowQuestion={setshowQuestion} /> */}
               </Canvas>
             </Suspense>
             <LoadingScene2 onLoading={onLoading} setOnLoading={() => setOnLoading(false)} />
             {onConnectionFailed && <ConnectionFailed />}
           </div>
       )
-     
   }
 
   if( logedIn ) {

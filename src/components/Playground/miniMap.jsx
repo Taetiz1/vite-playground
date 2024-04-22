@@ -65,19 +65,6 @@ const Minimap = memo(() => {
         miniMap.updateProjectionMatrix();
         gl.render(scene, miniMap);
 
-        // gl.setViewport(
-        //     miniMapLocationLeftPixels - 15,
-        //     miniMapLocationBottomPixels - 20,
-        //     (window.innerWidth * 0.2) + 30,
-        //     (window.innerHeight * 0.25) + 30
-        // );
-        // gl.setScissor(
-        //     miniMapLocationLeftPixels - 15,
-        //     miniMapLocationBottomPixels - 20 ,
-        //     window.innerWidth * 0.2 + 30,
-        //     window.innerHeight * 0.25 + 30
-        // );
-
         miniMapSymbol.position.x = posMinimap[0];
         miniMapSymbol.position.z = posMinimap[2];
 
@@ -91,7 +78,6 @@ const Minimap = memo(() => {
         if(playerRef.current) {
             playerRef.current.position.set(posMinimap[0], 26, posMinimap[2])
         }
-
     });
 
     return (

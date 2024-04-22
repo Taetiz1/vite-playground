@@ -26,6 +26,10 @@ export const SocketclientProvider = ({children}) => {
     })
     const [avatarAnimation, setAvatarAnimation] = useState([])
     const [showInformation, setShowInformation] = useState(false)
+    const [information, setInformation] = useState({})
+    const [questions, setQuestions] = useState([])
+    const [showQuestion, setshowQuestion] = useState(false);
+    const [leaderBoard, setLeaderBoard] = useState([])
     
     const Web_URL = import.meta.env.VITE_SERVER_URL || "http://localhost:3000";
 
@@ -87,7 +91,15 @@ export const SocketclientProvider = ({children}) => {
                 setInterractivePosition,
                 avatarAnimation,
                 showInformation,
-                setShowInformation
+                setShowInformation,
+                information,
+                setInformation,
+                questions, 
+                setQuestions,
+                showQuestion, 
+                setshowQuestion,
+                leaderBoard, 
+                setLeaderBoard
             }}
         >
             {children}

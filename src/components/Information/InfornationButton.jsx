@@ -4,26 +4,20 @@ import { Vector3 } from "three";
 import { useFrame } from "@react-three/fiber";
 import { Text } from "@react-three/drei";
 
-function InteractiveButton({emote, pos, rot}) {
+const InformationButton = ({information}) => {
     const {
-        setDoEmote,
-        setEmote,
-        onInteractive,
-        setOnInteractive,
-        setInterractivePosition
+        showInformation,
+        setShowInformation,
+        setInformation
     } = useSocketClient();
 
     const handleClick = () => {
-      setDoEmote(true)
-      setEmote(emote)
-      setOnInteractive(true)
-      setInterractivePosition({
-        pos: pos,
-        rot: rot
-      })
+        setShowInformation(true)
+        setInformation(information)
     };
 
-    const iconPos = new Vector3(pos[0], pos[1], pos[2]); 
+    const position = information.pos
+    const iconPos = new Vector3(position[0], position[1], position[2]); 
     const maxDistanceToShowText = 5;
     const [enabledClick, setEnabledClick] = useState(false);
     const buttonRef = useRef()
@@ -41,9 +35,9 @@ function InteractiveButton({emote, pos, rot}) {
             buttonRef.current.lookAt(camera.position);
         }
     })
-  
+
     return (
-        <group position={pos} ref={buttonRef} scale={[0.4, 0.4, 0.4]} visible={onInteractive ? false : true}>
+        <group position={position} ref={buttonRef} scale={[0.4, 0.4, 0.4]} visible={showInformation ? false : true}>
             <mesh 
                 onClick={() => {
                     if(enabledClick) {
@@ -61,11 +55,12 @@ function InteractiveButton({emote, pos, rot}) {
                     outlineWidth={0.02}
                     outlineColor="white"
                 >
-                    click to {emote}
+                    information
                 </Text>}
             </mesh>
         </group>
     );
+
 }
 
-export default InteractiveButton
+export default InformationButton
