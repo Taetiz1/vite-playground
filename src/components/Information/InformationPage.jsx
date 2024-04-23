@@ -64,6 +64,7 @@ const InformationPage = () => {
                                 top: "50%", 
                                 left: "50%", 
                                 transform: "translate(-50%, -50%)",
+                                opacity: Index === index ? 1 : 0 ,
                                 maxHeight: "400px"
                             }}
                         />
